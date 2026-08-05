@@ -631,9 +631,16 @@ class JLPTApp {
         this.speechUtterance.rate = rate;
 
         const voices = window.speechSynthesis.getVoices();
-        const jaVoice = voices.find(v => v.lang === 'ja-JP' || v.lang.startsWith('ja'));
+        const jaVoice = voices.find(v => 
+          v.lang.toLowerCase().replace('_', '-').startsWith('ja') ||
+          v.name.toLowerCase().includes('japanese')
+        );
         if (jaVoice) {
           this.speechUtterance.voice = jaVoice;
+        } else {
+          console.warn("No native Japanese voice found. Falling back to Google Translate TTS.");
+          this.playGoogleTTSFallback(promptText, rate);
+          return;
         }
 
         this.speechUtterance.onend = () => {
