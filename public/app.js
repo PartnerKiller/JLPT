@@ -645,7 +645,12 @@ class JLPTApp {
           this.playGoogleTTSFallback(promptText, rate);
         };
 
-        window.speechSynthesis.speak(this.speechUtterance);
+        // Workaround: 50ms timeout protects Chrome's voice queue from cancellation dropouts
+        setTimeout(() => {
+          if (this.isSpeaking) {
+            window.speechSynthesis.speak(this.speechUtterance);
+          }
+        }, 50);
         return;
       } catch (e) {
         console.warn("Speech Synthesis call failed, using fallback", e);
@@ -671,7 +676,7 @@ class JLPTApp {
       }
 
       const text = chunks[chunkIdx++];
-      const url = `https://translate.google.com/translate_tts?ie=UTF-8&tl=ja&client=tw-ob&q=${encodeURIComponent(text)}`;
+      const url = `/api/tts?q=${encodeURIComponent(text)}`;
       
       this.fallbackAudio = new Audio();
       this.fallbackAudio.referrerPolicy = "no-referrer";
@@ -741,9 +746,13 @@ class JLPTApp {
 
     // Save report card to backend JSON database
     if (this.currentUser) {
+      const token = sessionStorage.getItem('token') || '';
       fetch('/api/report/save', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
         body: JSON.stringify({
           username: this.currentUser,
           level: this.level,
@@ -1083,6 +1092,7 @@ class JLPTApp {
         // Save to session storage
         sessionStorage.setItem('currentUser', data.username);
         sessionStorage.setItem('currentRole', data.role);
+        sessionStorage.setItem('token', data.token);
         
         // Reset inputs
         usernameInput.value = '';
@@ -1154,7 +1164,12 @@ class JLPTApp {
     const reportContainer = document.getElementById('profile-report-card');
     reportContainer.innerHTML = '<div style="font-size: 13px; opacity: 0.6;">Loading your academic report card...</div>';
 
-    fetch(`/api/report/get?username=${encodeURIComponent(this.currentUser)}`)
+    const token = sessionStorage.getItem('token') || '';
+    fetch(`/api/report/get?username=${encodeURIComponent(this.currentUser)}`, {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    })
     .then(res => res.json())
     .then(data => {
       if (data.success) {
@@ -1211,9 +1226,13 @@ class JLPTApp {
       return;
     }
 
+    const token = sessionStorage.getItem('token') || '';
     fetch('/api/profile/update', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
       body: JSON.stringify({
         currentUsername: this.currentUser,
         newUsername: newUsername !== this.currentUser ? newUsername : undefined,
@@ -1256,10 +1275,10 @@ class JLPTApp {
     const usersList = document.getElementById('admin-users-list');
     usersList.innerHTML = '<tr><td colspan="4" style="padding: 15px; opacity: 0.6;">Loading users data...</td></tr>';
 
+    const token = sessionStorage.getItem('token') || '';
     fetch('/api/admin/users', {
       headers: {
-        'x-auth-user': this.currentUser || '',
-        'x-auth-role': this.currentRole || ''
+        'Authorization': `Bearer ${token}`
       }
     })
     .then(res => res.json())
@@ -1278,7 +1297,7 @@ class JLPTApp {
               <input type="text" id="admin-user-name-${idx}" value="${user.username}" style="padding: 4px 8px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.15); background: rgba(255,255,255,0.05); color: #fff; width: 100%; box-sizing: border-box; font-size: 13px;" ${isCurrentAdmin ? 'disabled' : ''}>
             </td>
             <td style="padding: 10px 5px;">
-              <input type="text" id="admin-user-pass-${idx}" value="${user.password}" style="padding: 4px 8px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.15); background: rgba(255,255,255,0.05); color: #fff; width: 100%; box-sizing: border-box; font-size: 13px;">
+              <input type="password" id="admin-user-pass-${idx}" placeholder="•••••••• (Unchanged)" style="padding: 4px 8px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.15); background: rgba(255,255,255,0.05); color: #fff; width: 100%; box-sizing: border-box; font-size: 13px;">
             </td>
             <td style="padding: 10px 5px; opacity: 0.8;">
               <span style="font-weight: bold; color: ${user.role === 'admin' ? '#f59e0b' : '#60a5fa'};">${user.role}</span>
@@ -1317,20 +1336,20 @@ class JLPTApp {
 
     const targetUsername = targetUsernameInput ? targetUsernameInput.value.trim() : '';
     const newUsername = newUsernameInput ? newUsernameInput.value.trim() : targetUsername;
-    const newPassword = newPasswordInput ? newPasswordInput.value.trim() : undefined;
+    const newPassword = newPasswordInput && newPasswordInput.value.trim() !== '' ? newPasswordInput.value.trim() : undefined;
 
-    if (!targetUsername || !newUsername || !newPassword) {
+    if (!targetUsername || !newUsername) {
       errorMsg.textContent = 'Fields cannot be blank';
       errorMsg.style.display = 'block';
       return;
     }
 
+    const token = sessionStorage.getItem('token') || '';
     fetch('/api/admin/user/update', {
       method: 'POST',
       headers: { 
         'Content-Type': 'application/json',
-        'x-auth-user': this.currentUser || '',
-        'x-auth-role': this.currentRole || ''
+        'Authorization': `Bearer ${token}`
       },
       body: JSON.stringify({
         targetUsername: targetUsername,

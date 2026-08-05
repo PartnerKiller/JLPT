@@ -2,9 +2,10 @@
   "users": [
     {
       "username": "sakura",
-      "password": "sakura",
+      "password": "09902da39d1b5acb60f6b4c901c42f03848185c643ae85bcc49b4ab0b4cb0a93",
       "role": "admin",
-      "scores": {}
+      "scores": {},
+      "salt": "sakura"
     }
   ]
 }
