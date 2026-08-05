@@ -237,11 +237,11 @@ class JLPTApp {
       const readingQs = this.shuffleArray(deepClone(db.Reading || [])).slice(0, 2);
       const listeningQs = this.shuffleArray(deepClone(db.Listening || [])).slice(0, 4);
 
-      // Tag sections
-      vocabQs.forEach(q => q.section = 'Vocabulary');
-      grammarQs.forEach(q => q.section = 'Grammar');
-      readingQs.forEach(q => q.section = 'Reading');
-      listeningQs.forEach(q => q.section = 'Listening');
+      // Tag sections and shuffle options to guarantee random choices
+      vocabQs.forEach(q => { q.section = 'Vocabulary'; this.shuffleOptions(q); });
+      grammarQs.forEach(q => { q.section = 'Grammar'; this.shuffleOptions(q); });
+      readingQs.forEach(q => { q.section = 'Reading'; this.shuffleOptions(q); });
+      listeningQs.forEach(q => { q.section = 'Listening'; this.shuffleOptions(q); });
 
       if (this.sessionMode === 'exam' || this.sessionMode === 'test') {
         // Combined sequential mock structure
@@ -268,7 +268,10 @@ class JLPTApp {
       if (this.focusSection === 'Listening') limit = 4;
 
       this.sessionQuestions = this.shuffleArray(deepClone(allQs)).slice(0, limit);
-      this.sessionQuestions.forEach(q => q.section = this.focusSection);
+      this.sessionQuestions.forEach(q => {
+        q.section = this.focusSection;
+        this.shuffleOptions(q);
+      });
       this.isFullMockExam = false;
     }
 
@@ -1041,6 +1044,17 @@ class JLPTApp {
       [array[i], array[j]] = [array[j], array[i]];
     }
     return array;
+  }
+
+  shuffleOptions(q) {
+    if (!q || !q.options || q.options.length <= 1) return q;
+    const correctText = q.options[q.correct];
+    for (let i = q.options.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [q.options[i], q.options[j]] = [q.options[j], q.options[i]];
+    }
+    q.correct = q.options.indexOf(correctText);
+    return q;
   }
 
   // --- USER AUTHENTICATION & MANAGEMENT SYSTEMS ---
