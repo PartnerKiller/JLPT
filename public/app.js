@@ -359,7 +359,6 @@ class JLPTApp {
       const seconds = (this.timeRemaining % 60).toString().padStart(2, '0');
       timerEl.textContent = `${minutes}:${seconds}`;
     } else {
-      this.timeElapsed++;
       const minutes = Math.floor(this.timeElapsed / 60).toString().padStart(2, '0');
       const seconds = (this.timeElapsed % 60).toString().padStart(2, '0');
       timerEl.textContent = `${minutes}:${seconds}`;
