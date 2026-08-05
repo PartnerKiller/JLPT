@@ -42,6 +42,12 @@
           <i class="fa-solid fa-fire text-orange"></i>
           <span id="streak-count">0</span> Days
         </div>
+        <div id="user-nav-area" style="display: none; gap: 8px; align-items: center;">
+          <span id="user-display-name" style="font-size: 13px; font-weight: bold; margin-right: 5px;"></span>
+          <button id="btn-admin-panel" onclick="app.showAdminPanel()" style="font-size: 11px; padding: 4px 8px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.15); background: rgba(255,255,255,0.05); color: inherit; cursor: pointer; display: none;">Admin</button>
+          <button id="btn-user-profile" onclick="app.showUserProfile()" style="font-size: 11px; padding: 4px 8px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.15); background: rgba(255,255,255,0.05); color: inherit; cursor: pointer;">Profile</button>
+          <button id="btn-logout" onclick="app.logout()" style="font-size: 11px; padding: 4px 8px; border-radius: 6px; border: 1px solid rgba(255,99,99,0.3); background: rgba(255,99,99,0.05); color: rgb(255,120,120); cursor: pointer;">Logout</button>
+        </div>
         <button id="theme-toggle" class="icon-btn" onclick="app.toggleTheme()" aria-label="Toggle Dark Mode">
           <i class="fa-solid fa-sun"></i>
         </button>
@@ -391,6 +397,91 @@
     <footer class="app-footer">
       <p>&copy; 2026 Nazuna JLPT Practice Hub. Crafted for optimal learning.</p>
     </footer>
+  </div>
+
+  <!-- Login/Register Overlay -->
+  <div id="login-overlay" style="position: fixed; inset: 0; z-index: 1000; background: rgba(10, 10, 15, 0.95); backdrop-filter: blur(10px); display: flex; align-items: center; justify-content: center;">
+    <div class="glass-card" style="width: 100%; max-width: 400px; padding: 30px; border-radius: 20px; text-align: center; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.05); color: #fff; font-family: sans-serif;">
+      <h2 style="font-size: 24px; font-weight: bold; margin-bottom: 20px;" id="auth-title">Sign In to Nazuna</h2>
+      
+      <div id="auth-error-msg" style="color: #ff6b6b; font-size: 13px; margin-bottom: 15px; display: none;"></div>
+      
+      <form id="auth-form" onsubmit="event.preventDefault(); app.handleAuthSubmit();">
+        <div style="margin-bottom: 15px; text-align: left;">
+          <label style="font-size: 12px; opacity: 0.8; display: block; margin-bottom: 5px;">Username</label>
+          <input type="text" id="auth-username" required style="width: 100%; padding: 10px 15px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.15); background: rgba(255,255,255,0.05); color: #fff; outline: none; box-sizing: border-box;">
+        </div>
+        <div style="margin-bottom: 20px; text-align: left;">
+          <label style="font-size: 12px; opacity: 0.8; display: block; margin-bottom: 5px;">Password</label>
+          <input type="password" id="auth-password" required style="width: 100%; padding: 10px 15px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.15); background: rgba(255,255,255,0.05); color: #fff; outline: none; box-sizing: border-box;">
+        </div>
+        
+        <button type="submit" id="btn-auth-submit" class="btn-primary" style="width: 100%; padding: 12px; border-radius: 10px; font-weight: bold; cursor: pointer; border: none; background: #6366f1; color: #fff;">Sign In</button>
+      </form>
+      
+      <p style="margin-top: 20px; font-size: 13px; opacity: 0.8;" id="auth-toggle-text">
+        Don't have an account? <a href="#" onclick="event.preventDefault(); app.toggleAuthMode();" style="color: #818cf8; text-decoration: none; font-weight: bold;">Create Account</a>
+      </p>
+    </div>
+  </div>
+
+  <!-- User Profile Modal -->
+  <div id="modal-user-profile" style="position: fixed; inset: 0; z-index: 500; background: rgba(0,0,0,0.6); backdrop-filter: blur(5px); display: none; align-items: center; justify-content: center; font-family: sans-serif; color: #fff;">
+    <div class="glass-card" style="width: 100%; max-width: 500px; padding: 30px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1); background: rgba(20,20,30,0.95); position: relative; max-height: 90vh; overflow-y: auto; box-sizing: border-box;">
+      <button onclick="app.closeUserProfile()" style="position: absolute; top: 15px; right: 15px; background: none; border: none; font-size: 20px; color: inherit; cursor: pointer;"><i class="fa-solid fa-xmark"></i></button>
+      <h2 style="font-size: 20px; font-weight: bold; margin-bottom: 20px;"><i class="fa-solid fa-circle-user text-indigo"></i> My Study Profile</h2>
+      
+      <!-- Change Credentials Form -->
+      <h4 style="font-size: 14px; font-weight: bold; margin-bottom: 10px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 5px;">Change Account Credentials</h4>
+      <div id="profile-success-msg" style="color: #10b981; font-size: 13px; margin-bottom: 10px; display: none;"></div>
+      <div id="profile-error-msg" style="color: #ff6b6b; font-size: 13px; margin-bottom: 10px; display: none;"></div>
+      <form onsubmit="event.preventDefault(); app.updateUserProfileCredentials();" style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 25px;">
+        <div style="display: flex; gap: 10px;">
+          <div style="flex: 1;">
+            <label style="font-size: 11px; opacity: 0.8; display: block; margin-bottom: 3px;">New Username</label>
+            <input type="text" id="profile-new-username" style="width: 100%; padding: 8px 12px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.15); background: rgba(255,255,255,0.05); color: #fff; outline: none; font-size: 13px; box-sizing: border-box;">
+          </div>
+          <div style="flex: 1;">
+            <label style="font-size: 11px; opacity: 0.8; display: block; margin-bottom: 3px;">New Password</label>
+            <input type="password" id="profile-new-password" style="width: 100%; padding: 8px 12px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.15); background: rgba(255,255,255,0.05); color: #fff; outline: none; font-size: 13px; box-sizing: border-box;">
+          </div>
+        </div>
+        <button type="submit" class="btn-primary" style="padding: 8px 12px; border-radius: 8px; font-size: 12px; align-self: flex-end; cursor: pointer; border: none; background: #6366f1; color: #fff; font-weight: bold;">Save Account Credentials</button>
+      </form>
+
+      <!-- Report Card -->
+      <h4 style="font-size: 14px; font-weight: bold; margin-bottom: 10px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 5px;">My Academic Report Card</h4>
+      <div id="profile-report-card" style="display: flex; flex-direction: column; gap: 10px; margin-top: 10px;">
+        <!-- Loaded dynamically -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Admin Panel Modal -->
+  <div id="modal-admin-panel" style="position: fixed; inset: 0; z-index: 500; background: rgba(0,0,0,0.6); backdrop-filter: blur(5px); display: none; align-items: center; justify-content: center; font-family: sans-serif; color: #fff;">
+    <div class="glass-card" style="width: 100%; max-width: 600px; padding: 30px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1); background: rgba(20,20,30,0.95); position: relative; max-height: 90vh; overflow-y: auto; box-sizing: border-box;">
+      <button onclick="app.closeAdminPanel()" style="position: absolute; top: 15px; right: 15px; background: none; border: none; font-size: 20px; color: inherit; cursor: pointer;"><i class="fa-solid fa-xmark"></i></button>
+      <h2 style="font-size: 20px; font-weight: bold; margin-bottom: 20px;"><i class="fa-solid fa-user-shield text-indigo"></i> Admin User Management Panel</h2>
+      
+      <div id="admin-success-msg" style="color: #10b981; font-size: 13px; margin-bottom: 10px; display: none;"></div>
+      <div id="admin-error-msg" style="color: #ff6b6b; font-size: 13px; margin-bottom: 10px; display: none;"></div>
+      
+      <div style="overflow-x: auto;">
+        <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 13px;">
+          <thead>
+            <tr style="border-bottom: 2px solid rgba(255,255,255,0.15); opacity: 0.8;">
+              <th style="padding: 10px 5px;">Username</th>
+              <th style="padding: 10px 5px;">Password</th>
+              <th style="padding: 10px 5px;">Role</th>
+              <th style="padding: 10px 5px; text-align: right;">Action</th>
+            </tr>
+          </thead>
+          <tbody id="admin-users-list">
+            <!-- Loaded dynamically -->
+          </tbody>
+        </table>
+      </div>
+    </div>
   </div>
 
   <!-- Audio feedback effects (synthesized locally via Web Audio API) -->

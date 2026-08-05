@@ -13,6 +13,11 @@ class JLPTApp {
     this.answers = []; // Records user responses
     this.isFullMockExam = false;
     
+    // User Auth State
+    this.currentUser = null;
+    this.currentRole = null;
+    this.authMode = 'login';
+    
     // Timer state
     this.timerInterval = null;
     this.timeElapsed = 0;
@@ -49,6 +54,7 @@ class JLPTApp {
     this.loadStreak();
     this.loadLevelStats();
     this.applySavedTheme();
+    this.initAuth();
     
     // Bind focus section tabs from index.html
     this.sectionTabs = {
@@ -713,6 +719,19 @@ class JLPTApp {
     const total = this.sessionQuestions.length;
     const pct = Math.round((this.score / total) * 100);
 
+    // Save report card to backend JSON database
+    if (this.currentUser) {
+      fetch('/api/report/save', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          username: this.currentUser,
+          level: this.level,
+          pct: pct
+        })
+      }).catch(err => console.error("Failed to save report to server", err));
+    }
+
     // Save highscores to update dashboard stats and trophies
     this.saveHighScore(this.level, pct);
 
@@ -980,6 +999,322 @@ class JLPTApp {
       [array[i], array[j]] = [array[j], array[i]];
     }
     return array;
+  }
+
+  // --- USER AUTHENTICATION & MANAGEMENT SYSTEMS ---
+  initAuth() {
+    const savedUser = sessionStorage.getItem('currentUser');
+    const savedRole = sessionStorage.getItem('currentRole');
+    if (savedUser && savedRole) {
+      this.loginUser(savedUser, savedRole);
+    } else {
+      document.getElementById('login-overlay').style.display = 'flex';
+      document.getElementById('user-nav-area').style.display = 'none';
+    }
+  }
+
+  toggleAuthMode() {
+    this.playAudio('click');
+    const errorMsg = document.getElementById('auth-error-msg');
+    errorMsg.style.display = 'none';
+    
+    if (this.authMode === 'login') {
+      this.authMode = 'register';
+      document.getElementById('auth-title').textContent = 'Create Learner Account';
+      document.getElementById('btn-auth-submit').textContent = 'Create Account';
+      document.getElementById('auth-toggle-text').innerHTML = `Already have an account? <a href="#" onclick="event.preventDefault(); app.toggleAuthMode();" style="color: #818cf8; text-decoration: none; font-weight: bold;">Sign In</a>`;
+    } else {
+      this.authMode = 'login';
+      document.getElementById('auth-title').textContent = 'Sign In to Nazuna';
+      document.getElementById('btn-auth-submit').textContent = 'Sign In';
+      document.getElementById('auth-toggle-text').innerHTML = `Don't have an account? <a href="#" onclick="event.preventDefault(); app.toggleAuthMode();" style="color: #818cf8; text-decoration: none; font-weight: bold;">Create Account</a>`;
+    }
+  }
+
+  handleAuthSubmit() {
+    this.playAudio('click');
+    const usernameInput = document.getElementById('auth-username');
+    const passwordInput = document.getElementById('auth-password');
+    const errorMsg = document.getElementById('auth-error-msg');
+    
+    const username = usernameInput.value.trim();
+    const password = passwordInput.value.trim();
+    
+    if (!username || !password) return;
+
+    errorMsg.style.display = 'none';
+    const endpoint = this.authMode === 'login' ? '/api/login' : '/api/register';
+    
+    fetch(endpoint, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username, password })
+    })
+    .then(res => res.json())
+    .then(data => {
+      if (data.success) {
+        // Save to session storage
+        sessionStorage.setItem('currentUser', data.username);
+        sessionStorage.setItem('currentRole', data.role);
+        
+        // Reset inputs
+        usernameInput.value = '';
+        passwordInput.value = '';
+        
+        // Log in user
+        this.loginUser(data.username, data.role);
+      } else {
+        errorMsg.textContent = data.message || 'Authentication failed';
+        errorMsg.style.display = 'block';
+      }
+    })
+    .catch(err => {
+      console.error(err);
+      errorMsg.textContent = 'Server connection failed';
+      errorMsg.style.display = 'block';
+    });
+  }
+
+  loginUser(username, role) {
+    this.currentUser = username;
+    this.currentRole = role;
+    
+    document.getElementById('login-overlay').style.display = 'none';
+    document.getElementById('user-nav-area').style.display = 'flex';
+    document.getElementById('user-display-name').textContent = username;
+
+    const btnAdmin = document.getElementById('btn-admin-panel');
+    if (role === 'admin') {
+      btnAdmin.style.display = 'inline-block';
+    } else {
+      btnAdmin.style.display = 'none';
+    }
+
+    // Refresh streak and statistics
+    this.loadStreak();
+    this.loadLevelStats();
+    this.showDashboard();
+  }
+
+  logout() {
+    this.playAudio('click');
+    sessionStorage.clear();
+    this.currentUser = null;
+    this.currentRole = null;
+    
+    // Stop any active quizzes
+    if (this.timerInterval) clearInterval(this.timerInterval);
+    this.stopListeningAudio();
+    
+    this.panelQuiz.classList.remove('active');
+    this.panelResults.classList.remove('active');
+    
+    this.initAuth();
+  }
+
+  showUserProfile() {
+    this.playAudio('click');
+    const modal = document.getElementById('modal-user-profile');
+    modal.style.display = 'flex';
+
+    document.getElementById('profile-new-username').value = this.currentUser;
+    document.getElementById('profile-new-password').value = '';
+    
+    document.getElementById('profile-success-msg').style.display = 'none';
+    document.getElementById('profile-error-msg').style.display = 'none';
+
+    // Load report card
+    const reportContainer = document.getElementById('profile-report-card');
+    reportContainer.innerHTML = '<div style="font-size: 13px; opacity: 0.6;">Loading your academic report card...</div>';
+
+    fetch(`/api/report/get?username=${encodeURIComponent(this.currentUser)}`)
+    .then(res => res.json())
+    .then(data => {
+      if (data.success) {
+        reportContainer.innerHTML = '';
+        const levels = ['N5', 'N4', 'N3', 'N2', 'N1'];
+        const scoreColors = { N5: 'emerald', N4: 'blue', N3: 'amber', N2: 'purple', N1: 'rose' };
+        
+        levels.forEach(lvl => {
+          const pct = data.scores[lvl] !== undefined ? data.scores[lvl] : null;
+          const barWidth = pct !== null ? `${pct}%` : '0%';
+          const scoreText = pct !== null ? `${pct}% Accuracy` : 'Not Attempted';
+          
+          const entry = document.createElement('div');
+          entry.style.marginBottom = '12px';
+          entry.innerHTML = `
+            <div style="display: flex; justify-content: space-between; font-size: 12px; font-weight: bold; margin-bottom: 5px;">
+              <span>JLPT ${lvl}</span>
+              <span style="opacity: 0.8;">${scoreText}</span>
+            </div>
+            <div style="width: 100%; height: 8px; border-radius: 4px; background: rgba(255,255,255,0.08); overflow: hidden;">
+              <div style="width: ${barWidth}; height: 100%; border-radius: 4px; background: ${pct !== null ? 'linear-gradient(90deg, #6366f1, #818cf8)' : 'rgba(255,255,255,0.1)'}; transition: width 0.3s ease;"></div>
+            </div>
+          `;
+          reportContainer.appendChild(entry);
+        });
+      } else {
+        reportContainer.innerHTML = '<div style="font-size: 13px; color: #ff6b6b;">Failed to load report card details.</div>';
+      }
+    })
+    .catch(err => {
+      console.error(err);
+      reportContainer.innerHTML = '<div style="font-size: 13px; color: #ff6b6b;">Failed to connect to report server.</div>';
+    });
+  }
+
+  closeUserProfile() {
+    this.playAudio('click');
+    document.getElementById('modal-user-profile').style.display = 'none';
+  }
+
+  updateUserProfileCredentials() {
+    this.playAudio('click');
+    const newUsername = document.getElementById('profile-new-username').value.trim();
+    const newPassword = document.getElementById('profile-new-password').value.trim();
+    const successMsg = document.getElementById('profile-success-msg');
+    const errorMsg = document.getElementById('profile-error-msg');
+
+    successMsg.style.display = 'none';
+    errorMsg.style.display = 'none';
+
+    if (!newUsername) {
+      errorMsg.textContent = 'Username cannot be blank';
+      errorMsg.style.display = 'block';
+      return;
+    }
+
+    fetch('/api/profile/update', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        currentUsername: this.currentUser,
+        newUsername: newUsername !== this.currentUser ? newUsername : undefined,
+        newPassword: newPassword ? newPassword : undefined
+      })
+    })
+    .then(res => res.json())
+    .then(data => {
+      if (data.success) {
+        successMsg.textContent = 'Account credentials saved successfully!';
+        successMsg.style.display = 'block';
+        
+        // Update user state if name changed
+        if (newUsername !== this.currentUser) {
+          sessionStorage.setItem('currentUser', newUsername);
+          this.currentUser = newUsername;
+          document.getElementById('user-display-name').textContent = newUsername;
+        }
+        document.getElementById('profile-new-password').value = '';
+      } else {
+        errorMsg.textContent = data.message || 'Failed to save credentials';
+        errorMsg.style.display = 'block';
+      }
+    })
+    .catch(err => {
+      console.error(err);
+      errorMsg.textContent = 'Failed to connect to account server';
+      errorMsg.style.display = 'block';
+    });
+  }
+
+  showAdminPanel() {
+    this.playAudio('click');
+    const modal = document.getElementById('modal-admin-panel');
+    modal.style.display = 'flex';
+
+    document.getElementById('admin-success-msg').style.display = 'none';
+    document.getElementById('admin-error-msg').style.display = 'none';
+
+    const usersList = document.getElementById('admin-users-list');
+    usersList.innerHTML = '<tr><td colspan="4" style="padding: 15px; opacity: 0.6;">Loading users data...</td></tr>';
+
+    fetch('/api/admin/users')
+    .then(res => res.json())
+    .then(data => {
+      if (data.success) {
+        usersList.innerHTML = '';
+        data.users.forEach((user, idx) => {
+          const tr = document.createElement('tr');
+          tr.style.borderBottom = '1px solid rgba(255,255,255,0.08)';
+          
+          const isCurrentAdmin = user.username === this.currentUser;
+          
+          tr.innerHTML = `
+            <td style="padding: 10px 5px;">
+              <input type="text" id="admin-user-name-${idx}" value="${user.username}" style="padding: 4px 8px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.15); background: rgba(255,255,255,0.05); color: #fff; width: 100%; box-sizing: border-box; font-size: 13px;" ${isCurrentAdmin ? 'disabled' : ''}>
+            </td>
+            <td style="padding: 10px 5px;">
+              <input type="text" id="admin-user-pass-${idx}" value="${user.password}" style="padding: 4px 8px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.15); background: rgba(255,255,255,0.05); color: #fff; width: 100%; box-sizing: border-box; font-size: 13px;">
+            </td>
+            <td style="padding: 10px 5px; opacity: 0.8;">
+              <span style="font-weight: bold; color: ${user.role === 'admin' ? '#f59e0b' : '#60a5fa'};">${user.role}</span>
+            </td>
+            <td style="padding: 10px 5px; text-align: right;">
+              <button onclick="app.updateUserByAdmin('${user.username}', 'admin-user-name-${idx}', 'admin-user-pass-${idx}')" style="padding: 4px 10px; border-radius: 6px; border: none; background: #6366f1; color: #fff; font-size: 11px; font-weight: bold; cursor: pointer;">Save</button>
+            </td>
+          `;
+          usersList.appendChild(tr);
+        });
+      } else {
+        usersList.innerHTML = '<tr><td colspan="4" style="padding: 15px; color: #ff6b6b;">Failed to load user records.</td></tr>';
+      }
+    })
+    .catch(err => {
+      console.error(err);
+      usersList.innerHTML = '<tr><td colspan="4" style="padding: 15px; color: #ff6b6b;">Failed to connect to admin server.</td></tr>';
+    });
+  }
+
+  closeAdminPanel() {
+    this.playAudio('click');
+    document.getElementById('modal-admin-panel').style.display = 'none';
+  }
+
+  updateUserByAdmin(targetUsername, inputUserElId, inputPassElId) {
+    this.playAudio('click');
+    const newUsernameInput = document.getElementById(inputUserElId);
+    const newPasswordInput = document.getElementById(inputPassElId);
+    const successMsg = document.getElementById('admin-success-msg');
+    const errorMsg = document.getElementById('admin-error-msg');
+
+    successMsg.style.display = 'none';
+    errorMsg.style.display = 'none';
+
+    const newUsername = newUsernameInput ? newUsernameInput.value.trim() : targetUsername;
+    const newPassword = newPasswordInput ? newPasswordInput.value.trim() : undefined;
+
+    if (!newUsername || !newPassword) {
+      errorMsg.textContent = 'Fields cannot be blank';
+      errorMsg.style.display = 'block';
+      return;
+    }
+
+    fetch('/api/admin/user/update', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        targetUsername: targetUsername,
+        newUsername: newUsername !== targetUsername ? newUsername : undefined,
+        newPassword: newPassword
+      })
+    })
+    .then(res => res.json())
+    .then(data => {
+      if (data.success) {
+        successMsg.textContent = `User "${targetUsername}" updated successfully!`;
+        successMsg.style.display = 'block';
+        this.showAdminPanel(); // Refresh table
+      } else {
+        errorMsg.textContent = data.message || 'Failed to update user';
+        errorMsg.style.display = 'block';
+      }
+    })
+    .catch(err => {
+      console.error(err);
+      errorMsg.textContent = 'Failed to connect to admin server';
+      errorMsg.style.display = 'block';
+    });
   }
 }
 

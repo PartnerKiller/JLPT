@@ -25,7 +25,209 @@ const MIME_TYPES = {
   '.otf': 'font/otf'
 };
 
+const getJsonBody = (req) => {
+  return new Promise((resolve, reject) => {
+    let body = '';
+    req.on('data', chunk => {
+      body += chunk.toString();
+    });
+    req.on('end', () => {
+      try {
+        resolve(JSON.parse(body));
+      } catch (e) {
+        resolve({});
+      }
+    });
+  });
+};
+
 const server = http.createServer((req, res) => {
+  // Handle API Requests
+  if (req.url.startsWith('/api/')) {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+
+    if (req.method === 'OPTIONS') {
+      res.writeHead(204);
+      res.end();
+      return;
+    }
+
+    const dbPath = path.join(__dirname, 'database.json');
+    const readDb = () => {
+      try {
+        return JSON.parse(fs.readFileSync(dbPath, 'utf8'));
+      } catch (e) {
+        return { users: [] };
+      }
+    };
+    const writeDb = (data) => {
+      fs.writeFileSync(dbPath, JSON.stringify(data, null, 2), 'utf8');
+    };
+
+    // 1. LOGIN ENDPOINT
+    if (req.url === '/api/login' && req.method === 'POST') {
+      getJsonBody(req).then(body => {
+        const dbData = readDb();
+        const user = dbData.users.find(u => u.username === body.username && u.password === body.password);
+        if (user) {
+          res.writeHead(200, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ success: true, username: user.username, role: user.role }));
+        } else {
+          res.writeHead(401, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ success: false, message: 'Invalid username or password' }));
+        }
+      });
+      return;
+    }
+
+    // 2. REGISTER ENDPOINT
+    if (req.url === '/api/register' && req.method === 'POST') {
+      getJsonBody(req).then(body => {
+        const dbData = readDb();
+        const existing = dbData.users.find(u => u.username === body.username);
+        if (existing) {
+          res.writeHead(400, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ success: false, message: 'Username already exists' }));
+          return;
+        }
+        const newUser = {
+          username: body.username,
+          password: body.password,
+          role: 'learner',
+          scores: {}
+        };
+        dbData.users.push(newUser);
+        writeDb(dbData);
+        res.writeHead(201, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ success: true, username: newUser.username, role: newUser.role }));
+      });
+      return;
+    }
+
+    // 3. USER PROFILE UPDATE ENDPOINT
+    if (req.url === '/api/profile/update' && req.method === 'POST') {
+      getJsonBody(req).then(body => {
+        const dbData = readDb();
+        const userIdx = dbData.users.findIndex(u => u.username === body.currentUsername);
+        if (userIdx === -1) {
+          res.writeHead(404, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ success: false, message: 'User not found' }));
+          return;
+        }
+        
+        // Check duplicate name
+        if (body.newUsername && body.newUsername !== body.currentUsername) {
+          const duplicate = dbData.users.find(u => u.username === body.newUsername);
+          if (duplicate) {
+            res.writeHead(400, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify({ success: false, message: 'New username already taken' }));
+            return;
+          }
+          dbData.users[userIdx].username = body.newUsername;
+        }
+        
+        if (body.newPassword) {
+          dbData.users[userIdx].password = body.newPassword;
+        }
+
+        writeDb(dbData);
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ success: true, username: dbData.users[userIdx].username }));
+      });
+      return;
+    }
+
+    // 4. GET ALL USERS (ADMIN ONLY)
+    if (req.url === '/api/admin/users' && req.method === 'GET') {
+      const dbData = readDb();
+      res.writeHead(200, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({ success: true, users: dbData.users }));
+      return;
+    }
+
+    // 5. UPDATE USER CREDENTIALS (ADMIN ONLY)
+    if (req.url === '/api/admin/user/update' && req.method === 'POST') {
+      getJsonBody(req).then(body => {
+        const dbData = readDb();
+        const userIdx = dbData.users.findIndex(u => u.username === body.targetUsername);
+        if (userIdx === -1) {
+          res.writeHead(404, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ success: false, message: 'Target user not found' }));
+          return;
+        }
+
+        // Check duplicate name
+        if (body.newUsername && body.newUsername !== body.targetUsername) {
+          const duplicate = dbData.users.find(u => u.username === body.newUsername);
+          if (duplicate) {
+            res.writeHead(400, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify({ success: false, message: 'Username already taken' }));
+            return;
+          }
+          dbData.users[userIdx].username = body.newUsername;
+        }
+
+        if (body.newPassword) {
+          dbData.users[userIdx].password = body.newPassword;
+        }
+
+        writeDb(dbData);
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ success: true }));
+      });
+      return;
+    }
+
+    // 6. SAVE REPORT CARD ENDPOINT
+    if (req.url === '/api/report/save' && req.method === 'POST') {
+      getJsonBody(req).then(body => {
+        const dbData = readDb();
+        const userIdx = dbData.users.findIndex(u => u.username === body.username);
+        if (userIdx !== -1) {
+          if (!dbData.users[userIdx].scores) {
+            dbData.users[userIdx].scores = {};
+          }
+          // Save highest percentage score
+          const prevPct = dbData.users[userIdx].scores[body.level] || 0;
+          if (body.pct >= prevPct) {
+            dbData.users[userIdx].scores[body.level] = body.pct;
+          }
+          writeDb(dbData);
+          res.writeHead(200, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ success: true }));
+        } else {
+          res.writeHead(404, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ success: false, message: 'User not found' }));
+        }
+      });
+      return;
+    }
+
+    // 7. GET REPORT CARD ENDPOINT
+    if (req.url.startsWith('/api/report/get') && req.method === 'GET') {
+      const urlParts = req.url.split('?');
+      const params = new URLSearchParams(urlParts[1] || '');
+      const username = params.get('username');
+      const dbData = readDb();
+      const user = dbData.users.find(u => u.username === username);
+      if (user) {
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ success: true, scores: user.scores || {} }));
+      } else {
+        res.writeHead(404, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ success: false, message: 'User not found' }));
+      }
+      return;
+    }
+
+    // Unrecognized API
+    res.writeHead(404, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({ success: false, message: 'Endpoint not found' }));
+    return;
+  }
+
   // Strip query parameters (e.g. ?v=2.0) to prevent disk lookup errors (ENOENT)
   const cleanUrl = req.url.split('?')[0];
 
