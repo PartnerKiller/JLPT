@@ -574,7 +574,15 @@ body.light-theme .streak-badge {
   border-radius: 6px;
 }
 
-.furigana-toggle-container {
+.toggles-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: flex-end;
+}
+
+.furigana-toggle-container,
+.romaji-toggle-container {
   display: flex;
   align-items: center;
   gap: 8px;
