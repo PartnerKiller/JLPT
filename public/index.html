@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="referrer" content="no-referrer">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="A premium, realistic interactive platform for practicing Japanese Language Proficiency Test (JLPT) from N5 to N1 levels with instant feedback, furigana controls, listening voice drills, and detailed performance analytics.">
+  <title>Nazuna JLPT - Premium Practice Hub</title>
+  
+  <!-- Modern Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Noto+Sans+JP:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+  
+  <!-- FontAwesome Icons for modern visuals -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Global Styling -->
+  <link rel="stylesheet" href="style.css?v=2.7">
+</head>
+<body class="dark-theme">
+  <!-- Glowing Background Orbs for Premium Glassmorphism -->
+  <div class="glow-orb orb-1"></div>
+  <div class="glow-orb orb-2"></div>
+  <div class="glow-orb orb-3"></div>
+
+  <div class="app-container">
+    <!-- Navbar Header -->
+    <header class="app-header">
+      <div class="logo-area" onclick="app.showDashboard()">
+        <div class="logo-icon">
+          <i class="fa-solid fa-seedling"></i>
+        </div>
+        <div class="logo-text">
+          <span class="logo-title">Nazuna <span class="logo-accent">JLPT</span></span>
+          <span class="logo-subtitle">Practice Hub</span>
+        </div>
+      </div>
+      
+      <div class="header-controls">
+        <div class="streak-badge tooltip" data-tooltip="Daily Practice Streak!">
+          <i class="fa-solid fa-fire text-orange"></i>
+          <span id="streak-count">0</span> Days
+        </div>
+        <button id="theme-toggle" class="icon-btn" onclick="app.toggleTheme()" aria-label="Toggle Dark Mode">
+          <i class="fa-solid fa-sun"></i>
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Content Panels -->
+    <main class="app-main">
+      
+      <!-- Panel 1: Dashboard (Level Selection) -->
+      <section id="panel-dashboard" class="panel active">
+        <div class="hero-section">
+          <h1>Master the <span class="gradient-text">Japanese Language</span></h1>
+          <p class="hero-desc">Choose a JLPT level to start your practice session. Toggle between Practice Mode (instant feedback) and Exam Mode (simulated time limits).</p>
+        </div>
+
+        <!-- Dashboard Controls (Selectors) -->
+        <div class="dashboard-controls">
+          <div class="mode-selector-container">
+            <span class="mode-label">Session Mode:</span>
+            <div class="glass-tabs">
+              <button id="mode-practice" class="tab-btn active" onclick="app.setSessionMode('practice')">
+                <i class="fa-solid fa-book-open"></i> Practice Mode
+              </button>
+              <button id="mode-exam" class="tab-btn" onclick="app.setSessionMode('exam')">
+                <i class="fa-solid fa-stopwatch"></i> Exam Mode
+              </button>
+              <button id="mode-test" class="tab-btn" onclick="app.setSessionMode('test')">
+                <i class="fa-solid fa-graduation-cap"></i> Take Test
+              </button>
+            </div>
+          </div>
+
+          <div class="mode-selector-container section-selector-container" style="margin-top: 15px;">
+            <span class="mode-label">Focus Section:</span>
+            <div class="glass-tabs flex-wrap">
+              <button id="section-all" class="tab-btn active" onclick="app.setFocusSection('All')">
+                <i class="fa-solid fa-layer-group"></i> Full Mock Test
+              </button>
+              <button id="section-vocab" class="tab-btn" onclick="app.setFocusSection('Vocabulary')">
+                <i class="fa-solid fa-font"></i> Vocabulary
+              </button>
+              <button id="section-grammar" class="tab-btn" onclick="app.setFocusSection('Grammar')">
+                <i class="fa-solid fa-spell-check"></i> Grammar
+              </button>
+              <button id="section-reading" class="tab-btn" onclick="app.setFocusSection('Reading')">
+                <i class="fa-solid fa-book-open-reader"></i> Reading
+              </button>
+              <button id="section-listening" class="tab-btn" onclick="app.setFocusSection('Listening')">
+                <i class="fa-solid fa-volume-high"></i> Listening
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="levels-grid">
+          <!-- N5 Card -->
+          <div class="level-card n5-theme" onclick="app.selectLevel('N5')">
+            <div class="level-badge">N5</div>
+            <div class="level-info">
+              <h3>Elementary</h3>
+              <p>Basic expressions, Hiragana, Katakana, and about 100 simple Kanji.</p>
+              <div class="level-meta">
+                <span><i class="fa-regular fa-circle-question"></i> 4 Sections</span>
+                <span id="stats-n5-score"><i class="fa-solid fa-trophy"></i> --</span>
+              </div>
+            </div>
+            <div class="card-action">
+              <button class="action-btn">Enter <i class="fa-solid fa-chevron-right"></i></button>
+            </div>
+          </div>
+
+          <!-- N4 Card -->
+          <div class="level-card n4-theme" onclick="app.selectLevel('N4')">
+            <div class="level-badge">N4</div>
+            <div class="level-info">
+              <h3>Basic</h3>
+              <p>Everyday conversation, basic grammar, and about 300 essential Kanji.</p>
+              <div class="level-meta">
+                <span><i class="fa-regular fa-circle-question"></i> 4 Sections</span>
+                <span id="stats-n4-score"><i class="fa-solid fa-trophy"></i> --</span>
+              </div>
+            </div>
+            <div class="card-action">
+              <button class="action-btn">Enter <i class="fa-solid fa-chevron-right"></i></button>
+            </div>
+          </div>
+
+          <!-- N3 Card -->
+          <div class="level-card n3-theme" onclick="app.selectLevel('N3')">
+            <div class="level-badge">N3</div>
+            <div class="level-info">
+              <h3>Intermediate</h3>
+              <p>Bridge to advanced. Read daily articles and understand casual speed audio.</p>
+              <div class="level-meta">
+                <span><i class="fa-regular fa-circle-question"></i> 4 Sections</span>
+                <span id="stats-n3-score"><i class="fa-solid fa-trophy"></i> --</span>
+              </div>
+            </div>
+            <div class="card-action">
+              <button class="action-btn">Enter <i class="fa-solid fa-chevron-right"></i></button>
+            </div>
+          </div>
+
+          <!-- N2 Card -->
+          <div class="level-card n2-theme" onclick="app.selectLevel('N2')">
+            <div class="level-badge">N2</div>
+            <div class="level-info">
+              <h3>Pre-Advanced</h3>
+              <p>Business level. Comprehend news reports, lectures, and follow complex logic.</p>
+              <div class="level-meta">
+                <span><i class="fa-regular fa-circle-question"></i> 4 Sections</span>
+                <span id="stats-n2-score"><i class="fa-solid fa-trophy"></i> --</span>
+              </div>
+            </div>
+            <div class="card-action">
+              <button class="action-btn">Enter <i class="fa-solid fa-chevron-right"></i></button>
+            </div>
+          </div>
+
+          <!-- N1 Card -->
+          <div class="level-card n1-theme" onclick="app.selectLevel('N1')">
+            <div class="level-badge">N1</div>
+            <div class="level-info">
+              <h3>Advanced</h3>
+              <p>Fluent/Native speaker level. Read literary reviews and understand abstract topics.</p>
+              <div class="level-meta">
+                <span><i class="fa-regular fa-circle-question"></i> 4 Sections</span>
+                <span id="stats-n1-score"><i class="fa-solid fa-trophy"></i> --</span>
+              </div>
+            </div>
+            <div class="card-action">
+              <button class="action-btn">Enter <i class="fa-solid fa-chevron-right"></i></button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Panel 2: Quiz Session -->
+      <section id="panel-quiz" class="panel">
+        <div class="quiz-header">
+          <div class="session-info">
+            <button class="back-link" onclick="app.confirmQuit()"><i class="fa-solid fa-arrow-left"></i> Dashboard</button>
+            <div id="quiz-title-badge" class="level-badge-small N5-theme-bg">JLPT N5</div>
+            <span id="session-mode-badge" class="mode-badge">Practice Mode</span>
+            <span id="active-section-badge" class="section-badge bg-green">Vocabulary</span>
+          </div>
+          
+          <div class="quiz-metrics">
+            <div class="timer-display">
+              <i class="fa-regular fa-clock"></i>
+              <span id="time-elapsed">00:00</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Progress Indicator -->
+        <div class="progress-bar-container">
+          <div class="progress-bar-info">
+            <span>Question <strong id="current-q-index">1</strong> of <strong id="total-q-count">10</strong></span>
+            <span id="progress-percentage">10%</span>
+          </div>
+          <div class="progress-track">
+            <div id="progress-fill" class="progress-fill" style="width: 10%;"></div>
+          </div>
+        </div>
+
+        <!-- Quiz layout wrapper for split reading layouts -->
+        <div class="quiz-layout-wrapper" id="quiz-layout-wrapper">
+          
+          <!-- Left Pane: Reading Passage (Only shown for Reading questions) -->
+          <div id="reading-passage-container" class="reading-passage-card glass hidden">
+            <!-- Passage HTML injected here -->
+          </div>
+
+          <!-- Right/Center Pane: Quiz Card -->
+          <div class="quiz-card glass">
+            <div class="question-header">
+              <span id="question-category" class="question-category">Grammar</span>
+              <div class="toggles-wrapper">
+                <div class="furigana-toggle-container">
+                  <span class="toggle-text">Furigana</span>
+                  <label class="switch">
+                    <input type="checkbox" id="furigana-checkbox" checked onchange="app.toggleFurigana()">
+                    <span class="slider round"></span>
+                  </label>
+                </div>
+                <div id="romaji-toggle-container" class="romaji-toggle-container hidden">
+                  <span class="toggle-text">Romaji</span>
+                  <label class="switch">
+                    <input type="checkbox" id="romaji-checkbox" onchange="app.toggleRomaji()">
+                    <span class="slider round"></span>
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <!-- Listening Deck (Only shown for Listening questions) -->
+            <div id="listening-player-container" class="listening-player-card hidden">
+              <div class="listening-player-body">
+                <div class="listening-badge-icon"><i class="fa-solid fa-headphones"></i></div>
+                <div class="listening-desc-box">
+                  <span class="listening-label">Situation (Context):</span>
+                  <p id="listening-situation" class="listening-situation-text">Situation context text here...</p>
+                </div>
+              </div>
+              <div class="audio-control-row">
+                <button id="btn-play-listening" class="btn-play-audio" onclick="app.toggleListeningTTS()">
+                  <i class="fa-solid fa-play"></i> Play Audio Prompt
+                </button>
+                <div class="listening-status" id="listening-status-text">Audio Ready. Standard Speed.</div>
+              </div>
+            </div>
+            
+            <div id="question-text" class="question-text furigana-enabled">
+              <!-- Question text will be injected here with <ruby> tags -->
+            </div>
+
+            <div id="romaji-text" class="romaji-text hidden">
+              <!-- Romaji text injected here -->
+            </div>
+
+            <div id="options-container" class="options-container">
+              <!-- 4 option buttons will be injected here -->
+            </div>
+
+            <!-- Instant Feedback Block (shown in Practice Mode after submitting) -->
+            <div id="feedback-container" class="feedback-card hidden">
+              <div class="feedback-status">
+                <span id="feedback-icon-label"><i class="fa-solid fa-circle-check text-green"></i> Correct!</span>
+              </div>
+              <div class="feedback-body">
+                <h5>Explanation:</h5>
+                <p id="feedback-explanation">Explanation goes here...</p>
+              </div>
+            </div>
+
+            <div class="quiz-actions">
+              <button id="btn-quit" class="btn-secondary" onclick="app.confirmQuit()">Quit Session</button>
+              <button id="btn-submit" class="btn-primary" onclick="app.handleNextSubmit()">Submit Answer</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Panel 3: Results & Analytics -->
+      <section id="panel-results" class="panel">
+        <div class="results-hero glass">
+          <h2>Session Completed!</h2>
+          <p id="results-meta-desc">You completed the JLPT N5 practice session.</p>
+          
+          <div class="results-stats-row">
+            <!-- Circular Progress Score -->
+            <div class="circular-score-wrapper">
+              <svg class="circular-progress" viewBox="0 0 120 120">
+                <circle class="circle-bg" cx="60" cy="60" r="50"></circle>
+                <circle class="circle-fill" cx="60" cy="60" r="50" style="stroke-dasharray: 314; stroke-dashoffset: 314;"></circle>
+              </svg>
+              <div class="score-display">
+                <span id="results-score-text">0/0</span>
+                <span class="score-label">Score</span>
+              </div>
+            </div>
+
+            <div class="stats-info-grid">
+              <div class="stat-box">
+                <span class="stat-num" id="stat-accuracy">0%</span>
+                <span class="stat-label">Accuracy</span>
+              </div>
+              <div class="stat-box">
+                <span class="stat-num" id="stat-total-time">00:00</span>
+                <span class="stat-label">Total Time</span>
+              </div>
+              <div class="stat-box">
+                <span class="stat-num" id="stat-avg-speed">0s</span>
+                <span class="stat-label">Avg. Speed / Q</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sectional Performance Breakdown -->
+        <h3 class="section-title">Sectional Performance</h3>
+        <div class="analytics-grid">
+          <div class="chart-card glass">
+            <h4>Section breakdown</h4>
+            <div class="category-bars">
+              <div class="cat-bar-item">
+                <div class="cat-info">
+                  <span>Vocabulary (文字・語彙)</span>
+                  <span id="bar-vocab-pct">0%</span>
+                </div>
+                <div class="bar-track"><div id="bar-vocab-fill" class="bar-fill bg-green" style="width: 0%;"></div></div>
+              </div>
+              <div class="cat-bar-item">
+                <div class="cat-info">
+                  <span>Grammar (文法)</span>
+                  <span id="bar-grammar-pct">0%</span>
+                </div>
+                <div class="bar-track"><div id="bar-grammar-fill" class="bar-fill bg-blue" style="width: 0%;"></div></div>
+              </div>
+              <div class="cat-bar-item">
+                <div class="cat-info">
+                  <span>Reading (読解)</span>
+                  <span id="bar-reading-pct">0%</span>
+                </div>
+                <div class="bar-track"><div id="bar-reading-fill" class="bar-fill bg-yellow" style="width: 0%;"></div></div>
+              </div>
+              <div class="cat-bar-item">
+                <div class="cat-info">
+                  <span>Listening (聴解)</span>
+                  <span id="bar-listening-pct">0%</span>
+                </div>
+                <div class="bar-track"><div id="bar-listening-fill" class="bar-fill bg-purple" style="width: 0%;"></div></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="mock-certificate-card glass" id="certificate-card">
+            <div class="cert-border">
+              <div class="cert-title">修了証書</div>
+              <div class="cert-subtitle">Certificate of Completion</div>
+              <p class="cert-body">This certifies that you have completed the JLPT <strong id="cert-level">N5</strong> Practice session with an accuracy rate of <strong id="cert-accuracy">100%</strong>.</p>
+              <div class="cert-footer">
+                <div class="cert-date" id="cert-date">2026-08-05</div>
+                <div class="cert-sign">Nazuna Team</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Detailed Review Section -->
+        <h3 class="section-title">Answer Key & Review</h3>
+        <div id="review-list" class="review-list">
+          <!-- Question reviews will be dynamically injected here -->
+        </div>
+
+        <div class="results-actions">
+          <button class="btn-secondary" onclick="app.showDashboard()"><i class="fa-solid fa-house"></i> Home Dashboard</button>
+          <button class="btn-primary" onclick="app.restartSession()"><i class="fa-solid fa-rotate-right"></i> Try Again</button>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="app-footer">
+      <p>&copy; 2026 Nazuna JLPT Practice Hub. Crafted for optimal learning.</p>
+    </footer>
+  </div>
+
+  <!-- Audio feedback effects for rich premium feel -->
+  <audio id="audio-correct" src="https://assets.mixkit.co/active_storage/sfx/2000/2000-84.wav" preload="auto"></audio>
+  <audio id="audio-wrong" src="https://assets.mixkit.co/active_storage/sfx/2003/2003-84.wav" preload="auto"></audio>
+  <audio id="audio-click" src="https://assets.mixkit.co/active_storage/sfx/2568/2568-84.wav" preload="auto"></audio>
+
+  <!-- JS Scripts -->
+  <script src="quiz-data.js?v=2.7"></script>
+  <script src="app.js?v=2.7"></script>
+</body>
+</html>

@@ -1,0 +1,15 @@
+[Unit]
+Description=JLPT Practice Hub Node Server
+After=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=/home/sakura/jlpt
+ExecStart=/usr/bin/node server.js
+Restart=on-failure
+RestartSec=5
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=default.target
