@@ -12,6 +12,7 @@ class JLPTApp {
     this.selectedOption = null;
     this.answers = []; // Records user responses
     this.isFullMockExam = false;
+    this.audioCtx = null;
     
     // User Auth State
     this.currentUser = null;
@@ -54,6 +55,13 @@ class JLPTApp {
     this.loadStreak();
     this.loadLevelStats();
     this.applySavedTheme();
+    
+    // Load saved romaji state
+    this.romajiEnabled = localStorage.getItem('jlpt_romaji_enabled') === 'true';
+    if (this.romajiCheckbox) {
+      this.romajiCheckbox.checked = this.romajiEnabled;
+    }
+    
     this.initAuth();
     
     // Bind focus section tabs from index.html
@@ -112,9 +120,10 @@ class JLPTApp {
   }
 
   loadLevelStats() {
+    if (!this.currentUser) return;
     const levels = ['N5', 'N4', 'N3', 'N2', 'N1'];
     levels.forEach(lvl => {
-      const score = localStorage.getItem(`jlpt_high_score_${lvl}`);
+      const score = localStorage.getItem(`jlpt_high_score_${this.currentUser}_${lvl}`);
       // Try to find either legacy score badge or newer score badge element
       const element = document.getElementById(`stats-${lvl.toLowerCase()}-score`) || document.getElementById(`stats-${lvl.toLowerCase()}-badge`);
       if (score && element) {
@@ -124,9 +133,10 @@ class JLPTApp {
   }
 
   saveHighScore(lvl, scorePercent) {
-    const currentHigh = parseInt(localStorage.getItem(`jlpt_high_score_${lvl}`) || '0', 10);
+    if (!this.currentUser) return;
+    const currentHigh = parseInt(localStorage.getItem(`jlpt_high_score_${this.currentUser}_${lvl}`) || '0', 10);
     if (scorePercent > currentHigh) {
-      localStorage.setItem(`jlpt_high_score_${lvl}`, scorePercent.toString());
+      localStorage.setItem(`jlpt_high_score_${this.currentUser}_${lvl}`, scorePercent.toString());
       this.loadLevelStats();
     }
   }
@@ -328,6 +338,7 @@ class JLPTApp {
 
   tickTimer() {
     const timerEl = document.getElementById('time-elapsed');
+    this.timeElapsed++;
     if (this.isCountdown) {
       this.timeRemaining--;
       
@@ -381,7 +392,15 @@ class JLPTApp {
     // Enable/disable submit button
     const submitBtn = document.getElementById('btn-submit');
     submitBtn.disabled = true;
-    submitBtn.textContent = this.sessionMode === 'practice' ? 'Submit Answer' : 'Next Question';
+    if (this.sessionMode === 'practice') {
+      submitBtn.textContent = 'Submit Answer';
+    } else {
+      if (this.currentIndex === this.sessionQuestions.length - 1) {
+        submitBtn.textContent = 'Finish & Submit Test';
+      } else {
+        submitBtn.textContent = 'Next Question';
+      }
+    }
 
     const q = this.sessionQuestions[this.currentIndex];
 
@@ -664,8 +683,9 @@ class JLPTApp {
       };
       
       this.fallbackAudio.onerror = (err) => {
-        console.error("Translate TTS failed for chunk:", text, err);
-        playNextChunk();
+        console.warn("Translate TTS fallback failed for chunk:", text, err);
+        this.resetListeningControls();
+        alert("Japanese text-to-speech failed. Please ensure a Japanese voice synthesis package is installed in your browser/system settings.");
       };
 
       this.fallbackAudio.play().catch(e => {
@@ -812,6 +832,7 @@ class JLPTApp {
     // Build review list cards
     const reviewList = document.getElementById('review-list');
     reviewList.innerHTML = '';
+    const furiganaEnabled = document.getElementById('furigana-checkbox') ? document.getElementById('furigana-checkbox').checked : true;
 
     this.answers.forEach((ans, idx) => {
       const item = document.createElement('div');
@@ -854,7 +875,7 @@ class JLPTApp {
           </div>
         ` : ''}
         
-        <div class="review-question furigana-enabled">
+        <div class="review-question ${furiganaEnabled ? 'furigana-enabled' : 'furigana-disabled'}">
           Q${idx + 1}: ${ans.question.question}
         </div>
         
@@ -928,9 +949,15 @@ class JLPTApp {
   // --- AUDIO FEEDBACK EFFECTS ---
   playAudio(type) {
     try {
-      const AudioContext = window.AudioContext || window.webkitAudioContext;
-      if (AudioContext) {
-        const ctx = new AudioContext();
+      const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+      if (AudioContextClass) {
+        if (!this.audioCtx) {
+          this.audioCtx = new AudioContextClass();
+        }
+        const ctx = this.audioCtx;
+        if (ctx.state === 'suspended') {
+          ctx.resume();
+        }
         if (type === 'correct') {
           // Double beep sound (C5 and E5 sine waves)
           const osc = ctx.createOscillator();
@@ -1229,7 +1256,12 @@ class JLPTApp {
     const usersList = document.getElementById('admin-users-list');
     usersList.innerHTML = '<tr><td colspan="4" style="padding: 15px; opacity: 0.6;">Loading users data...</td></tr>';
 
-    fetch('/api/admin/users')
+    fetch('/api/admin/users', {
+      headers: {
+        'x-auth-user': this.currentUser || '',
+        'x-auth-role': this.currentRole || ''
+      }
+    })
     .then(res => res.json())
     .then(data => {
       if (data.success) {
@@ -1242,6 +1274,7 @@ class JLPTApp {
           
           tr.innerHTML = `
             <td style="padding: 10px 5px;">
+              <input type="hidden" id="admin-user-target-${idx}" value="${user.username}">
               <input type="text" id="admin-user-name-${idx}" value="${user.username}" style="padding: 4px 8px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.15); background: rgba(255,255,255,0.05); color: #fff; width: 100%; box-sizing: border-box; font-size: 13px;" ${isCurrentAdmin ? 'disabled' : ''}>
             </td>
             <td style="padding: 10px 5px;">
@@ -1251,7 +1284,7 @@ class JLPTApp {
               <span style="font-weight: bold; color: ${user.role === 'admin' ? '#f59e0b' : '#60a5fa'};">${user.role}</span>
             </td>
             <td style="padding: 10px 5px; text-align: right;">
-              <button onclick="app.updateUserByAdmin('${user.username}', 'admin-user-name-${idx}', 'admin-user-pass-${idx}')" style="padding: 4px 10px; border-radius: 6px; border: none; background: #6366f1; color: #fff; font-size: 11px; font-weight: bold; cursor: pointer;">Save</button>
+              <button onclick="app.updateUserByAdmin(${idx})" style="padding: 4px 10px; border-radius: 6px; border: none; background: #6366f1; color: #fff; font-size: 11px; font-weight: bold; cursor: pointer;">Save</button>
             </td>
           `;
           usersList.appendChild(tr);
@@ -1271,20 +1304,22 @@ class JLPTApp {
     document.getElementById('modal-admin-panel').style.display = 'none';
   }
 
-  updateUserByAdmin(targetUsername, inputUserElId, inputPassElId) {
+  updateUserByAdmin(idx) {
     this.playAudio('click');
-    const newUsernameInput = document.getElementById(inputUserElId);
-    const newPasswordInput = document.getElementById(inputPassElId);
+    const targetUsernameInput = document.getElementById(`admin-user-target-${idx}`);
+    const newUsernameInput = document.getElementById(`admin-user-name-${idx}`);
+    const newPasswordInput = document.getElementById(`admin-user-pass-${idx}`);
     const successMsg = document.getElementById('admin-success-msg');
     const errorMsg = document.getElementById('admin-error-msg');
 
     successMsg.style.display = 'none';
     errorMsg.style.display = 'none';
 
+    const targetUsername = targetUsernameInput ? targetUsernameInput.value.trim() : '';
     const newUsername = newUsernameInput ? newUsernameInput.value.trim() : targetUsername;
     const newPassword = newPasswordInput ? newPasswordInput.value.trim() : undefined;
 
-    if (!newUsername || !newPassword) {
+    if (!targetUsername || !newUsername || !newPassword) {
       errorMsg.textContent = 'Fields cannot be blank';
       errorMsg.style.display = 'block';
       return;
@@ -1292,7 +1327,11 @@ class JLPTApp {
 
     fetch('/api/admin/user/update', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 
+        'Content-Type': 'application/json',
+        'x-auth-user': this.currentUser || '',
+        'x-auth-role': this.currentRole || ''
+      },
       body: JSON.stringify({
         targetUsername: targetUsername,
         newUsername: newUsername !== targetUsername ? newUsername : undefined,

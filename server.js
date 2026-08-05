@@ -57,9 +57,13 @@ const server = http.createServer((req, res) => {
     const dbPath = path.join(__dirname, 'database.json');
     const readDb = () => {
       try {
+        if (!fs.existsSync(dbPath)) {
+          return { users: [] };
+        }
         return JSON.parse(fs.readFileSync(dbPath, 'utf8'));
       } catch (e) {
-        return { users: [] };
+        console.error('CRITICAL: Failed to read user database!', e);
+        throw new Error('Database read failure');
       }
     };
     const writeDb = (data) => {
@@ -68,15 +72,23 @@ const server = http.createServer((req, res) => {
 
     // 1. LOGIN ENDPOINT
     if (req.url === '/api/login' && req.method === 'POST') {
+      console.log('API Login route invoked!');
       getJsonBody(req).then(body => {
-        const dbData = readDb();
-        const user = dbData.users.find(u => u.username === body.username && u.password === body.password);
-        if (user) {
-          res.writeHead(200, { 'Content-Type': 'application/json' });
-          res.end(JSON.stringify({ success: true, username: user.username, role: user.role }));
-        } else {
-          res.writeHead(401, { 'Content-Type': 'application/json' });
-          res.end(JSON.stringify({ success: false, message: 'Invalid username or password' }));
+        console.log('Parsed login body:', body);
+        try {
+          const dbData = readDb();
+          console.log('Found users list:', dbData.users);
+          const user = dbData.users.find(u => u.username === body.username && u.password === body.password);
+          if (user) {
+            res.writeHead(200, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify({ success: true, username: user.username, role: user.role }));
+          } else {
+            res.writeHead(401, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify({ success: false, message: 'Invalid username or password' }));
+          }
+        } catch (err) {
+          res.writeHead(500, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ success: false, message: 'Database read failure' }));
         }
       });
       return;
@@ -85,23 +97,28 @@ const server = http.createServer((req, res) => {
     // 2. REGISTER ENDPOINT
     if (req.url === '/api/register' && req.method === 'POST') {
       getJsonBody(req).then(body => {
-        const dbData = readDb();
-        const existing = dbData.users.find(u => u.username === body.username);
-        if (existing) {
-          res.writeHead(400, { 'Content-Type': 'application/json' });
-          res.end(JSON.stringify({ success: false, message: 'Username already exists' }));
-          return;
+        try {
+          const dbData = readDb();
+          const existing = dbData.users.find(u => u.username === body.username);
+          if (existing) {
+            res.writeHead(400, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify({ success: false, message: 'Username already exists' }));
+            return;
+          }
+          const newUser = {
+            username: body.username,
+            password: body.password,
+            role: 'learner',
+            scores: {}
+          };
+          dbData.users.push(newUser);
+          writeDb(dbData);
+          res.writeHead(201, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ success: true, username: newUser.username, role: newUser.role }));
+        } catch (err) {
+          res.writeHead(500, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ success: false, message: 'Database write failure' }));
         }
-        const newUser = {
-          username: body.username,
-          password: body.password,
-          role: 'learner',
-          scores: {}
-        };
-        dbData.users.push(newUser);
-        writeDb(dbData);
-        res.writeHead(201, { 'Content-Type': 'application/json' });
-        res.end(JSON.stringify({ success: true, username: newUser.username, role: newUser.role }));
       });
       return;
     }
@@ -109,97 +126,134 @@ const server = http.createServer((req, res) => {
     // 3. USER PROFILE UPDATE ENDPOINT
     if (req.url === '/api/profile/update' && req.method === 'POST') {
       getJsonBody(req).then(body => {
-        const dbData = readDb();
-        const userIdx = dbData.users.findIndex(u => u.username === body.currentUsername);
-        if (userIdx === -1) {
-          res.writeHead(404, { 'Content-Type': 'application/json' });
-          res.end(JSON.stringify({ success: false, message: 'User not found' }));
-          return;
-        }
-        
-        // Check duplicate name
-        if (body.newUsername && body.newUsername !== body.currentUsername) {
-          const duplicate = dbData.users.find(u => u.username === body.newUsername);
-          if (duplicate) {
-            res.writeHead(400, { 'Content-Type': 'application/json' });
-            res.end(JSON.stringify({ success: false, message: 'New username already taken' }));
+        try {
+          const dbData = readDb();
+          const userIdx = dbData.users.findIndex(u => u.username === body.currentUsername);
+          if (userIdx === -1) {
+            res.writeHead(404, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify({ success: false, message: 'User not found' }));
             return;
           }
-          dbData.users[userIdx].username = body.newUsername;
-        }
-        
-        if (body.newPassword) {
-          dbData.users[userIdx].password = body.newPassword;
-        }
+          
+          // Check duplicate name
+          if (body.newUsername && body.newUsername !== body.currentUsername) {
+            const duplicate = dbData.users.find(u => u.username === body.newUsername);
+            if (duplicate) {
+              res.writeHead(400, { 'Content-Type': 'application/json' });
+              res.end(JSON.stringify({ success: false, message: 'New username already taken' }));
+              return;
+            }
+            dbData.users[userIdx].username = body.newUsername;
+          }
+          
+          if (body.newPassword) {
+            dbData.users[userIdx].password = body.newPassword;
+          }
 
-        writeDb(dbData);
-        res.writeHead(200, { 'Content-Type': 'application/json' });
-        res.end(JSON.stringify({ success: true, username: dbData.users[userIdx].username }));
+          writeDb(dbData);
+          res.writeHead(200, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ success: true, username: dbData.users[userIdx].username }));
+        } catch (err) {
+          res.writeHead(500, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ success: false, message: 'Database write failure' }));
+        }
       });
       return;
     }
 
     // 4. GET ALL USERS (ADMIN ONLY)
     if (req.url === '/api/admin/users' && req.method === 'GET') {
-      const dbData = readDb();
-      res.writeHead(200, { 'Content-Type': 'application/json' });
-      res.end(JSON.stringify({ success: true, users: dbData.users }));
+      try {
+        const authUser = req.headers['x-auth-user'];
+        const authRole = req.headers['x-auth-role'];
+        const dbData = readDb();
+        const adminUser = dbData.users.find(u => u.username === authUser && u.role === 'admin');
+        if (!adminUser || authRole !== 'admin') {
+          res.writeHead(403, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ success: false, message: 'Forbidden: Admin access required' }));
+          return;
+        }
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ success: true, users: dbData.users }));
+      } catch (err) {
+        res.writeHead(500, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ success: false, message: 'Database read failure' }));
+      }
       return;
     }
 
     // 5. UPDATE USER CREDENTIALS (ADMIN ONLY)
     if (req.url === '/api/admin/user/update' && req.method === 'POST') {
-      getJsonBody(req).then(body => {
+      try {
+        const authUser = req.headers['x-auth-user'];
+        const authRole = req.headers['x-auth-role'];
         const dbData = readDb();
-        const userIdx = dbData.users.findIndex(u => u.username === body.targetUsername);
-        if (userIdx === -1) {
-          res.writeHead(404, { 'Content-Type': 'application/json' });
-          res.end(JSON.stringify({ success: false, message: 'Target user not found' }));
+        const adminUser = dbData.users.find(u => u.username === authUser && u.role === 'admin');
+        if (!adminUser || authRole !== 'admin') {
+          res.writeHead(403, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ success: false, message: 'Forbidden: Admin access required' }));
           return;
         }
 
-        // Check duplicate name
-        if (body.newUsername && body.newUsername !== body.targetUsername) {
-          const duplicate = dbData.users.find(u => u.username === body.newUsername);
-          if (duplicate) {
-            res.writeHead(400, { 'Content-Type': 'application/json' });
-            res.end(JSON.stringify({ success: false, message: 'Username already taken' }));
+        getJsonBody(req).then(body => {
+          const userIdx = dbData.users.findIndex(u => u.username === body.targetUsername);
+          if (userIdx === -1) {
+            res.writeHead(404, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify({ success: false, message: 'Target user not found' }));
             return;
           }
-          dbData.users[userIdx].username = body.newUsername;
-        }
 
-        if (body.newPassword) {
-          dbData.users[userIdx].password = body.newPassword;
-        }
+          // Check duplicate name
+          if (body.newUsername && body.newUsername !== body.targetUsername) {
+            const duplicate = dbData.users.find(u => u.username === body.newUsername);
+            if (duplicate) {
+              res.writeHead(400, { 'Content-Type': 'application/json' });
+              res.end(JSON.stringify({ success: false, message: 'Username already taken' }));
+              return;
+            }
+            dbData.users[userIdx].username = body.newUsername;
+          }
 
-        writeDb(dbData);
-        res.writeHead(200, { 'Content-Type': 'application/json' });
-        res.end(JSON.stringify({ success: true }));
-      });
+          if (body.newPassword) {
+            dbData.users[userIdx].password = body.newPassword;
+          }
+
+          writeDb(dbData);
+          res.writeHead(200, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ success: true }));
+        });
+      } catch (err) {
+        res.writeHead(500, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ success: false, message: 'Database write failure' }));
+      }
       return;
     }
 
     // 6. SAVE REPORT CARD ENDPOINT
     if (req.url === '/api/report/save' && req.method === 'POST') {
       getJsonBody(req).then(body => {
-        const dbData = readDb();
-        const userIdx = dbData.users.findIndex(u => u.username === body.username);
-        if (userIdx !== -1) {
-          if (!dbData.users[userIdx].scores) {
-            dbData.users[userIdx].scores = {};
+        try {
+          const dbData = readDb();
+          const userIdx = dbData.users.findIndex(u => u.username === body.username);
+          if (userIdx !== -1) {
+            if (!dbData.users[userIdx].scores) {
+              dbData.users[userIdx].scores = {};
+            }
+            // Save highest percentage score
+            const prevPct = dbData.users[userIdx].scores[body.level] || 0;
+            if (body.pct >= prevPct) {
+              dbData.users[userIdx].scores[body.level] = body.pct;
+            }
+            writeDb(dbData);
+            res.writeHead(200, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify({ success: true }));
+          } else {
+            res.writeHead(404, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify({ success: false, message: 'User not found' }));
           }
-          // Save highest percentage score
-          const prevPct = dbData.users[userIdx].scores[body.level] || 0;
-          if (body.pct >= prevPct) {
-            dbData.users[userIdx].scores[body.level] = body.pct;
-          }
-          writeDb(dbData);
-          res.writeHead(200, { 'Content-Type': 'application/json' });
-          res.end(JSON.stringify({ success: true }));
-        } else {
-          res.writeHead(404, { 'Content-Type': 'application/json' });
-          res.end(JSON.stringify({ success: false, message: 'User not found' }));
+        } catch (err) {
+          res.writeHead(500, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ success: false, message: 'Database write failure' }));
         }
       });
       return;
@@ -207,17 +261,22 @@ const server = http.createServer((req, res) => {
 
     // 7. GET REPORT CARD ENDPOINT
     if (req.url.startsWith('/api/report/get') && req.method === 'GET') {
-      const urlParts = req.url.split('?');
-      const params = new URLSearchParams(urlParts[1] || '');
-      const username = params.get('username');
-      const dbData = readDb();
-      const user = dbData.users.find(u => u.username === username);
-      if (user) {
-        res.writeHead(200, { 'Content-Type': 'application/json' });
-        res.end(JSON.stringify({ success: true, scores: user.scores || {} }));
-      } else {
-        res.writeHead(404, { 'Content-Type': 'application/json' });
-        res.end(JSON.stringify({ success: false, message: 'User not found' }));
+      try {
+        const urlParts = req.url.split('?');
+        const params = new URLSearchParams(urlParts[1] || '');
+        const username = params.get('username');
+        const dbData = readDb();
+        const user = dbData.users.find(u => u.username === username);
+        if (user) {
+          res.writeHead(200, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ success: true, scores: user.scores || {} }));
+        } else {
+          res.writeHead(404, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ success: false, message: 'User not found' }));
+        }
+      } catch (err) {
+        res.writeHead(500, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ success: false, message: 'Database read failure' }));
       }
       return;
     }
