@@ -211,12 +211,15 @@ class JLPTApp {
       return;
     }
 
+    // Helper to deep clone arrays/objects to prevent global mutation
+    const deepClone = (arr) => arr.map(obj => JSON.parse(JSON.stringify(obj)));
+
     // A. FULL MOCK TEST (All sections combined)
     if (this.focusSection === 'All') {
-      const vocabQs = this.shuffleArray([...(db.Vocabulary || [])]).slice(0, 8);
-      const grammarQs = this.shuffleArray([...(db.Grammar || [])]).slice(0, 8);
-      const readingQs = this.shuffleArray([...(db.Reading || [])]).slice(0, 2);
-      const listeningQs = this.shuffleArray([...(db.Listening || [])]).slice(0, 4);
+      const vocabQs = this.shuffleArray(deepClone(db.Vocabulary || [])).slice(0, 8);
+      const grammarQs = this.shuffleArray(deepClone(db.Grammar || [])).slice(0, 8);
+      const readingQs = this.shuffleArray(deepClone(db.Reading || [])).slice(0, 2);
+      const listeningQs = this.shuffleArray(deepClone(db.Listening || [])).slice(0, 4);
 
       // Tag sections
       vocabQs.forEach(q => q.section = 'Vocabulary');
@@ -248,7 +251,7 @@ class JLPTApp {
       if (this.focusSection === 'Reading') limit = 2;
       if (this.focusSection === 'Listening') limit = 4;
 
-      this.sessionQuestions = this.shuffleArray([...allQs]).slice(0, limit);
+      this.sessionQuestions = this.shuffleArray(deepClone(allQs)).slice(0, limit);
       this.sessionQuestions.forEach(q => q.section = this.focusSection);
       this.isFullMockExam = false;
     }
@@ -594,12 +597,44 @@ class JLPTApp {
     else if (this.level === 'N2') rate = 1.0;
     else if (this.level === 'N1') rate = 1.08;
 
-    // Split text into chunks to respect Google Translate API character limits (usually 200 chars)
-    // We split by standard Japanese punctuation: 。 、 ？ ！
+    // Try Web Speech API (Preferred)
+    if ('speechSynthesis' in window) {
+      try {
+        window.speechSynthesis.cancel();
+        this.speechUtterance = new SpeechSynthesisUtterance(promptText);
+        this.speechUtterance.lang = 'ja-JP';
+        this.speechUtterance.rate = rate;
+
+        const voices = window.speechSynthesis.getVoices();
+        const jaVoice = voices.find(v => v.lang === 'ja-JP' || v.lang.startsWith('ja'));
+        if (jaVoice) {
+          this.speechUtterance.voice = jaVoice;
+        }
+
+        this.speechUtterance.onend = () => {
+          this.resetListeningControls();
+        };
+
+        this.speechUtterance.onerror = (err) => {
+          console.warn("Speech Synthesis error, using Google Translate fallback", err);
+          this.playGoogleTTSFallback(promptText, rate);
+        };
+
+        window.speechSynthesis.speak(this.speechUtterance);
+        return;
+      } catch (e) {
+        console.warn("Speech Synthesis call failed, using fallback", e);
+      }
+    }
+
+    this.playGoogleTTSFallback(promptText, rate);
+  }
+
+  playGoogleTTSFallback(promptText, rate) {
     const rawChunks = promptText.split(/[。？！]/);
     const chunks = rawChunks.map(c => c.trim()).filter(c => c.length > 0);
     
-    console.log("Playing listening audio in chunks:", chunks);
+    console.log("Playing listening audio in chunks via Google Translate TTS fallback:", chunks);
 
     let chunkIdx = 0;
     this.fallbackAudio = null;
@@ -614,7 +649,7 @@ class JLPTApp {
       const url = `https://translate.google.com/translate_tts?ie=UTF-8&tl=ja&client=tw-ob&q=${encodeURIComponent(text)}`;
       
       this.fallbackAudio = new Audio();
-      this.fallbackAudio.referrerPolicy = "no-referrer"; // Strip referrer header
+      this.fallbackAudio.referrerPolicy = "no-referrer";
       this.fallbackAudio.src = url;
       this.fallbackAudio.playbackRate = rate;
       
@@ -623,8 +658,7 @@ class JLPTApp {
       };
       
       this.fallbackAudio.onerror = (err) => {
-        console.error("Translate TTS playback failed for chunk:", text, err);
-        // Skip this chunk and try the next
+        console.error("Translate TTS failed for chunk:", text, err);
         playNextChunk();
       };
 
@@ -679,10 +713,8 @@ class JLPTApp {
     const total = this.sessionQuestions.length;
     const pct = Math.round((this.score / total) * 100);
 
-    // Save highscores (only for full exams or multi-section practice)
-    if (this.isFullMockExam) {
-      this.saveHighScore(this.level, pct);
-    }
+    // Save highscores to update dashboard stats and trophies
+    this.saveHighScore(this.level, pct);
 
     document.getElementById('results-score-text').textContent = `${this.score}/${total}`;
     
@@ -766,7 +798,7 @@ class JLPTApp {
       const item = document.createElement('div');
       item.className = `review-item ${ans.isCorrect ? 'is-correct' : 'is-wrong'}`;
 
-      const selectedTxt = ans.question.options[ans.selected];
+      const selectedTxt = ans.selected === null || ans.selected === undefined ? '無解答 (No Answer)' : ans.question.options[ans.selected];
       const correctTxt = ans.question.options[ans.question.correct];
 
       // Add Reading passages or Listening transcripts to the card
@@ -876,6 +908,55 @@ class JLPTApp {
 
   // --- AUDIO FEEDBACK EFFECTS ---
   playAudio(type) {
+    try {
+      const AudioContext = window.AudioContext || window.webkitAudioContext;
+      if (AudioContext) {
+        const ctx = new AudioContext();
+        if (type === 'correct') {
+          // Double beep sound (C5 and E5 sine waves)
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(523.25, ctx.currentTime);
+          osc.frequency.setValueAtTime(659.25, ctx.currentTime + 0.08);
+          gain.gain.setValueAtTime(0.12, ctx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.25);
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+          osc.start();
+          osc.stop(ctx.currentTime + 0.25);
+        } else if (type === 'wrong') {
+          // Descending buzz sound (triangle wave)
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(150, ctx.currentTime);
+          osc.frequency.linearRampToValueAtTime(80, ctx.currentTime + 0.28);
+          gain.gain.setValueAtTime(0.18, ctx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.3);
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+          osc.start();
+          osc.stop(ctx.currentTime + 0.3);
+        } else if (type === 'click') {
+          // Short crisp click (sine wave)
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(800, ctx.currentTime);
+          gain.gain.setValueAtTime(0.05, ctx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.04);
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+          osc.start();
+          osc.stop(ctx.currentTime + 0.04);
+        }
+        return;
+      }
+    } catch (e) {
+      console.warn("Synthesized Audio failed, falling back to tags", e);
+    }
+
     try {
       if (type === 'correct' && this.audioCorrect) {
         this.audioCorrect.currentTime = 0;

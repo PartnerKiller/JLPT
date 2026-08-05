@@ -41,10 +41,20 @@ const server = http.createServer((req, res) => {
   let relativePath = decodedUrl === '/' ? 'index.html' : decodedUrl;
   let filePath = path.join(PUBLIC_DIR, relativePath);
 
+  // If the path points to a directory, safely default to index.html to prevent EISDIR errors
+  try {
+    const stat = fs.statSync(filePath);
+    if (stat.isDirectory()) {
+      filePath = path.join(PUBLIC_DIR, 'index.html');
+    }
+  } catch (e) {
+    // Let nonexistent files fall through to ENOENT handler
+  }
+
   // Security check: Prevent Directory Traversal Attacks
   const relative = path.relative(PUBLIC_DIR, filePath);
   const isSafe = relative && !relative.startsWith('..') && !path.isAbsolute(relative);
-  if (!isSafe && filePath !== PUBLIC_DIR && filePath !== path.join(PUBLIC_DIR, 'index.html')) {
+  if (!isSafe && filePath !== path.join(PUBLIC_DIR, 'index.html')) {
     res.writeHead(403, { 'Content-Type': 'text/plain; charset=utf-8' });
     res.end('403 Forbidden: Access denied.');
     return;
