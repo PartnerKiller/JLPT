@@ -610,11 +610,12 @@ class JLPTApp {
     this.listeningStatusText.textContent = 'Speaking...';
 
     // Construct Japanese-only speech text (excluding English context description)
-    const cleanDialogue = q.dialogue.replace(/<br>/g, '。').replace(/<\/?[^>]+(>|$)/g, "");
-    const cleanQuestion = q.question.replace(/<\/?[^>]+(>|$)/g, "");
+    const cleanDialogue = this.cleanSpeechText(q.dialogue.replace(/<br>/g, '。'));
+    const cleanQuestion = this.cleanSpeechText(q.question);
+    const cleanSituationJa = this.cleanSpeechText(q.situation_ja || '');
 
     // Structure prompt readouts: Context -> Dialogue -> Question
-    const promptText = `問題。 ${q.situation_ja || ''}。 会話。 ${cleanDialogue}。 もう一度質問します。 ${cleanQuestion}`;
+    const promptText = `問題。 ${cleanSituationJa}。 会話。 ${cleanDialogue}。 もう一度質問します。 ${cleanQuestion}`;
 
     // Speed rates based on levels
     let rate = 1.0;
@@ -1053,6 +1054,12 @@ class JLPTApp {
     }
     q.correct = q.options.indexOf(correctText);
     return q;
+  }
+
+  cleanSpeechText(text) {
+    if (!text) return '';
+    const noRt = text.replace(/<rt[^>]*>([\s\S]*?)<\/rt>/gi, '');
+    return noRt.replace(/<\/?[^>]+(>|$)/g, '').trim();
   }
 
   // --- USER AUTHENTICATION & MANAGEMENT SYSTEMS ---
