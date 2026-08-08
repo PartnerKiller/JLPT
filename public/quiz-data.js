@@ -299,44 +299,44 @@ window.quizQuestions = {
     ],
     "Reading": [
       {
-        "passage": "<div class='passage-title'>「お知らせ」</div><p class='passage-body'>留学生のみなさんへ。来週の日曜日に、みんなでバーベキューをします。場所はみどり公園です。時間は午前10時から午後3時までです。参加したい人は、木曜日までに事務室に名前を書いてください。会費は500円です。</p>",
-        "question": "バーベキューに参加したい人は、どうしなければなりませんか。",
+        "passage": "<div class='passage-title'>「お<ruby>知<rt>し</rt></ruby>らせ」</div><p class='passage-body'><ruby>留学生<rt>りゅうがくせい</rt></ruby>のみなさんへ。<ruby>来週<rt>らいしゅう</rt></ruby>の<ruby>日曜日<rt>にちようび</rt></ruby>に、みんなでバーベキューをします。<ruby>場所<rt>ばしょ</rt></ruby>はみどり<ruby>公園<rt>こうえん</rt></ruby>です。<ruby>時間<rt>じかん</rt></ruby>は<ruby>午前<rt>ごぜん</rt></ruby>10<ruby>時<rt>じ</rt></ruby>から<ruby>午後<rt>ごご</rt></ruby>3<ruby>時<rt>じ</rt></ruby>までです。<ruby>参加<rt>さんか</rt></ruby>したい<ruby>人<rt>ひと</rt></ruby>は、<ruby>木曜日<rt>もくようび</rt></ruby>までに<ruby>事務室<rt>じむしつ</rt></ruby>に<ruby>名前<rt>なまえ</rt></ruby>を<ruby>書<rt>か</rt></ruby>いてください。<ruby>会費<rt>かいひ</rt></ruby>は500<ruby>円<rt>えん</rt></ruby>です。</p>",
+        "question": "バーベキューに<ruby>参加<rt>さんか</rt></ruby>したい<ruby>人<rt>ひと</rt></ruby>は、どうしなければなりませんか。",
         "options": [
-          "木曜日までに事務室に名前を書く",
-          "日曜日までに500円を払って公園に行く",
-          "木曜日までにみどり公園に行って名前を書く",
-          "金曜日までに事務室に行く"
+          "<ruby>木曜日<rt>もくようび</rt></ruby>までに<ruby>事務室<rt>じむしつ</rt></ruby>に<ruby>名前<rt>なまえ</rt></ruby>を<ruby>書<rt>か</rt></ruby>く",
+          "<ruby>日曜日<rt>にちようび</rt></ruby>までに500<ruby>円<rt>えん</rt></ruby>を<ruby>払<rt>はら</rt></ruby>って<ruby>公園<rt>こうえん</rt></ruby>に<ruby>行<rt>い</rt></ruby>く",
+          "<ruby>木曜日<rt>もくようび</rt></ruby>までにみどり<ruby>公園<rt>こうえん</rt></ruby>に<ruby>行<rt>い</rt></ruby>って<ruby>名前<rt>なまえ</rt></ruby>を<ruby>書<rt>か</rt></ruby>く",
+          "<ruby>金曜日<rt>きんようび</rt></ruby>までに<ruby>事務室<rt>じむしつ</rt></ruby>に<ruby>行<rt>い</rt></ruby>く"
         ],
         "correct": 0,
         "explanation": "The notice states: '参加したい人は、木曜日までに事務室に名前を書いてください' (People who want to participate, please write your name in the office by Thursday). Hence, Option A is correct."
       },
       {
-        "passage": "<div class='passage-title'>「私の部屋」</div><p class='passage-body'>私の部屋は広くないですが、窓が大きくて明るいです。机の隣にベッドがあります。ベッドの下には古い本がたくさん入っています。本棚には日本語の教科書だけがあります。私はこの部屋がとても好きです。</p>",
-        "question": "この人の部屋について、正しいものはどれですか。",
+        "passage": "<div class='passage-title'>「<ruby>私<rt>わたし</rt></ruby>の<ruby>部屋<rt>へや</rt></ruby>」</div><p class='passage-body'><ruby>私<rt>わたし</rt></ruby>の<ruby>部屋<rt>へや</rt></ruby>は<ruby>広<rt>ひろ</rt></ruby>くないですが、<ruby>窓<rt>まど</rt></ruby>が<ruby>大<rt>おお</rt></ruby>きくて<ruby>明<rt>あか</rt></ruby>るいです。<ruby>机<rt>つくえ</rt></ruby>の<ruby>隣<rt>となり</rt></ruby>にベッドがあります。ベッドの<ruby>下<rt>した</rt></ruby>には<ruby>古<rt>ふる</rt></ruby>い<ruby>本<rt>ほん</rt></ruby>がたくさん<ruby>入<rt>はい</rt></ruby>っています。<ruby>本棚<rt>ほんだな</rt></ruby>には<ruby>日本語<rt>にほんご</rt></ruby>の<ruby>教科書<rt>きょうかしょ</rt></ruby>だけがあります。<ruby>私<rt>わたし</rt></ruby>はこの<ruby>部屋<rt>へや</rt></ruby>がとても<ruby>好<rt>す</rt></ruby>きです。</p>",
+        "question": "この<ruby>人<rt>ひと</rt></ruby>の<ruby>部屋<rt>へや</rt></ruby>について、<ruby>正<rt>ただ</rt></ruby>しいものはどれですか。",
         "options": [
-          "部屋はとても広くてきれいだ",
-          "ベッドの下に古い本がたくさんある",
-          "本棚に小説や教科書がたくさんある",
-          "ベッドの上に机がある"
+          "<ruby>部屋<rt>へや</rt></ruby>はとても<ruby>広<rt>ひろ</rt></ruby>くてきれいだ",
+          "ベッドの<ruby>下<rt>した</rt></ruby>に<ruby>古<rt>ふる</rt></ruby>い<ruby>本<rt>ほん</rt></ruby>がたくさんある",
+          "<ruby>本棚<rt>ほんだな</rt></ruby>に<ruby>小説<rt>しょうせつ</rt></ruby>や<ruby>教科書<rt>きょうかしょ</rt></ruby>がたくさんある",
+          "ベッドの<ruby>上<rt>うえ</rt></ruby>に<ruby>机<rt>つくえ</rt></ruby>がある"
         ],
         "correct": 1,
         "explanation": "The text says: 'ベッドの下には古い本がたくさん入っています' (Under the bed, there are many old books). Thus, Option B is correct."
       },
       {
-        "passage": "今日は日曜日です。私は犬と一緒に近くの公園へ行きます。公園は広くてきれいです。犬は公園で走るのが大好きです。",
-        "question": "私は誰と公園へ行きますか。",
+        "passage": "<ruby>今日<rt>きょう</rt></ruby>は<ruby>日曜日<rt>にちようび</rt></ruby>です。<ruby>私<rt>わたし</rt></ruby>は<ruby>犬<rt>いぬ</rt></ruby>と<ruby>一緒<rt>いっしょ</rt></ruby>に<ruby>近く<rt>ちか</rt></ruby>の<ruby>公園<rt>こうえん</rt></ruby>へ<ruby>行<rt>い</rt></ruby>きます。<ruby>公園<rt>こうえん</rt></ruby>は<ruby>広<rt>ひろ</rt></ruby>くてきれいです。<ruby>犬<rt>いぬ</rt></ruby>は<ruby>公園<rt>こうえん</rt></ruby>で<ruby>走<rt>はし</rt></ruby>るのが<ruby>大好<rt>だいす</rt></ruby>きです。",
+        "question": "<ruby>私<rt>わたし</rt></ruby>は<ruby>誰<rt>だれ</rt></ruby>と<ruby>公園<rt>こうえん</rt></ruby>へ<ruby>行<rt>い</rt></ruby>きますか。",
         "options": [
-          "友達",
-          "家族",
-          "犬",
-          "一人で"
+          "<ruby>友達<rt>ともだち</rt></ruby>",
+          "<ruby>家族<rt>かぞく</rt></ruby>",
+          "<ruby>犬<rt>いぬ</rt></ruby>",
+          "<ruby>一人<rt>ひとり</rt></ruby>で"
         ],
         "correct": 2,
         "explanation": "The passage says '犬と一緒に...' (together with my dog)."
       },
       {
-        "passage": "昨日、りんごを３つ買いました。昨日１つ食べました。残りのりんごは明日食べます。",
-        "question": "残っているりんごはいくつですか。",
+        "passage": "<ruby>昨日<rt>きのう</rt></ruby>、りんごを３つ<ruby>買<rt>か</rt></ruby>いました。<ruby>昨日<rt>きのう</rt></ruby>１つ<ruby>食<rt>た</rt></ruby>べました。<ruby>残り<rt>のこり</rt></ruby>のりんごは<ruby>明日<rt>あした</rt></ruby><ruby>食<rt>た</rt></ruby>べます。",
+        "question": "<ruby>残<rt>のこ</rt></ruby>っているりんごはいくつですか。",
         "options": [
           "１つ",
           "２つ",
