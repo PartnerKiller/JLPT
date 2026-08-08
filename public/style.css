@@ -656,12 +656,12 @@ input:checked + .slider:before {
   word-break: break-word;
 }
 
-/* Ruby Text hiding when disabled */
-.question-text.furigana-disabled ruby rt {
-  display: none;
+/* Ruby Text hiding when disabled globally */
+body.furigana-disabled ruby rt {
+  display: none !important;
 }
 
-.question-text.furigana-disabled ruby {
+body.furigana-disabled ruby {
   ruby-position: over;
 }
 

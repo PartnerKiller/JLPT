@@ -56,6 +56,18 @@ class JLPTApp {
     this.loadLevelStats();
     this.applySavedTheme();
     
+    // Load saved furigana state
+    const furiganaSaved = localStorage.getItem('jlpt_furigana_enabled') !== 'false';
+    const furiganaCheckbox = document.getElementById('furigana-checkbox');
+    if (furiganaCheckbox) {
+      furiganaCheckbox.checked = furiganaSaved;
+    }
+    if (furiganaSaved) {
+      document.body.classList.remove('furigana-disabled');
+    } else {
+      document.body.classList.add('furigana-disabled');
+    }
+
     // Load saved romaji state
     this.romajiEnabled = localStorage.getItem('jlpt_romaji_enabled') === 'true';
     if (this.romajiCheckbox) {
@@ -938,15 +950,15 @@ class JLPTApp {
 
   // --- TOGGLES ---
   toggleFurigana() {
+    this.playAudio('click');
     const checkbox = document.getElementById('furigana-checkbox');
-    const qText = document.getElementById('question-text');
+    const enabled = checkbox ? checkbox.checked : true;
+    localStorage.setItem('jlpt_furigana_enabled', enabled.toString());
     
-    if (checkbox.checked) {
-      qText.classList.add('furigana-enabled');
-      qText.classList.remove('furigana-disabled');
+    if (enabled) {
+      document.body.classList.remove('furigana-disabled');
     } else {
-      qText.classList.add('furigana-disabled');
-      qText.classList.remove('furigana-enabled');
+      document.body.classList.add('furigana-disabled');
     }
   }
 

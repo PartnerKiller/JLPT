@@ -351,68 +351,68 @@ window.quizQuestions = {
       {
         "situation": "A man and a woman are talking at the office. What will the woman do next?",
         "dialogue": "男：田中さん、会議の準備はできましたか？<br>女：はい、資料はすべてコピーしました。<br>男：そうですか。じゃあ、会議室のテーブルの上に並べておいてください。<br>女：わかりました。すぐやります。",
-        "question": "女の人はこれから何をしますか。",
+        "question": "<ruby>女<rt>おんな</rt></ruby>の<ruby>人<rt>ひと</rt></ruby>はこれから<ruby>何<rt>なに</rt></ruby>をしますか。",
         "options": [
-          "資料をコピーする",
-          "会議室のテーブルに資料を並べる",
-          "男の人を呼びに行く",
-          "自分の机で資料を読む"
+          "<ruby>資料<rt>しりょう</rt></ruby>をコピーする",
+          "<ruby>会議室<rt>かいぎしつ</rt></ruby>のテーブルに<ruby>資料<rt>しりょう</rt></ruby>を<ruby>並<rt>なら</rt></ruby>べる",
+          "<ruby>男<rt>おとこ</rt></ruby>の<ruby>人<rt>ひと</rt></ruby>を<ruby>呼<rt>よ</rt></ruby>びに<ruby>行<rt>い</rt></ruby>く",
+          "<ruby>自分<rt>じぶん</rt></ruby>の<ruby>机<rt>つくえ</rt></ruby>で<ruby>資料<rt>しりょう</rt></ruby>を<ruby>読<rt>よ</rt></ruby>む"
         ],
         "correct": 1,
         "explanation": "The man asks the woman to place the copies on the meeting room table ('会議室のテーブルの上に並べておいてください') and she agrees. She will do this next.",
-        "situation_ja": "男の人と女の人が会社で話しています。女の人はこれから何をしますか。"
+        "situation_ja": "<ruby>男<rt>おとこ</rt></ruby>の<ruby>人<rt>ひと</rt></ruby>と<ruby>女<rt>おんな</rt></ruby>の<ruby>人<rt>ひと</rt></ruby>が<ruby>会社<rt>かいしゃ</rt></ruby>で<ruby>話<rt>はな</rt></ruby>しています。<ruby>女<rt>おんな</rt></ruby>の<ruby>人<rt>ひと</rt></ruby>はこれから<ruby>何<rt>なに</rt></ruby>をしますか。"
       },
       {
         "situation": "A student and a teacher are talking. What will the student bring tomorrow?",
         "dialogue": "先生：鈴木くん、明日は遠足ですね。準備はいいですか？<br>男：はい、お弁当と水筒は用意しました。<br>先生：そうですか。雨が降るかもしれないので、折りたたみ傘も持ってきてくださいね。敷物は事務室で用意しますから、いりません。<br>男：わかりました。傘ですね、忘れないようにします。",
-        "question": "男の生徒は明日、何を持って行きますか。",
+        "question": "<ruby>男<rt>おとこ</rt></ruby>の<ruby>生徒<rt>せいと</rt></ruby>は<ruby>明日<rt>あした</rt></ruby>、<ruby>何<rt>なに</rt></ruby>を<ruby>持<rt>も</rt></ruby>って<ruby>行<rt>い</rt></ruby>きますか。",
         "options": [
-          "お弁当、水筒、敷物",
-          "お弁当、水筒、傘",
-          "傘と敷物だけ",
-          "お弁当と水筒だけ"
+          "お<ruby>弁当<rt>べんとう</rt></ruby>、<ruby>水筒<rt>すいとう</rt></ruby>、<ruby>敷物<rt>しきもの</rt></ruby>",
+          "お<ruby>弁当<rt>べんとう</rt></ruby>、<ruby>水筒<rt>すいとう</rt></ruby>、<ruby>傘<rt>かさ</rt></ruby>",
+          "<ruby>傘<rt>かさ</rt></ruby>と<ruby>敷物<rt>しきもの</rt></ruby>だけ",
+          "お<ruby>弁当<rt>べんとう</rt></ruby>と<ruby>水筒<rt>すいとう</rt></ruby>だけ"
         ],
         "correct": 1,
         "explanation": "The teacher tells the student to bring a folding umbrella ('折りたたみ傘も持ってきてください') in addition to lunch ('お弁当') and water bottle ('水筒'), but says the groundsheet ('敷物') is not needed. The student will bring those three.",
-        "situation_ja": "男の生徒と先生が話しています。男の生徒は明日、何を持って行きますか。"
+        "situation_ja": "<ruby>男<rt>おとこ</rt></ruby>の<ruby>生徒<rt>せいと</rt></ruby>と<ruby>先生<rt>せんせい</rt></ruby>が<ruby>話<rt>はな</rt></ruby>しています。<ruby>男<rt>おとこ</rt></ruby>の<ruby>生徒<rt>せいと</rt></ruby>は<ruby>明日<rt>あした</rt></ruby>、<ruby>何<rt>なに</rt></ruby>を<ruby>持<rt>も</rt></ruby>って<ruby>行<rt>い</rt></ruby>きますか。"
       },
       {
         "situation": "A mother and a boy are talking at home. What will the boy do first?",
         "dialogue": "女：たかし、宿題は終わったの？<br>男：ううん、これからやるよ。<br>女：その前に、手を洗って、テーブルの上を片付けてね。もうすぐご飯だから。<br>男：はーい。じゃあ、まずテーブルの上を片付けるね。<br>女：いいえ、先に手をきれいに洗ってきなさい。<br>男：わかったよ。",
-        "question": "男の子は最初に何をしますか。",
+        "question": "<ruby>男<rt>おとこ</rt></ruby>の<ruby>子<rt>こ</rt></ruby>は<ruby>最初<rt>さいしょ</rt></ruby>に<ruby>何<rt>なに</rt></ruby>をしますか。",
         "options": [
-          "宿題をする",
-          "テーブルの上を片付ける",
-          "手を洗う",
-          "ご飯を食べる"
+          "<ruby>宿題<rt>しゅくだい</rt></ruby>をする",
+          "テーブルの<ruby>上<rt>うえ</rt></ruby>を<ruby>片付<rt>かたづ</rt></ruby>ける",
+          "<ruby>手<rt>て</rt></ruby>を<ruby>洗<rt>あら</rt></ruby>う",
+          "ご<ruby>飯<rt>はん</rt></ruby>を<ruby>食<rt>た</rt></ruby>べる"
         ],
         "correct": 2,
         "explanation": "The mother tells him to wash his hands ('手を洗って') and clean the table ('テーブルの上を片付けて'). The boy wants to clean the table first, but the mother corrects him: 'いいえ、先に手をきれいに洗ってきなさい' (No, wash your hands first). Thus, he will wash his hands first.",
-        "situation_ja": "お母さんと男の子が家で話しています。男の子は最初に何をしますか。"
+        "situation_ja": "お<ruby>母<rt>かあ</rt></ruby>さんと<ruby>男<rt>おとこ</rt></ruby>の<ruby>子<rt>こ</rt></ruby>が<ruby>家<rt>いえ</rt></ruby>で<ruby>話<rt>はな</rt></ruby>しています。<ruby>男<rt>おとこ</rt></ruby>の<ruby>子<rt>こ</rt></ruby>は<ruby>最初<rt>さいしょ</rt></ruby>に<ruby>何<rt>なに</rt></ruby>をしますか。"
       },
       {
         "situation": "Quick Response. Listen to the greeting and choose the best response.",
         "dialogue": "男：はじめまして、鈴木です。どうぞよろしくお願いします。",
-        "question": "男の人に挨拶されました。何と答えますか。",
+        "question": "<ruby>男<rt>おとこ</rt></ruby>の<ruby>人<rt>ひと</rt></ruby>に<ruby>挨拶<rt>あいさつ</rt></ruby>されました。<ruby>何<rt>なに</rt></ruby>と<ruby>答<rt>こた</rt></ruby>えますか。",
         "options": [
           "こちらこそ、よろしくお願いします。",
           "どういたしまして。",
-          "失礼しました。"
+          "<ruby>失礼<rt>しつれい</rt></ruby>しました。"
         ],
         "correct": 0,
         "explanation": "When someone says 'はじめまして... よろしくお願いします' (Nice to meet you... please be kind to me), the standard reply is 'こちらこそ、よろしくお願いします' (Likewise, nice to meet you).",
-        "situation_ja": "男の人が挨拶をしています。一番いい返事を選んでください。"
+        "situation_ja": "<ruby>男<rt>おとこ</rt></ruby>の<ruby>人<rt>ひと</rt></ruby>が<ruby>挨拶<rt>あいさつ</rt></ruby>をしています。一番いい返事を選んでください。"
       },
       {
         "situation": "A mother is asking her son to clean. What will the son do first?",
         "situation_ja": "お母さんと男の子が話しています。男の子は最初に何をしますか。",
         "dialogue": "女：たかし、部屋を掃除しなさい。<br>男：はーい。机の上を片付ければいい？<br>女：そうね。本は後でいいから、まずゴミを捨てて。",
-        "question": "男の子は最初に何をしますか。",
+        "question": "<ruby>男<rt>おとこ</rt></ruby>の<ruby>子<rt>こ</rt></ruby>は<ruby>最初<rt>さいしょ</rt></ruby>に<ruby>何<rt>なに</rt></ruby>をしますか。",
         "options": [
-          "本を片付ける",
-          "ゴミを捨てる",
-          "机を拭く",
-          "遊ぶ"
+          "<ruby>本<rt>ほん</rt></ruby>を<ruby>片付<rt>かたづ</rt></ruby>ける",
+          "ゴミを<ruby>捨<rt>す</rt></ruby>てる",
+          "<ruby>机<rt>つくえ</rt></ruby>を<ruby>拭<rt>ふ</rt></ruby>く",
+          "<ruby>遊<rt>あそ</rt></ruby>ぶ"
         ],
         "correct": 1,
         "explanation": "The mother says 'まずゴミを捨てて' (first throw away the garbage)."
@@ -421,12 +421,12 @@ window.quizQuestions = {
         "situation": "A man is asking a station worker about trains. Which train will he take?",
         "situation_ja": "男の人と駅員が話しています。男の人はどの電車に乗りますか。",
         "dialogue": "男：すみません、２時の電車は直通ですか？<br>女：いえ、２時の電車は乗り換えが必要です。２時１５分の快速なら直通ですよ。<br>男：じゃあ、それにします。",
-        "question": "男の人はどの電車に乗りますか。",
+        "question": "<ruby>男<rt>おとこ</rt></ruby>の<ruby>人<rt>ひと</rt></ruby>はどの<ruby>電車<rt>でんしゃ</rt></ruby>に<ruby>乗<rt>の</rt></ruby>りますか。",
         "options": [
-          "２時の電車",
-          "２時１５分の快速電車",
-          "次の普通電車",
-          "乗らない"
+          "２<ruby>時<rt>じ</rt></ruby>の<ruby>電車<rt>でんしゃ</rt></ruby>",
+          "２<ruby>時<rt>じ</rt></ruby>１５<ruby>分<rt>ふん</rt></ruby>の<ruby>快速電車<rt>かいそくでんしゃ</rt></ruby>",
+          "<ruby>次<rt>つぎ</rt></ruby>の<ruby>普通電車<rt>ふつうでんしゃ</rt></ruby>",
+          "<ruby>乗<rt>の</rt></ruby>らない"
         ],
         "correct": 1,
         "explanation": "He decides to take the direct 2:15 rapid train (２時１５分の快速)."
