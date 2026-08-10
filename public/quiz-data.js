@@ -153,7 +153,7 @@ window.quizQuestions = {
     ],
     "Grammar": [
       {
-        "question": "Complete the sentence: 私は毎日学校<span class='blank-placeholder'>?</span>行きます。",
+        "question": "Complete the sentence: <ruby>私<rt>わたし</rt></ruby>は<ruby>毎日<rt>まいにち</rt></ruby><ruby>学校<rt>がっこう</rt></ruby><span class='blank-placeholder'>?</span><ruby>行<rt>い</rt></ruby>きます。",
         "options": [
           "を",
           "は",
@@ -165,7 +165,7 @@ window.quizQuestions = {
         "explanation": "The particle 'に' (ni) is used to mark the direction or destination of movement (行きます = to go)."
       },
       {
-        "question": "Complete the sentence: これは私<span class='blank-placeholder'>?</span>本です。",
+        "question": "Complete the sentence: これは<ruby>私<rt>わたし</rt></ruby><span class='blank-placeholder'>?</span><ruby>本<rt>ほん</rt></ruby>です。",
         "options": [
           "は",
           "の",
@@ -177,7 +177,7 @@ window.quizQuestions = {
         "explanation": "The particle 'の' (no) indicates possession. '私の本' means 'my book'."
       },
       {
-        "question": "Complete the sentence: 図書館で本をつくえの<ruby>上<rt>うえ</rt></ruby><span class='blank-placeholder'>?</span>置きました。",
+        "question": "Complete the sentence: <ruby>図書館<rt>としょかん</rt></ruby>で<ruby>本<rt>ほん</rt></ruby>をつくえの<ruby>上<rt>うえ</rt></ruby><span class='blank-placeholder'>?</span><ruby>置<rt>お</rt></ruby>きました。",
         "options": [
           "に",
           "で",
@@ -189,7 +189,7 @@ window.quizQuestions = {
         "explanation": "The particle 'に' is used to mark the location where an object is placed/put (置く = to put)."
       },
       {
-        "question": "Complete the sentence: デパートでかばん<span class='blank-placeholder'>?</span>買いました。",
+        "question": "Complete the sentence: デパートでかばん<span class='blank-placeholder'>?</span><ruby>買<rt>か</rt></ruby>いました。",
         "options": [
           "は",
           "に",
@@ -201,7 +201,7 @@ window.quizQuestions = {
         "explanation": "The particle 'を' (o) marks the direct object of the transitive verb (買いました = bought)."
       },
       {
-        "question": "Complete the sentence: あそこに犬<span class='blank-placeholder'>?</span>います。",
+        "question": "Complete the sentence: あそこに<ruby>犬<rt>いぬ</rt></ruby><span class='blank-placeholder'>?</span>います。",
         "options": [
           "は",
           "を",
@@ -213,7 +213,7 @@ window.quizQuestions = {
         "explanation": "The particle 'が' is used with 'います' (to exist, for animate objects) to state the existence of something."
       },
       {
-        "question": "Complete: 英語<span class='blank-placeholder'>?</span>分かりますか。",
+        "question": "Complete: <ruby>英語<rt>えいご</rt></ruby><span class='blank-placeholder'>?</span><ruby>分<rt>わ</rt></ruby>かりますか。",
         "options": [
           "を",
           "は",
@@ -225,7 +225,7 @@ window.quizQuestions = {
         "explanation": "Verbs of understanding like '分かる' (to understand) take the particle 'が' to mark the object."
       },
       {
-        "question": "Sentence Composition: Choose the word that goes into the star (★) position:<br>昨日、私は ＿ ＿ ★ ＿ 買いました。",
+        "question": "Sentence Composition: Choose the word that goes into the star (★) position:<br><ruby>昨日<rt>きのう</rt></ruby>、<ruby>私<rt>わたし</rt></ruby>は ＿ ＿ ★ ＿ <ruby>買<rt>か</rt></ruby>いました。",
         "options": [
           "りんごを",
           "デパートで",
@@ -239,17 +239,17 @@ window.quizQuestions = {
       {
         "question": "Sentence Composition: Choose the word that goes into the star (★) position:<br>あそこに ＿ ＿ ★ ＿ あります。",
         "options": [
-          "白い",
-          "本が",
+          "<ruby>白い<rt>しろい</rt></ruby>",
+          "<ruby>本が<rt>ほんが</rt></ruby>",
           "おもしろい",
-          "古い"
+          "<ruby>古い<rt>ふるい</rt></ruby>"
         ],
         "correct": 1,
         "romaji": "Asoko ni kirei na akai [hana ga] takusan arimasu.",
         "explanation": "Correct order: きれいな 赤い [花が] たくさん. The third position is '花が' (Option B)."
       },
       {
-        "question": "Complete the sentence: りんごを三つ<span class='blank-placeholder'>?</span>買いました。",
+        "question": "Complete the sentence: りんごを<ruby>三つ<rt>みっつ</rt></ruby><span class='blank-placeholder'>?</span><ruby>買<rt>か</rt></ruby>いました。",
         "options": [
           "に",
           "を",
@@ -261,22 +261,22 @@ window.quizQuestions = {
         "explanation": "No particle is needed between a counter (三つ) and the verb (買いました)."
       },
       {
-        "question": "Complete the sentence: 昨日、友達と映画を<span class='blank-placeholder'>?</span>。",
+        "question": "Complete the sentence: <ruby>昨日<rt>きのう</rt></ruby>、<ruby>友達<rt>ともだち</rt></ruby>と<ruby>映画<rt>えいが</rt></ruby>を<span class='blank-placeholder'>?</span>。",
         "options": [
-          "見ます",
-          "見ました",
-          "見ています",
-          "見たい"
+          "<ruby>見ます<rt>みます</rt></ruby>",
+          "<ruby>見ました<rt>みました</rt></ruby>",
+          "<ruby>見ています<rt>みています</rt></ruby>",
+          "<ruby>見たい<rt>みたい</rt></ruby>"
         ],
         "correct": 1,
         "romaji": "Kinō, tomodachi to eiga o [?].",
         "explanation": "The past tense form '見ました' (watched) matches the past time marker '昨日' (yesterday)."
       },
       {
-        "question": "Rearrange the words to make a grammatical sentence. What goes in the star position?<br><br>公園 <span class='star-char'>★</span> 行きます 歩いて<br><br>[ 公園 ] [ ___ ] [ _★_ ] [ 行きます ]",
+        "question": "Rearrange the words to make a grammatical sentence. What goes in the star position?<br><br><ruby>公園<rt>こうえん</rt></ruby> <span class='star-char'>★</span> <ruby>行<rt>い</rt></ruby>きます <ruby>歩<rt>ある</rt></ruby>いて<br><br>[ <ruby>公園<rt>こうえん</rt></ruby> ] [ ___ ] [ _★_ ] [ <ruby>行<rt>い</rt></ruby>きます ]",
         "options": [
           "まで",
-          "歩いて",
+          "<ruby>歩いて<rt>あるいて</rt></ruby>",
           "から",
           "に"
         ],
@@ -285,7 +285,7 @@ window.quizQuestions = {
         "explanation": "The correct order is '公園まで歩いて行きます' (I walk to the park). The star position fits '歩いて'."
       },
       {
-        "question": "Complete the sentence: そこはとても静か<span class='blank-placeholder'>?</span>でした。",
+        "question": "Complete the sentence: そこはとても<ruby>静か<rt>しずか</rt></ruby><span class='blank-placeholder'>?</span>でした。",
         "options": [
           "に",
           "な",
