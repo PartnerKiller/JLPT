@@ -149,6 +149,66 @@ window.quizQuestions = {
         "correct": 3,
         "romaji": "enpitsu",
         "explanation": "'えんぴつ' (enpitsu) means pencil."
+      },
+      {
+        "question": "Choose the correct reading for: <ruby>電気<rt class='placeholder'>?</rt></ruby>",
+        "options": [
+          "でんき",
+          "てんき",
+          "でんしゃ",
+          "てがみ"
+        ],
+        "correct": 0,
+        "romaji": "denki",
+        "explanation": "'電気' (electricity/light) is read as 'でんき'."
+      },
+      {
+        "question": "What does '<ruby>図書館<rt>としょかん</rt></ruby>' mean?",
+        "options": [
+          "Park",
+          "Library",
+          "School",
+          "Hospital"
+        ],
+        "correct": 1,
+        "romaji": "toshokan",
+        "explanation": "'図書館' (toshokan) means library."
+      },
+      {
+        "question": "Choose the correct reading for: <ruby>飛行機<rt class='placeholder'>?</rt></ruby>",
+        "options": [
+          "じどうしゃ",
+          "しんかんせん",
+          "ひこうき",
+          "じてんしゃ"
+        ],
+        "correct": 2,
+        "romaji": "hikōki",
+        "explanation": "'飛行機' (airplane) is read as 'ひこうき'."
+      },
+      {
+        "question": "What does '<ruby>切符<rt>きっぷ</rt></ruby>' mean?",
+        "options": [
+          "Stamp",
+          "Ticket",
+          "Letter",
+          "Postcard"
+        ],
+        "correct": 1,
+        "romaji": "kippu",
+        "explanation": "'切符' (kippu) means ticket."
+      },
+      {
+        "question": "Choose the correct reading for: <ruby>食堂<rt class='placeholder'>?</rt></ruby>",
+        "options": [
+          "しょくどう",
+          "こうえん",
+          "きょうしつ",
+          "かいぎしつ"
+        ],
+        "correct": 0,
+        "romaji": "shokudō",
+        "explanation": "'食堂' (cafeteria/dining hall) is read as 'しょくどう'."
       }
     ],
     "Grammar": [
@@ -295,6 +355,66 @@ window.quizQuestions = {
         "correct": 3,
         "romaji": "Soko wa totemo shizuka [?] deshita.",
         "explanation": "For Na-adjectives like '静か', the past tense copula is added directly ('静かでした') without any particles."
+      },
+      {
+        "question": "Complete the sentence: <ruby>机<rt>つくえ</rt></ruby>の<ruby>上<rt>うえ</rt></ruby><span class='blank-placeholder'>?</span><ruby>本<rt>ほん</rt></ruby>が<ruby>二冊<rt>にさつ</rt></ruby>あります。",
+        "options": [
+          "が",
+          "に",
+          "を",
+          "の"
+        ],
+        "correct": 1,
+        "romaji": "Tsukue no ue [ni] hon ga nisatsu arimasu.",
+        "explanation": "The particle 'に' is used to mark the location of existence (あります = to exist)."
+      },
+      {
+        "question": "Complete the sentence: <ruby>昨日<rt>きのう</rt></ruby>は<ruby>雨<rt>あめ</rt></ruby><span class='blank-placeholder'>?</span>でした。",
+        "options": [
+          "に",
+          "で",
+          "が",
+          "(none)"
+        ],
+        "correct": 3,
+        "romaji": "Kinō wa ame [?] deshita.",
+        "explanation": "For noun predicates like '雨' (rain), the past tense copula 'でした' is added directly without any particles."
+      },
+      {
+        "question": "Complete: <ruby>図書館<rt>としょかん</rt></ruby>で<ruby>静<rt>しず</rt></ruby>か<span class='blank-placeholder'>?</span><ruby>勉強<rt>べんきょう</rt></ruby>してください。",
+        "options": [
+          "に",
+          "な",
+          "を",
+          "で"
+        ],
+        "correct": 0,
+        "romaji": "Toshokan de shizuka [?] benkyō shite kudasai.",
+        "explanation": "Na-adjectives like '静か' take the particle 'に' to act adverbially (quietly) modifying the verb '勉強する'."
+      },
+      {
+        "question": "Complete: <ruby>木村<rt>きむら</rt></ruby>さんは<ruby>日本語<rt>にほんご</rt></ruby><span class='blank-placeholder'>?</span><ruby>話<rt>はな</rt></ruby>すのが<ruby>上手<rt>じょうず</rt></ruby>です。",
+        "options": [
+          "を",
+          "が",
+          "に",
+          "で"
+        ],
+        "correct": 1,
+        "romaji": "Kimura-san wa Nihongo [?] hanasu no ga jōzu desu.",
+        "explanation": "The particle 'が' is used with adjectives of ability like '上手' (skilled at) to specify the field of expertise."
+      },
+      {
+        "question": "Complete: <ruby>駅<rt>えき</rt></ruby>までタクシー<span class='blank-placeholder'>?</span><ruby>行<rt>い</rt></ruby>きました。",
+        "options": [
+          "で",
+          "に",
+          "を",
+          "へ"
+        ],
+        "correct": 0,
+        "romaji": "Eki made takushī [?] ikimashita.",
+        "explanation": "The particle 'で' is used to mark the means or instrument of transportation (by taxi)."
       }
     ],
     "Reading": [
@@ -345,6 +465,30 @@ window.quizQuestions = {
         ],
         "correct": 1,
         "explanation": "Bought 3, ate 1 yesterday, so 2 are left for tomorrow."
+      },
+      {
+        "passage": "<div class='passage-title'>「<ruby>私<rt>わたし</rt></ruby>の<ruby>家族<rt>かぞく</rt></ruby>」</div><p class='passage-body'><ruby>私<rt>わたし</rt></ruby>の<ruby>家族<rt>かぞく</rt></ruby>は<ruby>四人<rt>よにん</rt></ruby>です。<ruby>父<rt>ちち</rt></ruby>と<ruby>母<rt>はは</rt></ruby>と<ruby>姉<rt>あね</rt></ruby>と<ruby>私<rt>わたし</rt></ruby>です。<ruby>父<rt>ちち</rt></ruby>は<ruby>会社員<rt>かいしゃいん</rt></ruby>で、<ruby>母<rt>はは</rt></ruby>は<ruby>高校<rt>こうこう</rt></ruby>の<ruby>英語<rt>えいご</rt></ruby>の<ruby>先生<rt>せんせい</rt></ruby>です。<ruby>姉<rt>あね</rt></ruby>は<ruby>大学<rt>だいがく</rt></ruby>で<ruby>看護<rt>かんご</rt></ruby>を<ruby>勉強<rt>べんきょう</rt></ruby>しています。<ruby>私<rt>わたし</rt></ruby>たちは<ruby>毎週<rt>まいしゅう</rt></ruby><ruby>日曜日<rt>にちようび</rt></ruby>に<ruby>一緒<rt>いっしょ</rt></ruby>に<ruby>晩<rt>ばん</rt></ruby>ご飯を<ruby>食<rt>た</rt></ruby>べます。</p>",
+        "question": "<ruby>母<rt>はは</rt></ruby>の<ruby>仕事<rt>しごと</rt></ruby>は<ruby>何<rt>なん</rt></ruby>ですか。",
+        "options": [
+          "<ruby>英語<rt>えいご</rt></ruby>の<ruby>先生<rt>せんせい</rt></ruby>",
+          "<ruby>会社員<rt>かいしゃいん</rt></ruby>",
+          "<ruby>大学生<rt>だいがくせい</rt></ruby>",
+          "<ruby>看護<rt>かんご</rt></ruby>の<ruby>学生<rt>がくせい</rt></ruby>"
+        ],
+        "correct": 0,
+        "explanation": "The text says '母は高校 of English teacher' (My mother is a high school English teacher)."
+      },
+      {
+        "passage": "<div class='passage-title'>「<ruby>買<rt>か</rt></ruby>い<ruby>物<rt>もの</rt></ruby>の<ruby>日<rt>ひ</rt></ruby>」</div><p class='passage-body'><ruby>私<rt>わたし</rt></ruby>は<ruby>昨日<rt>きのう</rt></ruby>、<ruby>駅<rt>えき</rt></ruby>の<ruby>近く<rt>ちか</rt></ruby>のデパートへ<ruby>行<rt>い</rt></ruby>って、<ruby>新<rt>あたら</rt></ruby>しい<ruby>靴<rt>くつ</rt></ruby>を<ruby>買<rt>か</rt></ruby>いました。<ruby>靴<rt>くつ</rt></ruby>は<ruby>五千円<rt>ごせんえん</rt></ruby>でした。それから、<ruby>友達<rt>ともだち</rt></ruby>の<ruby>誕生日<rt>たんじょうび</rt></ruby>プレゼントにきれいな<ruby>花<rt>はな</rt></ruby>を<ruby>買<rt>か</rt></ruby>いしました。<ruby>花<rt>はな</rt></ruby>は<ruby>千五百円<rt>せんごひゃくえん</rt></ruby>でした。<ruby>全部<rt>ぜんぶ</rt></ruby>で<ruby>六千五百円<rt>ろくせんごひゃくえん</rt></ruby><ruby>払<rt>はら</rt></ruby>いました。</p>",
+        "question": "<ruby>新<rt>あたら</rt></ruby>しい<ruby>靴<rt>くつ</rt></ruby>はいくらでしたか。",
+        "options": [
+          "<ruby>千五百円<rt>せんごひゃくえん</rt></ruby>",
+          "<ruby>五千円<rt>ごせんえん</rt></ruby>",
+          "<ruby>六千五百円<rt>ろくせんごひゃくえん</rt></ruby>",
+          "<ruby>一万円<rt>いちまんえん</rt></ruby>"
+        ],
+        "correct": 1,
+        "explanation": "The text states: '靴は五千円でした' (The shoes were 5,000 yen)."
       }
     ],
     "Listening": [
@@ -430,6 +574,34 @@ window.quizQuestions = {
         ],
         "correct": 1,
         "explanation": "He decides to take the direct 2:15 rapid train (２時１５分の快速)."
+      },
+      {
+        "situation": "A woman is calling a restaurant. What time will she make the reservation for?",
+        "situation_ja": "<ruby>女<rt>おんな</rt></ruby>の<ruby>人<rt>ひと</rt></ruby>がレストランに<ruby>電話<rt>でんわ</rt></ruby>をしています。<ruby>何時<rt>なんじ</rt></ruby>に<ruby>予約<rt>よやく</rt></ruby>しますか。",
+        "dialogue": "女：もしもし、今日の夜、６時から４人で予約できますか？<br>男：すみません、６時はテーブルがいっぱいで、７時なら空いていますが。<br>女：そうですか。じゃあ、７時にお願いします。",
+        "question": "<ruby>女<rt>おんな</rt></ruby>の<ruby>人<rt>ひと</rt></ruby>は<ruby>何時<rt>なんじ</rt></ruby>に<ruby>予約<rt>よやく</rt></ruby>しますか。",
+        "options": [
+          "６<ruby>時<rt>じ</rt></ruby>",
+          "６<ruby>時半<rt>じはん</rt></ruby>",
+          "７<ruby>時<rt>じ</rt></ruby>",
+          "<ruby>予約<rt>よやく</rt></ruby>しない"
+        ],
+        "correct": 2,
+        "explanation": "The clerk says 6:00 is full, but 7:00 is open. She agrees to 7:00 (じゃあ、７時にお願いします)."
+      },
+      {
+        "situation": "A teacher is telling a student what homework to do tonight. What will the student do?",
+        "situation_ja": "<ruby>先生<rt>せんせい</rt></ruby>が<ruby>生徒<rt>せいと</rt></ruby>に<ruby>話<rt>はな</rt></ruby>しています。<ruby>生徒<rt>せいと</rt></ruby>は<ruby>今日<rt>きょう</rt></ruby>、<ruby>何<rt>なん</rt></ruby>の<ruby>宿題<rt>しゅくだい</rt></ruby>をしますか。",
+        "dialogue": "先生：みなさん、今日の宿題は漢字の練習です。教科書の３０ページです。作文は明日出しますから、今日はしなくてもいいですよ。<br>男：はーい、漢字だけですね。",
+        "question": "<ruby>生徒<rt>せいと</rt></ruby>は<ruby>今日<rt>きょう</rt></ruby>、<ruby>何<rt>なん</rt></ruby>の<ruby>宿題<rt>しゅくだい</rt></ruby>をしますか。",
+        "options": [
+          "<ruby>漢字<rt>かんじ</rt></ruby>の<ruby>練習<rt>れんしゅう</rt></ruby>",
+          "<ruby>作文<rt>さくぶん</rt></ruby>",
+          "<ruby>漢字<rt>かんじ</rt></ruby>と<ruby>作文<rt>さくぶん</rt></ruby>",
+          "<ruby>何もしない<rt>なにもしない</rt></ruby>"
+        ],
+        "correct": 0,
+        "explanation": "The teacher says today's homework is kanji practice ('今日の宿題は漢字の練習です') and writing ('作文') can be done tomorrow."
       }
     ]
   },
