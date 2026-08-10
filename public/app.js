@@ -244,8 +244,9 @@ class JLPTApp {
       listeningQs.forEach(q => { q.section = 'Listening'; this.shuffleOptions(q); });
 
       if (this.sessionMode === 'exam' || this.sessionMode === 'test') {
-        // Combined sequential mock structure
-        this.sessionQuestions = [...vocabQs, ...grammarQs, ...readingQs, ...listeningQs];
+        // Combined sequential mock structure, fully shuffled by default to ensure complete randomness
+        const combined = [...vocabQs, ...grammarQs, ...readingQs, ...listeningQs];
+        this.sessionQuestions = this.shuffleArray(combined);
         this.isFullMockExam = true;
       } else {
         // Practice mixed mode: select 10 random mixed questions
