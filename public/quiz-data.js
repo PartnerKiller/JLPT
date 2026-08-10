@@ -750,6 +750,66 @@ window.quizQuestions = {
         "correct": 1,
         "romaji": "tetsudau",
         "explanation": "'てつだう' (tetsudau) means to help/assist."
+      },
+      {
+        "question": "Choose the correct reading for: <ruby>空港<rt class='placeholder'>?</rt></ruby>",
+        "options": [
+          "くうこう",
+          "こうくう",
+          "くうがん",
+          "こうえん"
+        ],
+        "correct": 0,
+        "romaji": "kūkō",
+        "explanation": "'空港' (airport) is read as 'くうこう' (kūkō)."
+      },
+      {
+        "question": "What does '<ruby>案内<rt>あんない</rt></ruby>' mean?",
+        "options": [
+          "Warning",
+          "Apology",
+          "Guide/Information",
+          "Invitation"
+        ],
+        "correct": 2,
+        "romaji": "annai",
+        "explanation": "'案内' (annai) means guide or information."
+      },
+      {
+        "question": "Choose the correct reading for: <ruby>拾<rt class='placeholder'>?</rt></ruby>う",
+        "options": [
+          "ひろう",
+          "すてる",
+          "あらう",
+          "もらう"
+        ],
+        "correct": 0,
+        "romaji": "hirou",
+        "explanation": "'拾う' (to pick up/gather) is read as 'ひろう' (hirou)."
+      },
+      {
+        "question": "What does '<ruby>交番<rt>こうばん</rt></ruby>' mean?",
+        "options": [
+          "Intersection",
+          "Police box",
+          "Gas station",
+          "Convenience store"
+        ],
+        "correct": 1,
+        "romaji": "kōban",
+        "explanation": "'交番' (kōban) refers to a Japanese police box (neighborhood police station)."
+      },
+      {
+        "question": "Choose the correct reading for: <ruby>宿題<rt class='placeholder'>?</rt></ruby>",
+        "options": [
+          "しゅくだい",
+          "しゅくじつ",
+          "もりだい",
+          "としょかん"
+        ],
+        "correct": 0,
+        "romaji": "shukudai",
+        "explanation": "'宿題' (homework) is read as 'しゅくだい' (shukudai)."
       }
     ],
     "Grammar": [
@@ -896,6 +956,66 @@ window.quizQuestions = {
         "correct": 0,
         "romaji": "Nihongo o [?] [?] benkyō shiteimasu.",
         "explanation": "The correct order is '日本語を毎日一生懸命勉強しています' (I study Japanese hard every day). The star fits '毎日'."
+      },
+      {
+        "question": "Complete: <ruby>日本<rt>にほん</rt></ruby>の<ruby>寿司<rt>すし</rt></ruby>を<ruby>食<rt>た</rt></ruby>べて<span class='blank-placeholder'>?</span>。",
+        "options": [
+          "みたいです",
+          "みてください",
+          "みせます",
+          "みえます"
+        ],
+        "correct": 0,
+        "romaji": "Nihon no sushi o tabete [mitai desu].",
+        "explanation": "'〜てみる' is used to express trying something out. '食べてみたいです' means 'I want to try eating (sushi)'."
+      },
+      {
+        "question": "Complete: <ruby>音楽<rt>おんがく</rt></ruby>を<span class='blank-placeholder'>?</span>ながら<ruby>勉強<rt>べんきょう</rt></ruby>します。",
+        "options": [
+          "聞き",
+          "聞いて",
+          "聞く",
+          "読んだ"
+        ],
+        "correct": 0,
+        "romaji": "Ongaku o [kiki]nagara benkyō shimasu.",
+        "explanation": "'〜ながら' (while doing) attaches to the stem form (masu-stem) of the verb. '聞きながら' means 'while listening'."
+      },
+      {
+        "question": "Complete: <ruby>来年<rt>らいねん</rt></ruby>、<ruby>日本<rt>にほん</rt></ruby>へ<ruby>行<rt>い</rt></ruby>く<span class='blank-placeholder'>?</span>です。",
+        "options": [
+          "つもり",
+          "はず",
+          "こと",
+          "ため"
+        ],
+        "correct": 0,
+        "romaji": "Rainen, Nihon he iku [tsumori] desu.",
+        "explanation": "'〜つもりです' indicates intention. '行くつもりです' means 'I plan/intend to go'."
+      },
+      {
+        "question": "Complete: このスープはちょっと<ruby>辛<rt>から</rt></ruby><span class='blank-placeholder'>?</span>ました。",
+        "options": [
+          "すぎ",
+          "やすい",
+          "にくい",
+          "た"
+        ],
+        "correct": 0,
+        "romaji": "Kono sūpu wa chotto [kara]sugimashita.",
+        "explanation": "'〜すぎる' expresses excessiveness (too much). Stem/Root + すぎる. '辛すぎました' means 'was too spicy'."
+      },
+      {
+        "question": "Complete: この<ruby>本<rt>ほん</rt></ruby>は<ruby>字<rt>じ</rt></ruby>が<ruby>大<rt>おお</rt></ruby>きくて<ruby>読<rt>よ</rt></ruby>み<span class='blank-placeholder'>?</span>です。",
+        "options": [
+          "やすい",
+          "にくい",
+          "がたい",
+          "かねる"
+        ],
+        "correct": 0,
+        "romaji": "Kono hon wa ji ga ōkikute yomi[yasui] desu.",
+        "explanation": "'Verb stem + やすい' means 'easy to do'. '読みやすい' means 'easy to read'."
       }
     ],
     "Reading": [
@@ -946,6 +1066,30 @@ window.quizQuestions = {
         ],
         "correct": 1,
         "explanation": "'金曜日までに返事をしてください' (please reply by Friday)."
+      },
+      {
+        "passage": "<div class='passage-title'>「日曜日のお出かけ」</div><p class='passage-body'>私は昨日、友達と映画を見に行きました。映画は午後１時に始まりました。映画の前に、私たちはカフェでコーヒーを飲みながら話しました。映画が終わってから、デパートで買い物をしました。楽しい一日でした。</p>",
+        "question": "映画の前に、二人は何をしましたか。",
+        "options": [
+          "デパートで買い物をした",
+          "カフェでコーヒーを飲んだ",
+          "映画を見た",
+          "何もしなかった"
+        ],
+        "correct": 1,
+        "explanation": "The text states '映画の前に、私たちはカフェでコーヒーを飲みながら話しました' (Before the movie, we talked while drinking coffee at a cafe)."
+      },
+      {
+        "passage": "<div class='passage-title'>「図書館のルール」</div><p class='passage-body'>この図書館では、本を３冊まで２週間借りることができます。辞書や古い新聞は借りることができません。また、館内で飲み物を飲むことはできますが、食べ物を食べることは禁止されています。静かに利用してください。</p>",
+        "question": "この図書館でできないことは何ですか。",
+        "options": [
+          "飲み物を飲むこと",
+          "本を２冊借りること",
+          "お弁当を食べること",
+          "２週間本を借りること"
+        ],
+        "correct": 2,
+        "explanation": "The text says '食べ物を食べることは禁止されています' (Eating food is prohibited)."
       }
     ],
     "Listening": [
@@ -1031,6 +1175,34 @@ window.quizQuestions = {
         ],
         "correct": 1,
         "explanation": "The teacher states '来週の月曜日に提出してください' (please submit it next Monday)."
+      },
+      {
+        "situation": "A student is asking a teacher about the test date. When is the test?",
+        "situation_ja": "生徒が先生にテストの日について聞いています。テストはいつですか。",
+        "dialogue": "生徒：先生、次の日本語のテストはいつですか？来週の火曜日ですか？<br>先生：いいえ、火曜日ではなくて、その次の日の水曜日ですよ。<br>生徒：わかりました。ありがとうございます。",
+        "question": "テストはいつですか。",
+        "options": [
+          "来週の火曜日",
+          "来週の水曜日",
+          "来週の木曜日",
+          "今日の午後"
+        ],
+        "correct": 1,
+        "explanation": "The teacher corrects the student saying it's the next day, Wednesday (水曜日)."
+      },
+      {
+        "situation": "Two friends are making plans to meet. Where will they meet?",
+        "situation_ja": "友達二人が会う約束をしています。二人はどこで会いますか。",
+        "dialogue": "女：明日の約束だけど、駅の改札口で会う？それともデパートの前？<br>男：駅は人が多いから、デパートの入り口の前のカフェにしよう。<br>女：そうだね。じゃあ、そこで。",
+        "question": "二人はどこで会いますか。",
+        "options": [
+          "駅の改札口",
+          "デパートの前",
+          "デパートの入り口の前のカフェ",
+          "映画館"
+        ],
+        "correct": 2,
+        "explanation": "They decide to meet at the cafe in front of the department store entrance (デパートの入り口の前のカフェ)."
       }
     ]
   },
@@ -1149,6 +1321,66 @@ window.quizQuestions = {
         "correct": 1,
         "romaji": "gakkari",
         "explanation": "'がっかり' (gakkari) means to be disappointed."
+      },
+      {
+        "question": "Choose the correct reading for: <ruby>準備<rt class='placeholder'>?</rt></ruby>",
+        "options": [
+          "じゅんび",
+          "じゅうび",
+          "せつび",
+          "てはい"
+        ],
+        "correct": 0,
+        "romaji": "junbi",
+        "explanation": "'準備' (preparation/readiness) is read as 'じゅんび'."
+      },
+      {
+        "question": "What does '<ruby>解決<rt>かいけつ</rt></ruby>' mean?",
+        "options": [
+          "Decision",
+          "Conflict",
+          "Resolution/Settlement",
+          "Explanation"
+        ],
+        "correct": 2,
+        "romaji": "kaiketsu",
+        "explanation": "'解決' means solution or resolution of a problem."
+      },
+      {
+        "question": "Choose the correct reading for: <ruby>厳<rt class='placeholder'>?</rt>しい",
+        "options": [
+          "きびしい",
+          "はげしい",
+          "やさしい",
+          "かなしい"
+        ],
+        "correct": 0,
+        "romaji": "kibishii",
+        "explanation": "'厳しい' (strict/severe) is read as 'きびしい'."
+      },
+      {
+        "question": "What does '<ruby>相談<rt>そうだん</rt></ruby>' mean?",
+        "options": [
+          "Agreement",
+          "Consultation/Discussion",
+          "Dispute",
+          "Proposal"
+        ],
+        "correct": 1,
+        "romaji": "sōdan",
+        "explanation": "'相談' means consultation or discussion to seek advice."
+      },
+      {
+        "question": "Choose the correct reading for: <ruby>記念<rt class='placeholder'>?</rt></ruby>",
+        "options": [
+          "きねん",
+          "ぎねん",
+          "しんねん",
+          "よねん"
+        ],
+        "correct": 0,
+        "romaji": "kinen",
+        "explanation": "'記念' (commemoration/memory) is read as 'きねん'."
       }
     ],
     "Grammar": [
@@ -1265,6 +1497,66 @@ window.quizQuestions = {
         "correct": 1,
         "romaji": "Isogashikute [?] [?] hima mo nai.",
         "explanation": "The correct order is '忙しくてご飯を食べる暇もない' (I'm so busy I don't even have time to eat). The star fits '食べる'."
+      },
+      {
+        "question": "Complete: 彼がそんな嘘をつく<span class='blank-placeholder'>?</span>。",
+        "options": [
+          "わけがない",
+          "はずがないではない",
+          "にちがいない",
+          "ものか"
+        ],
+        "correct": 0,
+        "romaji": "Kare ga sonna uso o tsuku [wake ga nai].",
+        "explanation": "'〜わけがない' means 'there is no way that...' or 'it is impossible that...'."
+      },
+      {
+        "question": "Complete: 若い<span class='blank-placeholder'>?</span>に、いろいろな国へ行ってみたいです。",
+        "options": [
+          "うちに",
+          "あいだに",
+          "からに",
+          "のちに"
+        ],
+        "correct": 0,
+        "romaji": "Wakai [uchi ni], iroiro na kuni he itte mitai desu.",
+        "explanation": "'〜うちに' means 'while' or 'before status changes' (in this case, while young)."
+      },
+      {
+        "question": "Complete: 今日の会議は、部長の<span class='blank-placeholder'>?</span>課長が出席します。",
+        "options": [
+          "代わりに",
+          "せいで",
+          "おかげで",
+          "ついでに"
+        ],
+        "correct": 0,
+        "romaji": "Kyō no kaigi wa, buchō no [kawarini] kachō ga shusseki shimasu.",
+        "explanation": "'〜代わりに' means 'instead of' or 'in place of'."
+      },
+      {
+        "question": "Complete: 今回の事件<span class='blank-placeholder'>?</span>、新しい事実がわかりました。",
+        "options": [
+          "に関して",
+          "に比べて",
+          "に反して",
+          "に対して"
+        ],
+        "correct": 0,
+        "romaji": "Konkai no jiken [ni kanshite], atarashii jijitsu ga wakarimashita.",
+        "explanation": "'〜に関して' means 'concerning' or 'with regard to'."
+      },
+      {
+        "question": "Complete: 彼は毎日ゲーム<span class='blank-placeholder'>?</span>している。",
+        "options": [
+          "ばかり",
+          "だけ",
+          "ほど",
+          "くらい"
+        ],
+        "correct": 0,
+        "romaji": "Kare wa mainichi gēmu [bakari] shite iru.",
+        "explanation": "'Noun + ばかり' indicates that someone does nothing but that action."
       }
     ],
     "Reading": [
@@ -1315,6 +1607,30 @@ window.quizQuestions = {
         ],
         "correct": 1,
         "explanation": "'必ず洗ってから指定のゴミ箱に捨ててください' (always wash before throwing in designated bins)."
+      },
+      {
+        "passage": "<div class='passage-title'>「地球温暖化について」</div><p class='passage-body'>現在、地球温暖化が世界的な問題になっています。二酸化炭素の排出量が増えたことが主な原因と言われています。個人ができる対策として、電気をこまめに消すことや、マイバッグを持ち歩くことが推奨されています。一人一人の意識が大切です。</p>",
+        "question": "地球温暖化の主な原因は何ですか。",
+        "options": [
+          "電気をこまめに消すこと",
+          "二酸化炭素の排出量の増加",
+          "マイバッグを使うこと",
+          "気温の低下"
+        ],
+        "correct": 1,
+        "explanation": "The text states '二酸化炭素の排出量が増えたことが主な原因と言われています' (Increased CO2 emission is said to be the main cause)."
+      },
+      {
+        "passage": "<div class='passage-title'>「新しいリサイクル方法」</div><p class='passage-body'>我が街では来月から新しいゴミの分別方法が導入されます。これまで燃えるゴミだったプラスチックの一部が資源ゴミとして回収されることになりました。これにより、ゴミの減量と資源の再利用が期待されています。</p>",
+        "question": "来月からの変更点は何ですか。",
+        "options": [
+          "燃えるゴミがなくなること",
+          "ゴミの回収が中止されること",
+          "プラスチックの一部が資源ゴミになること",
+          "新しいリサイクル施設ができること"
+        ],
+        "correct": 2,
+        "explanation": "The text states 'これまで燃えるゴミだったプラスチックの一部が資源ゴミとして回収される...' (Some plastics previously burned will now be collected as resource garbage)."
       }
     ],
     "Listening": [
@@ -1400,6 +1716,34 @@ window.quizQuestions = {
         ],
         "correct": 1,
         "explanation": "He agrees to look at the PDF in the shared folder ('共有フォルダにあるよ...見てみるよ')."
+      },
+      {
+        "situation": "Two colleagues are talking about preparing slides for a presentation. What will they do?",
+        "situation_ja": "同僚二人が発表のスライド準備について話しています。二人は何をしますか。",
+        "dialogue": "男：明日のプレゼンのスライド、もう確認した？<br>女：うーん、グラフのデータが少し古いかも。直したほうがいいかな。<br>男：そうだね。じゃあ、君がデータを修正して、僕が全体のデザインを整えるよ。<br>女：お願い、助かるわ。",
+        "question": "男の人は何をしますか。",
+        "options": [
+          "グラフのデータを修正する",
+          "スライド全体のデザインを整える",
+          "プレゼンの練習をする",
+          "何もしない"
+        ],
+        "correct": 1,
+        "explanation": "The man says: '僕が全体のデザインを整えるよ' (I will adjust the overall design)."
+      },
+      {
+        "situation": "A weather forecaster is recommending items for today. What is recommended?",
+        "situation_ja": "気象予報士が今日の持ち物について勧めています。何を持っていくといいですか。",
+        "dialogue": "女：今日の午後からは急な雷雨の可能性があります。午前中は晴れていても、外出の際は折りたたみ傘を忘れずにお持ちください。また、夕方からは気温が急に下がりますので、薄い上着があると安心です。",
+        "question": "午後から外出する際、何を持っていくといいですか。",
+        "options": [
+          "日傘",
+          "折りたたみ傘",
+          "厚いコート",
+          "帽子"
+        ],
+        "correct": 1,
+        "explanation": "The speaker advises to bring a foldable umbrella due to potential afternoon thunderstorms (折りたたみ傘を忘れずにお持ちください)."
       }
     ]
   },
@@ -1518,6 +1862,66 @@ window.quizQuestions = {
         "correct": 0,
         "romaji": "hiniku",
         "explanation": "'皮肉' (hiniku) means irony, sarcasm, or cynicism."
+      },
+      {
+        "question": "Choose the correct reading for: <ruby>影響<rt class='placeholder'>?</rt></ruby>",
+        "options": [
+          "えいきょう",
+          "えいぎょう",
+          "えいこう",
+          "ようきょう"
+        ],
+        "correct": 0,
+        "romaji": "eikyō",
+        "explanation": "'影響' (influence/effect) is read as 'えいきょう'."
+      },
+      {
+        "question": "What does '<ruby>状況<rt>じょうきょう</rt></ruby>' mean?",
+        "options": [
+          "Emotion",
+          "Condition/Situation",
+          "Location",
+          "Standard"
+        ],
+        "correct": 1,
+        "romaji": "jōkyō",
+        "explanation": "'状況' means state of affairs, situation, or circumstances."
+      },
+      {
+        "question": "Choose the correct reading for: <ruby>冷静<rt class='placeholder'>?</rt></ruby>",
+        "options": [
+          "れいせい",
+          "れいぞう",
+          "れいかん",
+          "れいせん"
+        ],
+        "correct": 0,
+        "romaji": "reisei",
+        "explanation": "'冷静' (calmness/coolheadedness) is read as 'れいせい'."
+      },
+      {
+        "question": "What does '<ruby>範囲<rt>はんい</rt></ruby>' mean?",
+        "options": [
+          "Scope/Range",
+          "Result",
+          "Opinion",
+          "Method"
+        ],
+        "correct": 0,
+        "romaji": "hani",
+        "explanation": "'範囲' means scope, sphere, range, or span."
+      },
+      {
+        "question": "Choose the correct reading for: <ruby>開発<rt class='placeholder'>?</rt></ruby>",
+        "options": [
+          "かいはつ",
+          "かいへい",
+          "かいさく",
+          "かいしゅつ"
+        ],
+        "correct": 0,
+        "romaji": "kaihatsu",
+        "explanation": "'開発' (development/exploitation) is read as 'かいはつ'."
       }
     ],
     "Grammar": [
@@ -1634,6 +2038,66 @@ window.quizQuestions = {
         "correct": 1,
         "romaji": "Konkai no jiken wa [?] [?] kaiketsu dekinai.",
         "explanation": "The correct order is '警察の力をもってしても解決できない' (cannot be solved even with the power of the police). The star fits '力をもってしても'."
+      },
+      {
+        "question": "Complete: 台風の接近<span class='blank-placeholder'>?</span>、風雨が強まってきた。",
+        "options": [
+          "にともなって",
+          "に反して",
+          "を問わず",
+          "に先立って"
+        ],
+        "correct": 0,
+        "romaji": "Taifū no sekkin [ni tomonatte], fūu ga tsuyomatte kita.",
+        "explanation": "'〜に伴って' (ni tomonatte) means 'along with' or 'as something progresses'."
+      },
+      {
+        "question": "Complete: お金<span class='blank-placeholder'>?</span>あれば、何でも買えるわけではない。",
+        "options": [
+          "さえあれば",
+          "こそあれば",
+          "ばかりあれば",
+          "のみあれば"
+        ],
+        "correct": 0,
+        "romaji": "Okane [sae areba], nandemo kaeru wake dewa nai.",
+        "explanation": "'〜さえ〜ば' means 'if only...' (expressing a minimum requirement)."
+      },
+      {
+        "question": "Complete: 新しいダム建設の是非<span class='blank-placeholder'>?</span>議論が続いている。",
+        "options": [
+          "をめぐって",
+          "をきっかけに",
+          "をもとにして",
+          "に代わって"
+        ],
+        "correct": 0,
+        "romaji": "Atarashii damu kensetsu no zehi [o megutte] giron ga tsuzute iru.",
+        "explanation": "'〜をめぐって' means 'surrounding' or 'concerning (an issue about which people debate/disagree)'."
+      },
+      {
+        "question": "Complete: 日本では少子高齢化が急速に進み<span class='blank-placeholder'>?</span>。",
+        "options": [
+          "つつある",
+          "きっている",
+          "がちである",
+          "かねない"
+        ],
+        "correct": 0,
+        "romaji": "Nihon dewa shōshikōreika ga kyūsoku ni susumi[tsutsu aru].",
+        "explanation": "'〜つつある' indicates a continuous progress or change ('in the process of doing')."
+      },
+      {
+        "question": "Complete: このまま対策を怠れば、大事故になり<span class='blank-placeholder'>?</span>。",
+        "options": [
+          "かねない",
+          "っこない",
+          "かねる",
+          "がたい"
+        ],
+        "correct": 0,
+        "romaji": "Kono mama taisaku o okotareba, daijiko ni nari[kanenai].",
+        "explanation": "'〜かねない' means 'might happen' or 'could result in' (usually indicating a negative consequence)."
       }
     ],
     "Reading": [
@@ -1684,6 +2148,30 @@ window.quizQuestions = {
         ],
         "correct": 1,
         "explanation": "'土日祝日のご来館には事前の日時指定チケットのご購入が必要となります' (Saturdays, Sundays, and holidays require reservations)."
+      },
+      {
+        "passage": "<div class='passage-title'>「現代のワークライフバランス」</div><p class='passage-body'>仕事とプライベートの調和を意味するワークライフバランスの重要性が叫ばれている。過度な労働は心身の健康を損なうだけでなく、生産性の低下にも繋がる。企業が有給休暇の取得を奨励し、在宅勤務を導入することは、長期的に見れば優秀な人材の確保と業績の向上に有効である。</p>",
+        "question": "ワークライフバランスを整えることによる企業のメリットは何ですか。",
+        "options": [
+          "有給休暇の削減",
+          "在宅勤務の廃止",
+          "優秀な人材の確保と業績向上",
+          "生産性の低下"
+        ],
+        "correct": 2,
+        "explanation": "The text states: '長期的に見れば優秀な人材の確保と業績の向上に有効である' (Effective in securing excellent talent and improving business results in the long run)."
+      },
+      {
+        "passage": "<div class='passage-title'>「医療におけるAI技術」</div><p class='passage-body'>医療分野における人工知能（AI）の活用が注目を集めている。特に画像診断において、AIは膨大なデータから医師が見落としがちな微小な病変を瞬時に検出できる能力を持つ。しかし、AIはあくまで判断を支援する道具であり、最終的な治療方針の決定や患者との対話は人間にしかできない役割である。</p>",
+        "question": "医療現場におけるAIの役割について、筆者はどのように考えていますか。",
+        "options": [
+          "医師の代わりとしてすべての決定を行う",
+          "医師の画像診断の支援ツールとして活用する",
+          "患者との対話を自動化する",
+          "医療現場には導入すべきではない"
+        ],
+        "correct": 1,
+        "explanation": "The text explains 'AIはあくまで判断を支援する道具であり...' (AI is strictly a tool to support decisions, and final decisions must be done by humans)."
       }
     ],
     "Listening": [
@@ -1769,6 +2257,34 @@ window.quizQuestions = {
         ],
         "correct": 2,
         "explanation": "He avoids the slow transfer flight and opts for the afternoon direct flight ('午後一番の直行便にしてください')."
+      },
+      {
+        "situation": "A department manager is giving instructions to his team in a meeting. What is the priority?",
+        "situation_ja": "部長が会議でチームに指示を出しています。一番優先すべきことは何ですか。",
+        "dialogue": "男：新製品 of campaign about, but design and SNS notification rather than spec coordination with the dev team is the top priority. If this is not settled, all other schedules will be delayed.",
+        "question": "一番優先すべきことは何ですか。",
+        "options": [
+          "デザインの決定",
+          "SNSの告知",
+          "開発チームとの仕様調整",
+          "キャンペーンの実施"
+        ],
+        "correct": 2,
+        "explanation": "The manager says: 'まずは開発チームとの仕様調整を最優先で終わらせてください' (First, finish specifications coordination with the dev team as top priority)."
+      },
+      {
+        "situation": "A radio host is interviewing an environmental researcher. What is the researcher concerned about?",
+        "situation_ja": "ラジオで研究者が環境問題について話しています。研究者が最も懸念していることは何ですか。",
+        "dialogue": "女：現在、海洋プラスチックゴミの増加が深刻ですが、私が特に懸念しているのは、魚がそれを食べて体内にマイクロプラスチックが蓄積し、最終的に人間の健康に及ぼす影響です。単なる景観の悪化にとどまらない生物連鎖の問題なのです。",
+        "question": "研究者が最も懸念していることは何ですか。",
+        "options": [
+          "海の景観の悪化",
+          "人間の健康や生態系への長期的な影響",
+          "観光客の減少",
+          "漁業のコスト増加"
+        ],
+        "correct": 1,
+        "explanation": "The researcher expresses concern about microplastics accumulating in fish and eventually impacting human health (最終的に人間の健康に及ぼす影響)."
       }
     ]
   },
@@ -1887,6 +2403,66 @@ window.quizQuestions = {
         "correct": 0,
         "romaji": "enkyoku",
         "explanation": "'婉曲' (enkyoku) means euphemistic, roundabout, or indirect."
+      },
+      {
+        "question": "Choose the correct reading for: <ruby>把握<rt class='placeholder'>?</rt></ruby>",
+        "options": [
+          "はおく",
+          "ぱおく",
+          "はそく",
+          "ばそく"
+        ],
+        "correct": 0,
+        "romaji": "haoku",
+        "explanation": "'把握' (grasp/understanding) is read as 'はおく'."
+      },
+      {
+        "question": "What does '<ruby>妥協<rt>だきょう</rt></ruby>' mean?",
+        "options": [
+          "Negotiation",
+          "Agreement/Compromise",
+          "Conflict",
+          "Decline"
+        ],
+        "correct": 1,
+        "romaji": "dakyō",
+        "explanation": "'妥協' means finding a mutual middle ground, i.e., compromise."
+      },
+      {
+        "question": "Choose the correct reading for: <ruby>模索<rt class='placeholder'>?</rt></ruby>",
+        "options": [
+          "もさく",
+          "ぼさく",
+          "もさくさ",
+          "めいさく"
+        ],
+        "correct": 0,
+        "romaji": "mosaku",
+        "explanation": "'模索' (grope/search/explore) is read as 'もさく'."
+      },
+      {
+        "question": "What does '<ruby>崩壊<rt>ほうかい</rt></ruby>' mean?",
+        "options": [
+          "Destruction/Collapse",
+          "Reconstruction",
+          "Movement",
+          "Reform"
+        ],
+        "correct": 0,
+        "romaji": "hōkai",
+        "explanation": "'崩壊' means decay, ruin, collapse, or breakdown."
+      },
+      {
+        "question": "Choose the correct reading for: <ruby>核心<rt class='placeholder'>?</rt></ruby>",
+        "options": [
+          "かくしん",
+          "ぎゃくしん",
+          "こうしん",
+          "はいしん"
+        ],
+        "correct": 0,
+        "romaji": "kakushin",
+        "explanation": "'核心' (core/crux/heart of matter) is read as 'かくしん'."
       }
     ],
     "Grammar": [
@@ -2003,6 +2579,66 @@ window.quizQuestions = {
         "correct": 0,
         "romaji": "Kare hodo no shūsai [?] [?] gōkaku suru hazu da.",
         "explanation": "The correct order is '彼ほどの秀才にして初めて合格するはずだ' (only a genius like him is bound to pass). The star fits 'にして初めて'."
+      },
+      {
+        "question": "Complete: 彼の無責任な態度は、怒り<span class='blank-placeholder'>?</span>。",
+        "options": [
+          "極まりない",
+          "に限る",
+          "にかたくない",
+          "にすぎない"
+        ],
+        "correct": 0,
+        "romaji": "Kare no musekinin na taido wa, ikari[kiwamarinai].",
+        "explanation": "'〜極まりない' means 'extremely' or 'limitless' (used to emphasize a negative state)."
+      },
+      {
+        "question": "Complete: 今日の東京公演<span class='blank-placeholder'>?</span>、全国ツアーが始まった。",
+        "options": [
+          "を皮切りに",
+          "を皮切りとしてではない",
+          "をもってして",
+          "はおろか"
+        ],
+        "correct": 0,
+        "romaji": "Kyō no Tōkyō kōen [o kawakiri ni], zenkoku tsuā ga hajimatta.",
+        "explanation": "'〜を皮切りに' means 'starting with...' or 'beginning with...' (triggering a succession of similar events)."
+      },
+      {
+        "question": "Complete: 挨拶<span class='blank-placeholder'>?</span>、新居のお祝いを持って伺いました。",
+        "options": [
+          "かたがた",
+          "がてら",
+          "ながら",
+          "つつ"
+        ],
+        "correct": 0,
+        "romaji": "Aisatsu [katagata], shinkyo no oiwai o motte ukagaimashita.",
+        "explanation": "'〜かたがた' means 'while doing' or 'at the same time' (combining two purposes in one action, formal)."
+      },
+      {
+        "question": "Complete: 法を犯した者は、厳罰に処せ<span class='blank-placeholder'>?</span>。",
+        "options": [
+          "ずにはおかない",
+          "ざるをえない",
+          "ずにはいられない",
+          "べからず"
+        ],
+        "correct": 0,
+        "romaji": "Hō o okashita mono wa, genbatsu ni shose[zu ni wa okanai].",
+        "explanation": "'〜ずにはおかない' means 'will definitely do...' or 'cannot help but cause...'."
+      },
+      {
+        "question": "Complete: 優れた技術が、徹底的な市場調査<span class='blank-placeholder'>?</span>、画期的な製品が誕生した。",
+        "options": [
+          "と相まって",
+          "にあって",
+          "をおいて",
+          "はおろか"
+        ],
+        "correct": 0,
+        "romaji": "Sugureta gijutsu ga, tetteiteki na shijō chōsa [to aimatte], kakkiteki na seihin ga tanjō shita.",
+        "explanation": "'〜と相まって' means 'coupled with...' or 'together with...' (two factors working together to produce a synergy)."
       }
     ],
     "Reading": [
@@ -2053,6 +2689,30 @@ window.quizQuestions = {
         ],
         "correct": 1,
         "explanation": "'現代社会のニーズに適合するような革新が不可欠である' (innovation adapted to modern needs is indispensable)."
+      },
+      {
+        "passage": "<div class='passage-title'>「現代社会と消費文化」</div><p class='passage-body'>消費社会において、モノの所有は単なる実用的欲求の充足を超え、自己のアイデンティティを誇示するための記号と化している。メディアや広告は絶えず新しい「差異」を創出し、消費者に終わりなき所有欲を喚起し続ける。このような構造下では、自己完結的な満足は得られず、他者との比較を通じた絶えざる不安と焦燥のみが再生産されるのである。</p>",
+        "question": "筆者が指摘する消費社会の構造とはどのようなものですか。",
+        "options": [
+          "実用的なモノの所有を重視する社会",
+          "広告により他者との差異をなくす社会",
+          "絶えず新たな欲求を生み出し、消費者に不満足を感じさせ続ける社会",
+          "自己完結的な満足感を容易に得られる社会"
+        ],
+        "correct": 2,
+        "explanation": "The text explains that the system creates endless desire and differences, leaving consumers unable to achieve self-contained satisfaction (他者との比較を通じた絶えざる不安と焦燥のみが再生産される)."
+      },
+      {
+        "passage": "<div class='passage-title'>「ゲノム編集の倫理的考察」</div><p class='passage-body'>生命の設計図を書き換えるゲノム編集技術の急速な進展は、医療に革命的変化をもたらす反面、深刻な倫理的課題を突きつけている。特に受精卵に対する遺伝子操作は、難病の根絶に寄与し得る一方で、望ましい能力を持つ人間を意図的にデザインする「デザイナーベビー」への道を開きかねない。技術的安全性のみならず、人間存在の本質に関わる深い社会的合意形成が今まさに求められている。</p>",
+        "question": "受精卵へのゲノム編集に関して、筆者が最も懸念していることは何ですか。",
+        "options": [
+          "医療の発展が阻害されること",
+          "十分な社会的合意がないままデザイナーベビー等の人為的改変へ繋がること",
+          "技術的な安全性がいつまでも確立しないこと",
+          "ゲノム編集を行うためのコストが高すぎること"
+        ],
+        "correct": 1,
+        "explanation": "The writer highlights the concern about designing babies and the urgent need for a deep social consensus (デザイナーベビーへの道を開きかねない...深い社会的合意形成が今まさに求められている)."
       }
     ],
     "Listening": [
@@ -2138,6 +2798,34 @@ window.quizQuestions = {
         ],
         "correct": 1,
         "explanation": "It features high biocompatibility and double the strength of conventional plastics ('生体適合性が極めて高く...強度も２倍以上')."
+      },
+      {
+        "situation": "An economist is discussing macro-financial reforms on a talk show. What is the economist's main point?",
+        "situation_ja": "経済学者が番組で金融改革について話しています。学者の主張で最も重要なことは何ですか。",
+        "dialogue": "男：金利の調整や量的緩和といったテクニカルな手法は一時的な処方箋に過ぎません。真の経済成長を目指すならば、規制緩和と同時に、イノベーションを促す教育制度への抜本的な予算投入こそが、この長期沈滞から脱する唯一の鍵です。",
+        "question": "長期的な経済成長のために最も必要とされる改革は何ですか。",
+        "options": [
+          "金利の引き下げ",
+          "量的緩和の継続",
+          "教育制度改革への予算投入と規制緩和",
+          "一時的な処方箋の適用"
+        ],
+        "correct": 2,
+        "explanation": "The economist asserts: 'イノベーションを促す教育制度への抜本的な予算投入こそが、この長期沈滞から脱する唯一の鍵です' (Drastic budget input into the education system to foster innovation... is the only key)."
+      },
+      {
+        "situation": "A professor is lecturing on the evolution of digital dialects. What is the reason for dialect propagation?",
+        "situation_ja": "教授がデジタル方言の普及について講義をしています。普及の主な原因は何ですか。",
+        "dialogue": "女：SNSなどで見られるネットスラングは、特定のグループ内の帰属意識を高めるツールとして機能します。最初は狭いコミュニティで使用されていた表現が、リポストやシェアによって一瞬にして広範囲へ伝播し、既存の言語規範を崩壊させつつ新しいデジタル方言として定着していくのです。",
+        "question": "ネットスラングが広く普及する主なメカニズムは何ですか。",
+        "options": [
+          "既存の言語規範の厳格な維持",
+          "帰属意識の共有とSNSのシェア拡散機能による伝播",
+          "辞書への掲載",
+          "学校教育での導入"
+        ],
+        "correct": 1,
+        "explanation": "The professor explains that it starts as a tool to raise belongingness and propagates instantly through reposting/sharing (帰属意識を高める...シェアによって一瞬にして広範囲へ伝播)."
       }
     ]
   }
