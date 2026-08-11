@@ -8,6 +8,13 @@
         "N5": 95
       },
       "salt": "sakura"
+    },
+    {
+      "username": "admin",
+      "password": "960410c38b240714ed94afb6515fd6bd54af06c8be2c72e1846f27d1b06e5a29",
+      "salt": "admin",
+      "role": "learner",
+      "scores": {}
     }
   ]
 }

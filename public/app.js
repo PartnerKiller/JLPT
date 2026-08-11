@@ -52,6 +52,52 @@ class JLPTApp {
   }
 
   init() {
+    // Enable client-side error forwarding to server
+    window.onerror = (message, source, lineno, colno, error) => {
+      fetch('/api/log', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          type: 'window.onerror',
+          message,
+          source,
+          lineno,
+          colno,
+          stack: error ? error.stack : null
+        })
+      }).catch(() => {});
+    };
+
+    window.addEventListener('unhandledrejection', (event) => {
+      fetch('/api/log', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          type: 'unhandledrejection',
+          message: event.reason ? String(event.reason.message || event.reason) : 'Unknown promise rejection',
+          stack: event.reason && event.reason.stack ? event.reason.stack : null
+        })
+      }).catch(() => {});
+    });
+
+    const originalConsoleError = console.error;
+    console.error = (...args) => {
+      originalConsoleError.apply(console, args);
+      fetch('/api/log', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          type: 'console.error',
+          args: args.map(arg => {
+            if (arg instanceof Error) {
+              return { message: arg.message, stack: arg.stack };
+            }
+            return String(arg);
+          })
+        })
+      }).catch(() => {});
+    };
+
     this.loadStreak();
     this.loadLevelStats();
     this.applySavedTheme();
@@ -65,8 +111,6 @@ class JLPTApp {
     
     // Highlight restored session mode in UI
     this.setSessionMode(this.sessionMode, false);
-    
-    this.initAuth();
     
     // Bind focus section tabs from index.html
     this.sectionTabs = {
@@ -90,11 +134,54 @@ class JLPTApp {
     window.addEventListener('popstate', () => {
       this.handleRoute();
     });
-    this.handleRoute();
+
+    // Run auth initialization at the very end of init once all UI elements and tabs are bound
+    this.initAuth();
+  }
+
+  // --- STORAGE SAFE HELPER METHODS ---
+  safeGet(key) {
+    try {
+      return localStorage.getItem(key) || sessionStorage.getItem(key) || null;
+    } catch (e) {
+      try {
+        return sessionStorage.getItem(key) || null;
+      } catch (e2) {
+        return null;
+      }
+    }
+  }
+
+  safeSet(key, value, useLocal = false) {
+    if (useLocal) {
+      try {
+        localStorage.setItem(key, value);
+      } catch (e) {
+        console.warn(`localStorage.setItem failed for ${key}:`, e);
+      }
+    } else {
+      try {
+        localStorage.removeItem(key);
+      } catch (e) {}
+    }
+    try {
+      sessionStorage.setItem(key, value);
+    } catch (e) {
+      console.error(`Failed to set ${key} in sessionStorage:`, e);
+    }
+  }
+
+  safeRemove(key) {
+    try {
+      localStorage.removeItem(key);
+    } catch (e) {}
+    try {
+      sessionStorage.removeItem(key);
+    } catch (e) {}
   }
 
   getToken() {
-    return localStorage.getItem('token') || sessionStorage.getItem('token') || '';
+    return this.safeGet('token') || '';
   }
 
   // --- STREAK & LOCALSTORAGE STUFF ---
@@ -275,9 +362,9 @@ class JLPTApp {
   }
 
   handleRoute() {
-    const savedUser = localStorage.getItem('currentUser') || sessionStorage.getItem('currentUser');
-    const savedRole = localStorage.getItem('currentRole') || sessionStorage.getItem('currentRole');
-    const savedToken = localStorage.getItem('token') || sessionStorage.getItem('token');
+    const savedUser = this.safeGet('currentUser');
+    const savedRole = this.safeGet('currentRole');
+    const savedToken = this.safeGet('token');
     const path = window.location.pathname;
     const parts = path.split('/').filter(Boolean); // e.g. ["quiz", "n5", "vocabulary"]
 
@@ -1304,18 +1391,15 @@ class JLPTApp {
 
   // --- USER AUTHENTICATION & MANAGEMENT SYSTEMS ---
   clearAuthStorage() {
-    localStorage.removeItem('currentUser');
-    localStorage.removeItem('currentRole');
-    localStorage.removeItem('token');
-    sessionStorage.removeItem('currentUser');
-    sessionStorage.removeItem('currentRole');
-    sessionStorage.removeItem('token');
+    this.safeRemove('currentUser');
+    this.safeRemove('currentRole');
+    this.safeRemove('token');
   }
 
   initAuth() {
-    const savedUser = localStorage.getItem('currentUser') || sessionStorage.getItem('currentUser');
-    const savedRole = localStorage.getItem('currentRole') || sessionStorage.getItem('currentRole');
-    const savedToken = localStorage.getItem('token') || sessionStorage.getItem('token');
+    const savedUser = this.safeGet('currentUser');
+    const savedRole = this.safeGet('currentRole');
+    const savedToken = this.safeGet('token');
     
     if (savedUser && savedRole && savedToken) {
       this.loginUser(savedUser, savedRole);
@@ -1368,24 +1452,10 @@ class JLPTApp {
     .then(res => res.json())
     .then(data => {
       if (data.success) {
-        const rememberEl = document.getElementById('auth-remember');
-        const remember = rememberEl ? rememberEl.checked : false;
-
-        if (remember) {
-          localStorage.setItem('currentUser', data.username);
-          localStorage.setItem('currentRole', data.role);
-          localStorage.setItem('token', data.token);
-          sessionStorage.removeItem('currentUser');
-          sessionStorage.removeItem('currentRole');
-          sessionStorage.removeItem('token');
-        } else {
-          sessionStorage.setItem('currentUser', data.username);
-          sessionStorage.setItem('currentRole', data.role);
-          sessionStorage.setItem('token', data.token);
-          localStorage.removeItem('currentUser');
-          localStorage.removeItem('currentRole');
-          localStorage.removeItem('token');
-        }
+        // Always save to sessionStorage only (Remember me removed)
+        this.safeSet('currentUser', data.username, false);
+        this.safeSet('currentRole', data.role, false);
+        this.safeSet('token', data.token, false);
         
         // Reset inputs
         usernameInput.value = '';
@@ -1432,10 +1502,10 @@ class JLPTApp {
 
   logout() {
     this.playAudio('click');
-    sessionStorage.clear();
-    localStorage.removeItem('currentUser');
-    localStorage.removeItem('currentRole');
-    localStorage.removeItem('token');
+    try {
+      sessionStorage.clear();
+    } catch (e) {}
+    this.clearAuthStorage();
     this.currentUser = null;
     this.currentRole = null;
     
@@ -1474,7 +1544,13 @@ class JLPTApp {
         'Authorization': `Bearer ${token}`
       }
     })
-    .then(res => res.json())
+    .then(res => {
+      if (res.status === 401 || res.status === 403) {
+        this.logout();
+        throw new Error('Session expired');
+      }
+      return res.json();
+    })
     .then(data => {
       if (data.success) {
         reportContainer.innerHTML = '';
@@ -1564,7 +1640,13 @@ class JLPTApp {
         newPassword: newPassword ? newPassword : undefined
       })
     })
-    .then(res => res.json())
+    .then(res => {
+      if (res.status === 401 || res.status === 403) {
+        this.logout();
+        throw new Error('Session expired');
+      }
+      return res.json();
+    })
     .then(data => {
       if (data.success) {
         successMsg.textContent = 'Account credentials saved successfully!';
@@ -1572,11 +1654,11 @@ class JLPTApp {
         
         // Update user state if name changed
         if (newUsername !== this.currentUser) {
-          if (localStorage.getItem('currentUser')) {
-            localStorage.setItem('currentUser', newUsername);
-          } else {
-            sessionStorage.setItem('currentUser', newUsername);
-          }
+          let isLocal = false;
+          try {
+            isLocal = !!localStorage.getItem('currentUser');
+          } catch (e) {}
+          this.safeSet('currentUser', newUsername, isLocal);
           this.currentUser = newUsername;
           document.getElementById('user-display-name').textContent = newUsername;
         }
@@ -1613,7 +1695,13 @@ class JLPTApp {
         'Authorization': `Bearer ${token}`
       }
     })
-    .then(res => res.json())
+    .then(res => {
+      if (res.status === 401 || res.status === 403) {
+        this.logout();
+        throw new Error('Session expired');
+      }
+      return res.json();
+    })
     .then(data => {
       if (data.success) {
         usersList.innerHTML = '';
@@ -1629,7 +1717,7 @@ class JLPTApp {
               <input type="text" id="admin-user-name-${idx}" value="${user.username}" style="padding: 4px 8px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.15); background: rgba(255,255,255,0.05); color: #fff; width: 100%; box-sizing: border-box; font-size: 13px;" ${isCurrentAdmin ? 'disabled' : ''}>
             </td>
             <td style="padding: 10px 5px;">
-              <input type="password" id="admin-user-pass-${idx}" placeholder="•••••••• (Unchanged)" style="padding: 4px 8px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.15); background: rgba(255,255,255,0.05); color: #fff; width: 100%; box-sizing: border-box; font-size: 13px;">
+              <input type="password" id="admin-user-pass-${idx}" placeholder="•••••••• (Unchanged)" style="padding: 4px 8px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.15); background: rgba(255,255,255,0.05); color: #fff; width: 100%; box-sizing: border-box; font-size: 13px; cursor: pointer;" title="Double-click to toggle password visibility" ondblclick="app.toggleAdminPasswordReveal(this, '${user.password || ''}')">
             </td>
             <td style="padding: 10px 5px; opacity: 0.8;">
               <span style="font-weight: bold; color: ${user.role === 'admin' ? '#f59e0b' : '#60a5fa'};">${user.role}</span>
@@ -1648,6 +1736,24 @@ class JLPTApp {
       console.error(err);
       usersList.innerHTML = '<tr><td colspan="4" style="padding: 15px; color: #ff6b6b;">Failed to connect to admin server.</td></tr>';
     });
+  }
+
+  toggleAdminPasswordReveal(inputEl, passwordVal) {
+    if (!passwordVal) return;
+    this.playAudio('click');
+    if (inputEl.type === 'password') {
+      inputEl.type = 'text';
+      if (!inputEl.value) {
+        inputEl.value = passwordVal;
+        inputEl.dataset.wasEmpty = 'true';
+      }
+    } else {
+      inputEl.type = 'password';
+      if (inputEl.dataset.wasEmpty === 'true') {
+        inputEl.value = '';
+        delete inputEl.dataset.wasEmpty;
+      }
+    }
   }
 
   closeAdminPanel() {
@@ -1692,7 +1798,13 @@ class JLPTApp {
         newPassword: newPassword
       })
     })
-    .then(res => res.json())
+    .then(res => {
+      if (res.status === 401 || res.status === 403) {
+        this.logout();
+        throw new Error('Session expired');
+      }
+      return res.json();
+    })
     .then(data => {
       if (data.success) {
         successMsg.textContent = `User "${targetUsername}" updated successfully!`;

@@ -12,7 +12,6 @@ An interactive, responsive, and realistic web application designed for practicin
 - **Four Focus Areas**: Focus on individual categories (**Vocabulary**, **Grammar**, **Reading**, or **Listening**) or take a **Full Mock Test**.
 - **User Authentication & Persistence**:
   - Secure **Login** and **Registration** system saving user accounts directly to a local JSON database.
-  - **Remember me** option to securely persist sessions in `localStorage` across browser restarts.
   - Separate user roles: **Admin** (`sakura`/`sakura`) and **Learner** (new accounts).
   - Profile settings modal allowing users to securely update their username and password credentials.
   - Streak tracking and high score syncing directly with the backend.
@@ -20,7 +19,7 @@ An interactive, responsive, and realistic web application designed for practicin
 - **Admin Dashboard Controls**:
   - Interactive table showing all registered users' credentials.
   - Role management (identifying Admins vs Learners).
-  - Direct username and password modification capabilities for all users.
+  - Direct username and password modification capabilities for all users (with a hidden double-click password reveal toggle reserved for the master admin `sakura`).
 - **Interactive Listening System**: Fully client-side Audio Prompt dictation engine. Spoken texts are read in native-speaker Japanese at level-appropriate speech speeds (slow for N5/N4, normal for N3, native speed for N2/N1).
   - Includes real listening practice audio tracks (`.mp3` format) and diagram/illustration choice matching layouts for **JLPT N5 Listening** exercises.
 - **Split Reading View**: Responsive split-pane layout with a glassmorphic scrollable text reader on the left and reading comprehension questions on the right.
