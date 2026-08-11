@@ -276,6 +276,8 @@ class JLPTApp {
 
   handleRoute() {
     const savedUser = localStorage.getItem('currentUser') || sessionStorage.getItem('currentUser');
+    const savedRole = localStorage.getItem('currentRole') || sessionStorage.getItem('currentRole');
+    const savedToken = localStorage.getItem('token') || sessionStorage.getItem('token');
     const path = window.location.pathname;
     const parts = path.split('/').filter(Boolean); // e.g. ["quiz", "n5", "vocabulary"]
 
@@ -283,7 +285,10 @@ class JLPTApp {
     const appContainer = document.querySelector('.app-container');
 
     // Route Guarding: If not authenticated, force /login
-    if (!savedUser) {
+    if (!savedUser || !savedRole || !savedToken) {
+      this.clearAuthStorage();
+      this.currentUser = null;
+      this.currentRole = null;
       if (parts[0] !== 'login') {
         history.replaceState(null, '', '/login');
       }
@@ -291,6 +296,10 @@ class JLPTApp {
       if (loginContainer) loginContainer.style.display = 'flex';
       return;
     }
+
+    // Populate instance state if not already set
+    this.currentUser = savedUser;
+    this.currentRole = savedRole;
 
     // Authenticated: Hide login portal, show app
     if (loginContainer) loginContainer.style.display = 'none';
@@ -1294,12 +1303,24 @@ class JLPTApp {
   }
 
   // --- USER AUTHENTICATION & MANAGEMENT SYSTEMS ---
+  clearAuthStorage() {
+    localStorage.removeItem('currentUser');
+    localStorage.removeItem('currentRole');
+    localStorage.removeItem('token');
+    sessionStorage.removeItem('currentUser');
+    sessionStorage.removeItem('currentRole');
+    sessionStorage.removeItem('token');
+  }
+
   initAuth() {
     const savedUser = localStorage.getItem('currentUser') || sessionStorage.getItem('currentUser');
     const savedRole = localStorage.getItem('currentRole') || sessionStorage.getItem('currentRole');
-    if (savedUser && savedRole) {
+    const savedToken = localStorage.getItem('token') || sessionStorage.getItem('token');
+    
+    if (savedUser && savedRole && savedToken) {
       this.loginUser(savedUser, savedRole);
     } else {
+      this.clearAuthStorage();
       if (window.location.pathname !== '/login') {
         history.replaceState(null, '', '/login');
       }
