@@ -1717,7 +1717,7 @@ class JLPTApp {
               <input type="text" id="admin-user-name-${idx}" value="${user.username}" style="padding: 4px 8px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.15); background: rgba(255,255,255,0.05); color: #fff; width: 100%; box-sizing: border-box; font-size: 13px;" ${isCurrentAdmin ? 'disabled' : ''}>
             </td>
             <td style="padding: 10px 5px;">
-              <input type="password" id="admin-user-pass-${idx}" placeholder="•••••••• (Unchanged)" style="padding: 4px 8px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.15); background: rgba(255,255,255,0.05); color: #fff; width: 100%; box-sizing: border-box; font-size: 13px; cursor: pointer;" title="Double-click to toggle password visibility" ondblclick="app.toggleAdminPasswordReveal(this, '${user.password || ''}')">
+              <input type="password" id="admin-user-pass-${idx}" placeholder="•••••••• (Unchanged)" style="padding: 4px 8px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.15); background: rgba(255,255,255,0.05); color: #fff; width: 100%; box-sizing: border-box; font-size: 13px; cursor: pointer;" title="Double-click to toggle password visibility">
             </td>
             <td style="padding: 10px 5px; opacity: 0.8;">
               <span style="font-weight: bold; color: ${user.role === 'admin' ? '#f59e0b' : '#60a5fa'};">${user.role}</span>
@@ -1727,6 +1727,16 @@ class JLPTApp {
             </td>
           `;
           usersList.appendChild(tr);
+
+          // Dynamically bind double-click reveal if password field has data from server
+          if (user.password) {
+            const passInput = tr.querySelector(`#admin-user-pass-${idx}`);
+            if (passInput) {
+              passInput.addEventListener('dblclick', () => {
+                this.toggleAdminPasswordReveal(passInput, user.password);
+              });
+            }
+          }
         });
       } else {
         usersList.innerHTML = '<tr><td colspan="4" style="padding: 15px; color: #ff6b6b;">Failed to load user records.</td></tr>';
@@ -1827,4 +1837,5 @@ class JLPTApp {
 let app;
 window.addEventListener('DOMContentLoaded', () => {
   app = new JLPTApp();
+  window.app = app;
 });
