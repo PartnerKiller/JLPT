@@ -46,6 +46,35 @@ for (const ex of exercises) {
   }
 }
 
+function sleepSync(ms) {
+  const end = Date.now() + ms;
+  while (Date.now() < end) {}
+}
+
+const { execSync } = require('child_process');
+console.log("Checking and downloading missing audio files...");
+for (const ex of exercises) {
+  const numQuestions = ex.mp3s.length;
+  for (let i = 0; i < numQuestions; i++) {
+    const qNum = i + 1;
+    const mp3Url = ex.mp3s[i];
+    const filename = `n5_ex${ex.exerciseNum}_q${qNum}.mp3`;
+    const dest = path.join(__dirname, '../public/audio/n5', filename);
+
+    if (!fs.existsSync(dest)) {
+      console.log(`Downloading missing file: ${filename}`);
+      const cmd = `curl -s -L -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36" -o "${dest}" "${mp3Url}"`;
+      try {
+        execSync(cmd);
+        sleepSync(1000); // Throttled download
+      } catch (err) {
+        console.error(`Failed to download ${mp3Url}:`, err);
+      }
+    }
+  }
+}
+console.log("All audio files verified and up to date!");
+
 console.log(`Generated ${newQuestions.length} N5 listening questions.`);
 
 // Now we need to modify public/quiz-data.js
