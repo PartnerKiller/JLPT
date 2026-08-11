@@ -1481,3 +1481,78 @@ body.light-theme .option-btn:hover {
   border: 1px solid rgba(239, 68, 68, 0.4);
   box-shadow: 0 0 15px rgba(239, 68, 68, 0.3);
 }
+
+/* Zen Style Aesthetic (Clean, Professional, Non-AI) */
+body.aesthetic-zen {
+  --card-glow-intensity: 0px !important;
+}
+
+body.aesthetic-zen .glow-orb {
+  display: none !important;
+}
+
+/* Zen Dark Mode overrides */
+body.aesthetic-zen.dark-theme {
+  --bg-color: #0f172a !important; /* Slate 900 */
+  --surface-color: #1e293b !important; /* Slate 800 (Solid) */
+  --border-color: #334155 !important; /* Slate 700 */
+  --primary-glow: transparent !important;
+  --primary-accent: #3b82f6 !important; /* Standard Blue */
+  --primary-accent-hover: #2563eb !important;
+  --shadow-color: rgba(0, 0, 0, 0.25) !important;
+}
+
+/* Zen Light Mode overrides */
+body.aesthetic-zen.light-theme {
+  --bg-color: #f8fafc !important; /* Slate 50 */
+  --surface-color: #ffffff !important; /* Solid White */
+  --border-color: #e2e8f0 !important; /* Slate 200 */
+  --primary-glow: transparent !important;
+  --primary-accent: #2563eb !important; /* Standard Blue */
+  --primary-accent-hover: #1d4ed8 !important;
+  --shadow-color: rgba(0, 0, 0, 0.05) !important;
+}
+
+/* Zen specific card and layout flat design */
+body.aesthetic-zen .level-card,
+body.aesthetic-zen .dashboard-container,
+body.aesthetic-zen .app-header,
+body.aesthetic-zen .panel,
+body.aesthetic-zen .modal-content,
+body.aesthetic-zen .option-btn,
+body.aesthetic-zen .quiz-btn,
+body.aesthetic-zen .mode-card,
+body.aesthetic-zen .result-container {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  box-shadow: 0 4px 6px -1px var(--shadow-color), 0 2px 4px -2px var(--shadow-color) !important;
+}
+
+body.aesthetic-zen .level-card:hover {
+  transform: translateY(-4px) !important;
+  box-shadow: 0 10px 15px -3px var(--shadow-color), 0 4px 6px -4px var(--shadow-color) !important;
+}
+
+body.aesthetic-zen .level-card::after,
+body.aesthetic-zen .level-card::before,
+body.aesthetic-zen .level-card .card-glow {
+  display: none !important;
+}
+
+/* De-glow header and text styles */
+body.aesthetic-zen .gradient-text {
+  background: none !important;
+  -webkit-background-clip: unset !important;
+  -webkit-text-fill-color: var(--primary-accent) !important;
+  color: var(--primary-accent) !important;
+}
+
+body.aesthetic-zen .logo .gradient-text {
+  -webkit-text-fill-color: var(--text-primary) !important;
+  color: var(--text-primary) !important;
+}
+
+body.aesthetic-zen .hero-section h1 {
+  text-shadow: none !important;
+}
+

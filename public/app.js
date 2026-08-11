@@ -55,6 +55,7 @@ class JLPTApp {
     this.loadStreak();
     this.loadLevelStats();
     this.applySavedTheme();
+    this.applySavedAesthetic();
     
     // Load saved romaji state
     this.romajiEnabled = localStorage.getItem('jlpt_romaji_enabled') === 'true';
@@ -169,6 +170,38 @@ class JLPTApp {
       localStorage.setItem('jlpt_theme', 'dark');
       document.querySelector('#theme-toggle i').className = 'fa-solid fa-sun';
     }
+  }
+
+  applySavedAesthetic() {
+    const savedAesthetic = localStorage.getItem('jlpt_aesthetic') || 'cyber';
+    if (savedAesthetic === 'zen') {
+      document.body.classList.remove('aesthetic-cyber');
+      document.body.classList.add('aesthetic-zen');
+      const toggleBtn = document.getElementById('aesthetic-toggle');
+      if (toggleBtn) {
+        toggleBtn.innerHTML = '<i class="fa-solid fa-graduation-cap"></i>';
+        toggleBtn.setAttribute('data-tooltip', 'Switch to Cyber Glow Style');
+      }
+    } else {
+      document.body.classList.add('aesthetic-cyber');
+      document.body.classList.remove('aesthetic-zen');
+      const toggleBtn = document.getElementById('aesthetic-toggle');
+      if (toggleBtn) {
+        toggleBtn.innerHTML = '<i class="fa-solid fa-wand-magic-sparkles"></i>';
+        toggleBtn.setAttribute('data-tooltip', 'Switch to Classic Zen Style');
+      }
+    }
+  }
+
+  toggleAesthetic() {
+    this.playAudio('click');
+    const isCyber = document.body.classList.contains('aesthetic-cyber');
+    if (isCyber) {
+      localStorage.setItem('jlpt_aesthetic', 'zen');
+    } else {
+      localStorage.setItem('jlpt_aesthetic', 'cyber');
+    }
+    this.applySavedAesthetic();
   }
 
   // --- SELECTORS ---

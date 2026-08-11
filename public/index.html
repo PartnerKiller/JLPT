@@ -16,9 +16,9 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   
   <!-- Global Styling -->
-  <link rel="stylesheet" href="style.css?v=4.0">
+  <link rel="stylesheet" href="style.css?v=4.1">
 </head>
-<body class="dark-theme furigana-enabled">
+<body class="dark-theme furigana-enabled aesthetic-cyber">
   <!-- Glowing Background Orbs for Premium Glassmorphism -->
   <div class="glow-orb orb-1"></div>
   <div class="glow-orb orb-2"></div>
@@ -48,6 +48,9 @@
           <button id="btn-user-profile" onclick="app.showUserProfile()" style="font-size: 11px; padding: 4px 8px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.15); background: rgba(255,255,255,0.05); color: inherit; cursor: pointer;">Profile</button>
           <button id="btn-logout" onclick="app.logout()" style="font-size: 11px; padding: 4px 8px; border-radius: 6px; border: 1px solid rgba(255,99,99,0.3); background: rgba(255,99,99,0.05); color: rgb(255,120,120); cursor: pointer;">Logout</button>
         </div>
+        <button id="aesthetic-toggle" class="icon-btn tooltip" onclick="app.toggleAesthetic()" data-tooltip="Switch Visual Theme Style" aria-label="Toggle Page Style">
+          <i class="fa-solid fa-wand-magic-sparkles"></i>
+        </button>
         <button id="theme-toggle" class="icon-btn" onclick="app.toggleTheme()" aria-label="Toggle Dark Mode">
           <i class="fa-solid fa-sun"></i>
         </button>
@@ -490,7 +493,7 @@
   <audio id="audio-click" preload="auto"></audio>
 
   <!-- JS Scripts -->
-  <script src="quiz-data.js?v=4.0"></script>
-  <script src="app.js?v=4.0"></script>
+  <script src="quiz-data.js?v=4.1"></script>
+  <script src="app.js?v=4.1"></script>
 </body>
 </html>
