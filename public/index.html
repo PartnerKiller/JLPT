@@ -16,7 +16,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   
   <!-- Global Styling -->
-  <link rel="stylesheet" href="style.css?v=4.5">
+  <link rel="stylesheet" href="style.css?v=4.6">
 </head>
 <body class="dark-theme furigana-enabled aesthetic-cyber">
   <!-- Glowing Background Orbs for Premium Glassmorphism -->
@@ -263,6 +263,11 @@
                 </button>
                 <div class="listening-status" id="listening-status-text">Audio Ready. Standard Speed.</div>
               </div>
+            </div>
+            
+            <!-- Question Image (If present) -->
+            <div id="question-image-container" class="question-image-card hidden" style="margin-bottom: 20px; text-align: center;">
+              <img id="question-image" src="" alt="Listening Question Image" style="max-width: 100%; border-radius: 12px; border: 1px solid var(--border-color); box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);">
             </div>
             
             <div id="question-text" class="question-text furigana-enabled">
@@ -530,7 +535,7 @@
   <audio id="audio-click" preload="auto"></audio>
 
   <!-- JS Scripts -->
-  <script src="quiz-data.js?v=4.5"></script>
-  <script src="app.js?v=4.5"></script>
+  <script src="quiz-data.js?v=4.6"></script>
+  <script src="app.js?v=4.6"></script>
 </body>
 </html>

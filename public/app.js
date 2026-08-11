@@ -635,6 +635,19 @@ class JLPTApp {
       this.romajiEnabled = false;
     }
 
+    // Render question image if present
+    const imgContainer = document.getElementById('question-image-container');
+    const imgEl = document.getElementById('question-image');
+    if (imgContainer && imgEl) {
+      if (q.imageUrl || q.image) {
+        imgEl.src = q.imageUrl || q.image;
+        imgContainer.classList.remove('hidden');
+      } else {
+        imgContainer.classList.add('hidden');
+        imgEl.src = '';
+      }
+    }
+
     // Inject Text
     document.getElementById('question-text').innerHTML = q.question;
 
@@ -779,7 +792,29 @@ class JLPTApp {
     this.stopListeningAudio();
 
     const q = this.sessionQuestions[this.currentIndex];
-    if (!q || !q.dialogue) return;
+    if (!q) return;
+
+    if (q.audioFile) {
+      this.isSpeaking = true;
+      this.btnPlayListening.innerHTML = '<i class="fa-solid fa-square-stop"></i> Stop Audio';
+      this.btnPlayListening.classList.add('playing');
+      this.listeningStatusText.textContent = 'Playing Audio...';
+
+      this.fallbackAudio = new Audio(q.audioFile.startsWith('http') ? q.audioFile : `/audio/n5/${q.audioFile}`);
+      this.fallbackAudio.onended = () => {
+        this.resetListeningControls();
+      };
+      this.fallbackAudio.onerror = () => {
+        this.resetListeningControls();
+      };
+      this.fallbackAudio.play().catch(err => {
+        console.error("Audio playback error:", err);
+        this.resetListeningControls();
+      });
+      return;
+    }
+
+    if (!q.dialogue) return;
 
     this.isSpeaking = true;
     this.btnPlayListening.innerHTML = '<i class="fa-solid fa-square-stop"></i> Stop Audio';
