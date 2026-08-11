@@ -1389,9 +1389,28 @@ class JLPTApp {
         const scoreColors = { N5: 'emerald', N4: 'blue', N3: 'amber', N2: 'purple', N1: 'rose' };
         
         levels.forEach(lvl => {
-          const pct = data.scores[lvl] !== undefined ? data.scores[lvl] : null;
-          const barWidth = pct !== null ? `${pct}%` : '0%';
-          const scoreText = pct !== null ? `${pct}% Accuracy` : 'Not Attempted';
+          let pct = data.scores[lvl] !== undefined ? data.scores[lvl] : null;
+          const localScore = parseInt(localStorage.getItem(`jlpt_high_score_${this.currentUser}_${lvl}`) || '0', 10);
+          
+          if (localScore > (pct || 0)) {
+            pct = localScore;
+            // Sync with backend database in the background
+            fetch('/api/report/save', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+              },
+              body: JSON.stringify({
+                username: this.currentUser,
+                level: lvl,
+                pct: localScore
+              })
+            });
+          }
+
+          const barWidth = pct !== null && pct > 0 ? `${pct}%` : '0%';
+          const scoreText = pct !== null && pct > 0 ? `${pct}% Accuracy` : 'Not Attempted';
           
           const entry = document.createElement('div');
           entry.style.marginBottom = '12px';
@@ -1401,7 +1420,7 @@ class JLPTApp {
               <span style="opacity: 0.8;">${scoreText}</span>
             </div>
             <div style="width: 100%; height: 8px; border-radius: 4px; background: rgba(255,255,255,0.08); overflow: hidden;">
-              <div style="width: ${barWidth}; height: 100%; border-radius: 4px; background: ${pct !== null ? 'linear-gradient(90deg, #6366f1, #818cf8)' : 'rgba(255,255,255,0.1)'}; transition: width 0.3s ease;"></div>
+              <div style="width: ${barWidth}; height: 100%; border-radius: 4px; background: ${pct !== null && pct > 0 ? 'linear-gradient(90deg, #6366f1, #818cf8)' : 'rgba(255,255,255,0.1)'}; transition: width 0.3s ease;"></div>
             </div>
           `;
           reportContainer.appendChild(entry);
