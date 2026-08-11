@@ -50,7 +50,7 @@ function scrapeExercisePage(url) {
   }
 
   // Find all image urls
-  const imgRegex = /src="(https:\/\/japanesetest4you.com\/image\/[^\s]*?\.(?:jpg|jpeg|png))"/gi;
+  const imgRegex = /src="(https:\/\/japanesetest4you.com\/image\/[^\s]*?\.(?:jpg|jpeg|png|gif))"/gi;
   const images = [];
   while ((match = imgRegex.exec(html)) !== null) {
     // Exclude generic site layout images if any, but choukai images are usually under /image/
