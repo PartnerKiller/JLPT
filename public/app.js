@@ -262,12 +262,33 @@ class JLPTApp {
   }
 
   handleRoute() {
-    // If not authenticated, do not navigate yet; the login overlay handles screen locking
     const savedUser = sessionStorage.getItem('currentUser');
-    if (!savedUser) return;
-
     const path = window.location.pathname;
     const parts = path.split('/').filter(Boolean); // e.g. ["quiz", "n5", "vocabulary"]
+
+    const loginContainer = document.getElementById('login-container');
+    const appContainer = document.querySelector('.app-container');
+
+    // Route Guarding: If not authenticated, force /login
+    if (!savedUser) {
+      if (parts[0] !== 'login') {
+        history.replaceState(null, '', '/login');
+      }
+      if (appContainer) appContainer.style.display = 'none';
+      if (loginContainer) loginContainer.style.display = 'flex';
+      return;
+    }
+
+    // Authenticated: Hide login portal, show app
+    if (loginContainer) loginContainer.style.display = 'none';
+    if (appContainer) appContainer.style.display = 'block';
+
+    // If authenticated but visiting /login, redirect to /dashboard
+    if (parts[0] === 'login') {
+      history.replaceState(null, '', '/dashboard');
+      this.handleRoute();
+      return;
+    }
 
     // Hide modals by default
     const profileModal = document.getElementById('modal-user-profile');
@@ -1225,8 +1246,10 @@ class JLPTApp {
     if (savedUser && savedRole) {
       this.loginUser(savedUser, savedRole);
     } else {
-      document.getElementById('login-overlay').style.display = 'flex';
-      document.getElementById('user-nav-area').style.display = 'none';
+      if (window.location.pathname !== '/login') {
+        history.replaceState(null, '', '/login');
+      }
+      this.handleRoute();
     }
   }
 
@@ -1297,7 +1320,11 @@ class JLPTApp {
     this.currentUser = username;
     this.currentRole = role;
     
-    document.getElementById('login-overlay').style.display = 'none';
+    const loginContainer = document.getElementById('login-container');
+    const appContainer = document.querySelector('.app-container');
+    if (loginContainer) loginContainer.style.display = 'none';
+    if (appContainer) appContainer.style.display = 'block';
+
     document.getElementById('user-nav-area').style.display = 'flex';
     document.getElementById('user-display-name').textContent = username;
 

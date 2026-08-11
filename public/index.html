@@ -16,7 +16,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   
   <!-- Global Styling -->
-  <link rel="stylesheet" href="style.css?v=4.2">
+  <link rel="stylesheet" href="style.css?v=4.3">
 </head>
 <body class="dark-theme furigana-enabled aesthetic-cyber">
   <!-- Glowing Background Orbs for Premium Glassmorphism -->
@@ -402,29 +402,66 @@
     </footer>
   </div>
 
-  <!-- Login/Register Overlay -->
-  <div id="login-overlay" style="position: fixed; inset: 0; z-index: 1000; background: rgba(10, 10, 15, 0.95); backdrop-filter: blur(10px); display: flex; align-items: center; justify-content: center;">
-    <div class="glass-card" style="width: 100%; max-width: 400px; padding: 30px; border-radius: 20px; text-align: center; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.05); color: #fff; font-family: sans-serif;">
-      <h2 style="font-size: 24px; font-weight: bold; margin-bottom: 20px;" id="auth-title">Sign In to Nazuna</h2>
-      
-      <div id="auth-error-msg" style="color: #ff6b6b; font-size: 13px; margin-bottom: 15px; display: none;"></div>
-      
-      <form id="auth-form" onsubmit="event.preventDefault(); app.handleAuthSubmit();">
-        <div style="margin-bottom: 15px; text-align: left;">
-          <label style="font-size: 12px; opacity: 0.8; display: block; margin-bottom: 5px;">Username</label>
-          <input type="text" id="auth-username" required style="width: 100%; padding: 10px 15px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.15); background: rgba(255,255,255,0.05); color: #fff; outline: none; box-sizing: border-box;">
+  <!-- Dedicated Premium Login Portal -->
+  <div id="login-container" style="display: none;">
+    <div class="login-split-left">
+      <div class="login-brand-info">
+        <div class="brand-logo">
+          <i class="fa-solid fa-graduation-cap"></i>
+          <span>Nihongo Pro</span>
         </div>
-        <div style="margin-bottom: 20px; text-align: left;">
-          <label style="font-size: 12px; opacity: 0.8; display: block; margin-bottom: 5px;">Password</label>
-          <input type="password" id="auth-password" required style="width: 100%; padding: 10px 15px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.15); background: rgba(255,255,255,0.05); color: #fff; outline: none; box-sizing: border-box;">
+        <h1>Master the Japanese Language</h1>
+        <p class="brand-sub">Your ultimate interactive dashboard to ace the JLPT N5 to N1 exams with curated practice, timing modes, and listening speech synthesis.</p>
+        
+        <div class="features-list">
+          <div class="feature-item">
+            <i class="fa-solid fa-circle-check text-green"></i>
+            <span>Interactive Grammar and Vocabulary banks for N5 to N1.</span>
+          </div>
+          <div class="feature-item">
+            <i class="fa-solid fa-circle-check text-green"></i>
+            <span>Real-time adaptive speech listening tests.</span>
+          </div>
+          <div class="feature-item">
+            <i class="fa-solid fa-circle-check text-green"></i>
+            <span>Timed Exam and Official Mock Test modes with score analytics.</span>
+          </div>
+          <div class="feature-item">
+            <i class="fa-solid fa-circle-check text-green"></i>
+            <span>Daily study streaks and high score progress tracking.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="login-split-right">
+      <div class="login-card">
+        <div class="login-header">
+          <h2 id="auth-title">Sign In to Nazuna</h2>
+          <p>Please enter your account details below</p>
         </div>
         
-        <button type="submit" id="btn-auth-submit" class="btn-primary" style="width: 100%; padding: 12px; border-radius: 10px; font-weight: bold; cursor: pointer; border: none; background: #6366f1; color: #fff;">Sign In</button>
-      </form>
-      
-      <p style="margin-top: 20px; font-size: 13px; opacity: 0.8;" id="auth-toggle-text">
-        Don't have an account? <a href="#" onclick="event.preventDefault(); app.toggleAuthMode();" style="color: #818cf8; text-decoration: none; font-weight: bold;">Create Account</a>
-      </p>
+        <div id="auth-error-msg" class="auth-error-banner" style="display: none;"></div>
+        
+        <form id="auth-form" onsubmit="event.preventDefault(); app.handleAuthSubmit();">
+          <div class="input-group">
+            <label for="auth-username"><i class="fa-solid fa-user"></i> Username</label>
+            <input type="text" id="auth-username" placeholder="Enter your username" required>
+          </div>
+          <div class="input-group">
+            <label for="auth-password"><i class="fa-solid fa-lock"></i> Password</label>
+            <input type="password" id="auth-password" placeholder="Enter your password" required>
+          </div>
+          
+          <button type="submit" id="btn-auth-submit" class="btn-primary login-btn">
+            Sign In <i class="fa-solid fa-arrow-right"></i>
+          </button>
+        </form>
+        
+        <p class="auth-toggle-tip" id="auth-toggle-text">
+          Don't have an account? <a href="#" onclick="event.preventDefault(); app.toggleAuthMode();">Create Account</a>
+        </p>
+      </div>
     </div>
   </div>
 
@@ -493,7 +530,7 @@
   <audio id="audio-click" preload="auto"></audio>
 
   <!-- JS Scripts -->
-  <script src="quiz-data.js?v=4.2"></script>
-  <script src="app.js?v=4.2"></script>
+  <script src="quiz-data.js?v=4.3"></script>
+  <script src="app.js?v=4.3"></script>
 </body>
 </html>

@@ -1556,3 +1556,228 @@ body.aesthetic-zen .hero-section h1 {
   text-shadow: none !important;
 }
 
+/* Premium Login Portal Styles */
+#login-container {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  z-index: 2000;
+  background-color: var(--bg-color);
+  font-family: 'Outfit', 'Noto Sans JP', sans-serif;
+  overflow: hidden;
+}
+
+.login-split-left {
+  flex: 1.2;
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.15), rgba(168, 85, 247, 0.15)), #090d16;
+  border-right: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Light Theme overrides for left split */
+body.light-theme .login-split-left {
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.05), rgba(168, 85, 247, 0.05)), #f1f5f9;
+}
+
+body.aesthetic-zen .login-split-left {
+  background: #0f172a;
+}
+body.aesthetic-zen.light-theme .login-split-left {
+  background: #f1f5f9;
+}
+
+.login-brand-info {
+  max-width: 520px;
+  position: relative;
+  z-index: 10;
+}
+
+.brand-logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--primary-accent);
+  margin-bottom: 30px;
+}
+
+.login-brand-info h1 {
+  font-size: 44px;
+  font-weight: 800;
+  line-height: 1.2;
+  margin-bottom: 20px;
+  letter-spacing: -0.5px;
+}
+
+.brand-sub {
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--text-secondary);
+  margin-bottom: 40px;
+}
+
+.features-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.feature-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  font-size: 15px;
+  color: var(--text-primary);
+}
+
+.feature-item i {
+  font-size: 18px;
+  margin-top: 2px;
+}
+
+.login-split-right {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  background-color: var(--bg-color);
+}
+
+.login-card {
+  width: 100%;
+  max-width: 400px;
+  background: var(--surface-color);
+  border: 1px solid var(--border-color);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-radius: 24px;
+  padding: 40px;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+}
+
+body.aesthetic-zen .login-card {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  box-shadow: 0 10px 15px -3px var(--shadow-color), 0 4px 6px -4px var(--shadow-color) !important;
+}
+
+.login-header {
+  margin-bottom: 30px;
+  text-align: left;
+}
+
+.login-header h2 {
+  font-size: 28px;
+  font-weight: 800;
+  margin-bottom: 8px;
+}
+
+.login-header p {
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+.auth-error-banner {
+  background-color: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.25);
+  color: #ef4444;
+  padding: 12px 16px;
+  border-radius: 12px;
+  font-size: 13px;
+  margin-bottom: 25px;
+  text-align: left;
+}
+
+.input-group {
+  margin-bottom: 20px;
+  text-align: left;
+}
+
+.input-group label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 8px;
+}
+
+.input-group input {
+  width: 100%;
+  padding: 12px 16px;
+  border-radius: 12px;
+  border: 1px solid var(--border-color);
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--text-primary);
+  font-size: 15px;
+  outline: none;
+  box-sizing: border-box;
+  transition: all 0.2s ease;
+}
+
+body.light-theme .input-group input {
+  background: #f8fafc;
+}
+
+.input-group input:focus {
+  border-color: var(--primary-accent);
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+}
+
+.login-btn {
+  width: 100%;
+  padding: 14px;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  border: none;
+  background: var(--primary-accent);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.2s ease;
+}
+
+.login-btn:hover {
+  background: var(--primary-accent-hover);
+}
+
+.auth-toggle-tip {
+  margin-top: 25px;
+  font-size: 14px;
+  color: var(--text-secondary);
+  text-align: center;
+}
+
+.auth-toggle-tip a {
+  color: var(--primary-accent);
+  text-decoration: none;
+  font-weight: 700;
+  margin-left: 4px;
+}
+
+.auth-toggle-tip a:hover {
+  text-decoration: underline;
+}
+
+/* Responsive Hide Left Side for Mobile */
+@media (max-width: 900px) {
+  .login-split-left {
+    display: none !important;
+  }
+}
+
+
