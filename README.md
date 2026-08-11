@@ -10,16 +10,19 @@ An interactive, responsive, and realistic web application designed for practicin
   - ⏱️ **Exam Mode**: A timed mock test that hides answers and explanations until the entire session is submitted.
   - 🎓 **Official Test Mode**: A strict exam simulation with official JLPT time limits, active countdowns, a flashing visual alert when time drops below 2 minutes, and automatic submission on timeout.
 - **Four Focus Areas**: Focus on individual categories (**Vocabulary**, **Grammar**, **Reading**, or **Listening**) or take a **Full Mock Test**.
-- **User Authentication System**:
+- **User Authentication & Persistence**:
   - Secure **Login** and **Registration** system saving user accounts directly to a local JSON database.
+  - **Remember me** option to securely persist sessions in `localStorage` across browser restarts.
   - Separate user roles: **Admin** (`sakura`/`sakura`) and **Learner** (new accounts).
   - Profile settings modal allowing users to securely update their username and password credentials.
   - Streak tracking and high score syncing directly with the backend.
+- **HTML5 History API Routing**: Client-side routing with clean URL paths (`/dashboard`, `/profile`, `/admin`, `/quiz/:level/:category`) supporting browser Back/Forward navigation and direct URL loading/refreshing.
 - **Admin Dashboard Controls**:
   - Interactive table showing all registered users' credentials.
   - Role management (identifying Admins vs Learners).
   - Direct username and password modification capabilities for all users.
-- **Interactive Listening System**: Fully client-side Audio Prompt dictation engine. Spoken texts (context, dialogues, and questions) are read entirely in native-speaker Japanese at level-appropriate speech speeds (slow for N5/N4, normal for N3, native speed for N2/N1).
+- **Interactive Listening System**: Fully client-side Audio Prompt dictation engine. Spoken texts are read in native-speaker Japanese at level-appropriate speech speeds (slow for N5/N4, normal for N3, native speed for N2/N1).
+  - Includes real listening practice audio tracks (`.mp3` format) and diagram/illustration choice matching layouts for **JLPT N5 Listening** exercises.
 - **Split Reading View**: Responsive split-pane layout with a glassmorphic scrollable text reader on the left and reading comprehension questions on the right.
 - **Star (`★`) Rearrangement Questions**: Realistic sentence composition questions matching actual JLPT grammar section layouts.
 - **Furigana & Romaji Toggles**: Support for showing/hiding furigana (N5-N1) and romaji translations (N5-N4) below Japanese text. Furigana toggling applies globally to options, questions, reading passages, and reviews.

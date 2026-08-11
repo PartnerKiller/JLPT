@@ -28,12 +28,20 @@ const MIME_TYPES = {
 };
 
 const getJsonBody = (req) => {
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve) => {
     let body = '';
+    let tooLarge = false;
     req.on('data', chunk => {
+      if (tooLarge) return;
       body += chunk.toString();
+      // Protect against massive request payload DoS (1MB limit)
+      if (body.length > 1024 * 1024) {
+        tooLarge = true;
+        resolve(null);
+      }
     });
     req.on('end', () => {
+      if (tooLarge) return;
       try {
         resolve(JSON.parse(body));
       } catch (e) {
@@ -58,14 +66,31 @@ const verifyPassword = (inputPassword, storedPassword, user) => {
 };
 
 // Simple Bearer Token Sessions system
-const SESSIONS = new Map(); // token -> { username, role }
+const SESSIONS = new Map(); // token -> { username, role, createdAt }
+const SESSION_LIFETIME = 24 * 60 * 60 * 1000; // 24 hours
 
 const authenticate = (req) => {
   const authHeader = req.headers['authorization'];
   if (!authHeader || !authHeader.startsWith('Bearer ')) return null;
   const token = authHeader.substring(7);
-  return SESSIONS.get(token);
+  const session = SESSIONS.get(token);
+  if (!session) return null;
+  if (Date.now() - session.createdAt > SESSION_LIFETIME) {
+    SESSIONS.delete(token);
+    return null;
+  }
+  return session;
 };
+
+// Periodically clean up expired sessions (every 1 hour)
+setInterval(() => {
+  const now = Date.now();
+  for (const [token, session] of SESSIONS.entries()) {
+    if (now - session.createdAt > SESSION_LIFETIME) {
+      SESSIONS.delete(token);
+    }
+  }
+}, 60 * 60 * 1000);
 
 const server = http.createServer((req, res) => {
   // Handle API Requests
@@ -110,6 +135,11 @@ const server = http.createServer((req, res) => {
         res.end('Missing query text');
         return;
       }
+      if (text.length > 1000) {
+        res.writeHead(400, { 'Content-Type': 'text/plain' });
+        res.end('Query too long');
+        return;
+      }
       const ttsUrl = `https://translate.google.com/translate_tts?ie=UTF-8&tl=ja&client=tw-ob&q=${encodeURIComponent(text)}`;
       const ttsReq = https.get(ttsUrl, (ttsRes) => {
         res.writeHead(ttsRes.statusCode, {
@@ -118,10 +148,20 @@ const server = http.createServer((req, res) => {
         });
         ttsRes.pipe(res);
       });
+      ttsReq.setTimeout(10000, () => {
+        ttsReq.destroy();
+        console.error('TTS Proxy Timeout');
+        if (!res.headersSent) {
+          res.writeHead(504, { 'Content-Type': 'text/plain' });
+          res.end('TTS Proxy Timeout');
+        }
+      });
       ttsReq.on('error', (err) => {
         console.error('TTS Proxy Error:', err);
-        res.writeHead(500, { 'Content-Type': 'text/plain' });
-        res.end('TTS Proxy Failure');
+        if (!res.headersSent) {
+          res.writeHead(500, { 'Content-Type': 'text/plain' });
+          res.end('TTS Proxy Failure');
+        }
       });
       return;
     }
@@ -130,19 +170,34 @@ const server = http.createServer((req, res) => {
     if (req.url === '/api/login' && req.method === 'POST') {
       console.log('API Login route invoked!');
       getJsonBody(req).then(body => {
+        if (body === null) {
+          res.writeHead(413, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ success: false, message: 'Payload too large' }));
+          return;
+        }
+
+        const username = typeof body.username === 'string' ? body.username.trim() : '';
+        const password = typeof body.password === 'string' ? body.password.trim() : '';
+
+        if (!username || !password) {
+          res.writeHead(400, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ success: false, message: 'Username and password are required' }));
+          return;
+        }
+
         try {
           const dbData = readDb();
-          const user = dbData.users.find(u => u.username === body.username);
-          if (user && verifyPassword(body.password, user.password, user)) {
+          const user = dbData.users.find(u => u.username === username);
+          if (user && verifyPassword(password, user.password, user)) {
             // Transparently upgrade legacy plain-text passwords on successful login
             if (!isHashed(user.password)) {
               user.salt = user.username;
-              user.password = hashPassword(body.password, user.salt);
+              user.password = hashPassword(password, user.salt);
               writeDb(dbData);
             }
             // Generate Session Token
             const token = crypto.randomBytes(16).toString('hex');
-            SESSIONS.set(token, { username: user.username, role: user.role });
+            SESSIONS.set(token, { username: user.username, role: user.role, createdAt: Date.now() });
             
             res.writeHead(200, { 'Content-Type': 'application/json' });
             res.end(JSON.stringify({ success: true, username: user.username, role: user.role, token: token }));
@@ -161,9 +216,36 @@ const server = http.createServer((req, res) => {
     // 2. REGISTER ENDPOINT
     if (req.url === '/api/register' && req.method === 'POST') {
       getJsonBody(req).then(body => {
+        if (body === null) {
+          res.writeHead(413, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ success: false, message: 'Payload too large' }));
+          return;
+        }
+
+        const username = typeof body.username === 'string' ? body.username.trim() : '';
+        const password = typeof body.password === 'string' ? body.password.trim() : '';
+
+        if (!username || !password) {
+          res.writeHead(400, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ success: false, message: 'Username and password are required' }));
+          return;
+        }
+
+        if (username.length < 3 || username.length > 20) {
+          res.writeHead(400, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ success: false, message: 'Username must be between 3 and 20 characters' }));
+          return;
+        }
+
+        if (password.length < 4) {
+          res.writeHead(400, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ success: false, message: 'Password must be at least 4 characters long' }));
+          return;
+        }
+
         try {
           const dbData = readDb();
-          const existing = dbData.users.find(u => u.username === body.username);
+          const existing = dbData.users.find(u => u.username.toLowerCase() === username.toLowerCase());
           if (existing) {
             res.writeHead(400, { 'Content-Type': 'application/json' });
             res.end(JSON.stringify({ success: false, message: 'Username already exists' }));
@@ -171,10 +253,10 @@ const server = http.createServer((req, res) => {
           }
           
           // Hash new user passwords
-          const salt = body.username;
-          const hashedPassword = hashPassword(body.password, salt);
+          const salt = username;
+          const hashedPassword = hashPassword(password, salt);
           const newUser = {
-            username: body.username,
+            username: username,
             password: hashedPassword,
             salt: salt,
             role: 'learner',
@@ -185,7 +267,7 @@ const server = http.createServer((req, res) => {
           
           // Generate Session Token
           const token = crypto.randomBytes(16).toString('hex');
-          SESSIONS.set(token, { username: newUser.username, role: newUser.role });
+          SESSIONS.set(token, { username: newUser.username, role: newUser.role, createdAt: Date.now() });
 
           res.writeHead(201, { 'Content-Type': 'application/json' });
           res.end(JSON.stringify({ success: true, username: newUser.username, role: newUser.role, token: token }));
@@ -200,10 +282,31 @@ const server = http.createServer((req, res) => {
     // 3. USER PROFILE UPDATE ENDPOINT
     if (req.url === '/api/profile/update' && req.method === 'POST') {
       getJsonBody(req).then(body => {
+        if (body === null) {
+          res.writeHead(413, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ success: false, message: 'Payload too large' }));
+          return;
+        }
+
         const session = authenticate(req);
         if (!session || session.username !== body.currentUsername) {
           res.writeHead(403, { 'Content-Type': 'application/json' });
           res.end(JSON.stringify({ success: false, message: 'Forbidden' }));
+          return;
+        }
+
+        const newUsername = typeof body.newUsername === 'string' ? body.newUsername.trim() : undefined;
+        const newPassword = typeof body.newPassword === 'string' ? body.newPassword.trim() : undefined;
+
+        if (newUsername !== undefined && (newUsername.length < 3 || newUsername.length > 20)) {
+          res.writeHead(400, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ success: false, message: 'New username must be between 3 and 20 characters' }));
+          return;
+        }
+
+        if (newPassword !== undefined && newPassword.length < 4) {
+          res.writeHead(400, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ success: false, message: 'New password must be at least 4 characters long' }));
           return;
         }
 
@@ -217,8 +320,8 @@ const server = http.createServer((req, res) => {
           }
           
           // Check duplicate name
-          if (body.newUsername && body.newUsername !== body.currentUsername) {
-            const duplicate = dbData.users.find(u => u.username === body.newUsername);
+          if (newUsername && newUsername.toLowerCase() !== body.currentUsername.toLowerCase()) {
+            const duplicate = dbData.users.find(u => u.username.toLowerCase() === newUsername.toLowerCase());
             if (duplicate) {
               res.writeHead(400, { 'Content-Type': 'application/json' });
               res.end(JSON.stringify({ success: false, message: 'New username already taken' }));
@@ -228,14 +331,14 @@ const server = http.createServer((req, res) => {
             if (!dbData.users[userIdx].salt) {
               dbData.users[userIdx].salt = dbData.users[userIdx].username;
             }
-            dbData.users[userIdx].username = body.newUsername;
+            dbData.users[userIdx].username = newUsername;
             // Update active session metadata
-            session.username = body.newUsername;
+            session.username = newUsername;
           }
           
-          if (body.newPassword) {
+          if (newPassword) {
             const salt = dbData.users[userIdx].salt || dbData.users[userIdx].username;
-            dbData.users[userIdx].password = hashPassword(body.newPassword, salt);
+            dbData.users[userIdx].password = hashPassword(newPassword, salt);
           }
 
           writeDb(dbData);
@@ -261,8 +364,12 @@ const server = http.createServer((req, res) => {
       try {
         const dbData = readDb();
         res.writeHead(200, { 'Content-Type': 'application/json' });
-        // Return user list safely
-        res.end(JSON.stringify({ success: true, users: dbData.users }));
+        // Return user list safely (sanitize passwords and salts)
+        const sanitizedUsers = dbData.users.map(u => ({
+          username: u.username,
+          role: u.role
+        }));
+        res.end(JSON.stringify({ success: true, users: sanitizedUsers }));
       } catch (e) {
         res.writeHead(500, { 'Content-Type': 'application/json' });
         res.end(JSON.stringify({ success: false, message: 'Database read failure' }));
@@ -280,9 +387,37 @@ const server = http.createServer((req, res) => {
       }
 
       getJsonBody(req).then(body => {
+        if (body === null) {
+          res.writeHead(413, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ success: false, message: 'Payload too large' }));
+          return;
+        }
+
+        const targetUsername = typeof body.targetUsername === 'string' ? body.targetUsername : '';
+        const newUsername = typeof body.newUsername === 'string' ? body.newUsername.trim() : undefined;
+        const newPassword = typeof body.newPassword === 'string' ? body.newPassword.trim() : undefined;
+
+        if (!targetUsername) {
+          res.writeHead(400, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ success: false, message: 'Target username is required' }));
+          return;
+        }
+
+        if (newUsername !== undefined && (newUsername.length < 3 || newUsername.length > 20)) {
+          res.writeHead(400, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ success: false, message: 'New username must be between 3 and 20 characters' }));
+          return;
+        }
+
+        if (newPassword !== undefined && newPassword.length < 4) {
+          res.writeHead(400, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ success: false, message: 'New password must be at least 4 characters long' }));
+          return;
+        }
+
         try {
           const dbData = readDb();
-          const userIdx = dbData.users.findIndex(u => u.username === body.targetUsername);
+          const userIdx = dbData.users.findIndex(u => u.username === targetUsername);
           if (userIdx === -1) {
             res.writeHead(404, { 'Content-Type': 'application/json' });
             res.end(JSON.stringify({ success: false, message: 'Target user not found' }));
@@ -290,8 +425,8 @@ const server = http.createServer((req, res) => {
           }
 
           // Check duplicate name
-          if (body.newUsername && body.newUsername !== body.targetUsername) {
-            const duplicate = dbData.users.find(u => u.username === body.newUsername);
+          if (newUsername && newUsername.toLowerCase() !== targetUsername.toLowerCase()) {
+            const duplicate = dbData.users.find(u => u.username.toLowerCase() === newUsername.toLowerCase());
             if (duplicate) {
               res.writeHead(400, { 'Content-Type': 'application/json' });
               res.end(JSON.stringify({ success: false, message: 'Username already taken' }));
@@ -301,12 +436,19 @@ const server = http.createServer((req, res) => {
             if (!dbData.users[userIdx].salt) {
               dbData.users[userIdx].salt = dbData.users[userIdx].username;
             }
-            dbData.users[userIdx].username = body.newUsername;
+            dbData.users[userIdx].username = newUsername;
+
+            // Terminate active sessions for the renamed user to force re-login
+            for (let [token, sessionData] of SESSIONS.entries()) {
+              if (sessionData.username === targetUsername) {
+                SESSIONS.delete(token);
+              }
+            }
           }
 
-          if (body.newPassword) {
+          if (newPassword) {
             const salt = dbData.users[userIdx].salt || dbData.users[userIdx].username;
-            dbData.users[userIdx].password = hashPassword(body.newPassword, salt);
+            dbData.users[userIdx].password = hashPassword(newPassword, salt);
           }
 
           writeDb(dbData);
@@ -323,10 +465,23 @@ const server = http.createServer((req, res) => {
     // 6. SAVE REPORT CARD ENDPOINT
     if (req.url === '/api/report/save' && req.method === 'POST') {
       getJsonBody(req).then(body => {
+        if (body === null) {
+          res.writeHead(413, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ success: false, message: 'Payload too large' }));
+          return;
+        }
+
         const session = authenticate(req);
         if (!session || session.username !== body.username) {
           res.writeHead(403, { 'Content-Type': 'application/json' });
           res.end(JSON.stringify({ success: false, message: 'Forbidden' }));
+          return;
+        }
+
+        const validLevels = ['N5', 'N4', 'N3', 'N2', 'N1'];
+        if (!validLevels.includes(body.level) || typeof body.pct !== 'number' || body.pct < 0 || body.pct > 100) {
+          res.writeHead(400, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ success: false, message: 'Invalid level or score percentage' }));
           return;
         }
 

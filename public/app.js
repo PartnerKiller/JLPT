@@ -4,7 +4,7 @@
 class JLPTApp {
   constructor() {
     this.level = null;
-    this.sessionMode = 'practice'; // 'practice' or 'exam'
+    this.sessionMode = localStorage.getItem('jlpt_session_mode') || 'practice'; // 'practice', 'exam', or 'test'
     this.focusSection = 'All'; // 'All' (Full Mock), 'Vocabulary', 'Grammar', 'Reading', 'Listening'
     this.sessionQuestions = [];
     this.currentIndex = 0;
@@ -62,6 +62,9 @@ class JLPTApp {
     if (this.romajiCheckbox) {
       this.romajiCheckbox.checked = this.romajiEnabled;
     }
+    
+    // Highlight restored session mode in UI
+    this.setSessionMode(this.sessionMode, false);
     
     this.initAuth();
     
@@ -126,14 +129,17 @@ class JLPTApp {
   }
 
   loadLevelStats() {
-    if (!this.currentUser) return;
     const levels = ['N5', 'N4', 'N3', 'N2', 'N1'];
     levels.forEach(lvl => {
-      const score = localStorage.getItem(`jlpt_high_score_${this.currentUser}_${lvl}`);
+      const score = this.currentUser ? localStorage.getItem(`jlpt_high_score_${this.currentUser}_${lvl}`) : null;
       // Try to find either legacy score badge or newer score badge element
       const element = document.getElementById(`stats-${lvl.toLowerCase()}-score`) || document.getElementById(`stats-${lvl.toLowerCase()}-badge`);
-      if (score && element) {
-        element.innerHTML = `<i class="fa-solid fa-trophy text-orange"></i> ${score}%`;
+      if (element) {
+        if (score) {
+          element.innerHTML = `<i class="fa-solid fa-trophy text-orange"></i> ${score}%`;
+        } else {
+          element.innerHTML = `<i class="fa-solid fa-trophy"></i> --`;
+        }
       }
     });
   }
@@ -210,9 +216,12 @@ class JLPTApp {
   }
 
   // --- SELECTORS ---
-  setSessionMode(mode) {
-    this.playAudio('click');
+  setSessionMode(mode, playAudio = true) {
+    if (playAudio) {
+      this.playAudio('click');
+    }
     this.sessionMode = mode;
+    localStorage.setItem('jlpt_session_mode', mode);
     
     // Toggle active state in UI
     const pmBtn = document.getElementById('mode-practice');
@@ -800,14 +809,17 @@ class JLPTApp {
       this.btnPlayListening.classList.add('playing');
       this.listeningStatusText.textContent = 'Playing Audio...';
 
-      this.fallbackAudio = new Audio(q.audioFile.startsWith('http') ? q.audioFile : `/audio/n5/${q.audioFile}`);
+      this.fallbackAudio = new Audio(q.audioFile.startsWith('http') ? q.audioFile : `/audio/${this.level.toLowerCase()}/${q.audioFile}`);
       this.fallbackAudio.onended = () => {
+        if (!this.isSpeaking) return;
         this.resetListeningControls();
       };
       this.fallbackAudio.onerror = () => {
+        if (!this.isSpeaking) return;
         this.resetListeningControls();
       };
       this.fallbackAudio.play().catch(err => {
+        if (!this.isSpeaking) return;
         console.error("Audio playback error:", err);
         this.resetListeningControls();
       });
@@ -906,16 +918,19 @@ class JLPTApp {
       this.fallbackAudio.playbackRate = rate;
       
       this.fallbackAudio.onended = () => {
+        if (!this.isSpeaking) return;
         playNextChunk();
       };
       
       this.fallbackAudio.onerror = (err) => {
+        if (!this.isSpeaking) return;
         console.warn("Translate TTS fallback failed for chunk:", text, err);
         this.resetListeningControls();
         alert("Japanese text-to-speech failed. Please ensure a Japanese voice synthesis package is installed in your browser/system settings.");
       };
 
       this.fallbackAudio.play().catch(e => {
+        if (!this.isSpeaking) return;
         console.error("Audio play invocation failed:", e);
         this.resetListeningControls();
       });
@@ -1276,8 +1291,8 @@ class JLPTApp {
 
   // --- USER AUTHENTICATION & MANAGEMENT SYSTEMS ---
   initAuth() {
-    const savedUser = sessionStorage.getItem('currentUser');
-    const savedRole = sessionStorage.getItem('currentRole');
+    const savedUser = localStorage.getItem('currentUser') || sessionStorage.getItem('currentUser');
+    const savedRole = localStorage.getItem('currentRole') || sessionStorage.getItem('currentRole');
     if (savedUser && savedRole) {
       this.loginUser(savedUser, savedRole);
     } else {
@@ -1328,10 +1343,24 @@ class JLPTApp {
     .then(res => res.json())
     .then(data => {
       if (data.success) {
-        // Save to session storage
-        sessionStorage.setItem('currentUser', data.username);
-        sessionStorage.setItem('currentRole', data.role);
-        sessionStorage.setItem('token', data.token);
+        const rememberEl = document.getElementById('auth-remember');
+        const remember = rememberEl ? rememberEl.checked : false;
+
+        if (remember) {
+          localStorage.setItem('currentUser', data.username);
+          localStorage.setItem('currentRole', data.role);
+          localStorage.setItem('token', data.token);
+          sessionStorage.removeItem('currentUser');
+          sessionStorage.removeItem('currentRole');
+          sessionStorage.removeItem('token');
+        } else {
+          sessionStorage.setItem('currentUser', data.username);
+          sessionStorage.setItem('currentRole', data.role);
+          sessionStorage.setItem('token', data.token);
+          localStorage.removeItem('currentUser');
+          localStorage.removeItem('currentRole');
+          localStorage.removeItem('token');
+        }
         
         // Reset inputs
         usernameInput.value = '';
@@ -1379,6 +1408,9 @@ class JLPTApp {
   logout() {
     this.playAudio('click');
     sessionStorage.clear();
+    localStorage.removeItem('currentUser');
+    localStorage.removeItem('currentRole');
+    localStorage.removeItem('token');
     this.currentUser = null;
     this.currentRole = null;
     
@@ -1389,6 +1421,7 @@ class JLPTApp {
     this.panelQuiz.classList.remove('active');
     this.panelResults.classList.remove('active');
     
+    this.loadLevelStats(); // Reset level stats trophies on logout
     this.initAuth();
   }
 
@@ -1421,7 +1454,6 @@ class JLPTApp {
       if (data.success) {
         reportContainer.innerHTML = '';
         const levels = ['N5', 'N4', 'N3', 'N2', 'N1'];
-        const scoreColors = { N5: 'emerald', N4: 'blue', N3: 'amber', N2: 'purple', N1: 'rose' };
         
         levels.forEach(lvl => {
           let pct = data.scores[lvl] !== undefined ? data.scores[lvl] : null;
@@ -1455,7 +1487,7 @@ class JLPTApp {
               <span style="opacity: 0.8;">${scoreText}</span>
             </div>
             <div style="width: 100%; height: 8px; border-radius: 4px; background: rgba(255,255,255,0.08); overflow: hidden;">
-              <div style="width: ${barWidth}; height: 100%; border-radius: 4px; background: ${pct !== null && pct > 0 ? 'linear-gradient(90deg, #6366f1, #818cf8)' : 'rgba(255,255,255,0.1)'}; transition: width 0.3s ease;"></div>
+              <div style="width: ${barWidth}; height: 100%; border-radius: 4px; background: ${pct !== null && pct > 0 ? `var(--color-${lvl.toLowerCase()})` : 'rgba(255,255,255,0.1)'}; transition: width 0.3s ease;"></div>
             </div>
           `;
           reportContainer.appendChild(entry);
