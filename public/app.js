@@ -83,6 +83,11 @@ class JLPTApp {
         };
       }
     }
+
+    window.addEventListener('popstate', () => {
+      this.handleRoute();
+    });
+    this.handleRoute();
   }
 
   // --- STREAK & LOCALSTORAGE STUFF ---
@@ -237,10 +242,122 @@ class JLPTApp {
     this.playAudio('click');
     this.stopListeningAudio();
     clearInterval(this.timerInterval);
+    
+    // Update path
+    if (window.location.pathname !== '/' && window.location.pathname !== '/dashboard') {
+      history.pushState(null, '', '/dashboard');
+    }
+
     this.panelQuiz.classList.remove('active');
     this.panelResults.classList.remove('active');
     this.panelDashboard.classList.add('active');
+
+    // Close modal overlays too
+    const profileModal = document.getElementById('modal-user-profile');
+    const adminModal = document.getElementById('modal-admin-panel');
+    if (profileModal) profileModal.style.display = 'none';
+    if (adminModal) adminModal.style.display = 'none';
+
     this.loadLevelStats();
+  }
+
+  handleRoute() {
+    // If not authenticated, do not navigate yet; the login overlay handles screen locking
+    const savedUser = sessionStorage.getItem('currentUser');
+    if (!savedUser) return;
+
+    const path = window.location.pathname;
+    const parts = path.split('/').filter(Boolean); // e.g. ["quiz", "n5", "vocabulary"]
+
+    // Hide modals by default
+    const profileModal = document.getElementById('modal-user-profile');
+    const adminModal = document.getElementById('modal-admin-panel');
+    if (profileModal) profileModal.style.display = 'none';
+    if (adminModal) adminModal.style.display = 'none';
+
+    if (parts.length === 0 || parts[0] === 'dashboard') {
+      this.panelQuiz.classList.remove('active');
+      this.panelResults.classList.remove('active');
+      this.panelDashboard.classList.add('active');
+      this.loadLevelStats();
+    } else if (parts[0] === 'profile') {
+      this.panelQuiz.classList.remove('active');
+      this.panelResults.classList.remove('active');
+      this.panelDashboard.classList.add('active');
+      this.showUserProfile(false);
+    } else if (parts[0] === 'admin') {
+      if (this.currentRole !== 'admin') {
+        history.replaceState(null, '', '/dashboard');
+        this.handleRoute();
+        return;
+      }
+      this.panelQuiz.classList.remove('active');
+      this.panelResults.classList.remove('active');
+      this.panelDashboard.classList.add('active');
+      this.showAdminPanel(false);
+    } else if (parts[0] === 'quiz' && parts[1] && parts[2]) {
+      const level = parts[1].toUpperCase();
+      let section = parts[2].charAt(0).toUpperCase() + parts[2].slice(1).toLowerCase();
+      if (section === 'Mock-test') section = 'All';
+
+      this.level = level;
+      this.focusSection = section;
+      this.setFocusSection(section);
+
+      const db = window.quizQuestions[level];
+      if (db) {
+        const deepClone = (arr) => arr.map(obj => JSON.parse(JSON.stringify(obj)));
+        if (section === 'All') {
+          const vocabQs = this.shuffleArray(deepClone(db.Vocabulary || [])).slice(0, 8);
+          const grammarQs = this.shuffleArray(deepClone(db.Grammar || [])).slice(0, 8);
+          const readingQs = this.shuffleArray(deepClone(db.Reading || [])).slice(0, 2);
+          const listeningQs = this.shuffleArray(deepClone(db.Listening || [])).slice(0, 4);
+
+          vocabQs.forEach(q => { q.section = 'Vocabulary'; this.shuffleOptions(q); });
+          grammarQs.forEach(q => { q.section = 'Grammar'; this.shuffleOptions(q); });
+          readingQs.forEach(q => { q.section = 'Reading'; this.shuffleOptions(q); });
+          listeningQs.forEach(q => { q.section = 'Listening'; this.shuffleOptions(q); });
+
+          if (this.sessionMode === 'exam' || this.sessionMode === 'test') {
+            const combined = [...vocabQs, ...grammarQs, ...readingQs, ...listeningQs];
+            this.sessionQuestions = this.shuffleArray(combined);
+            this.isFullMockExam = true;
+          } else {
+            const mixed = [...vocabQs, ...grammarQs, ...readingQs, ...listeningQs];
+            this.sessionQuestions = this.shuffleArray(mixed).slice(0, 10);
+            this.isFullMockExam = false;
+          }
+        } else {
+          const allQs = db[section];
+          if (allQs && allQs.length > 0) {
+            let limit = 8;
+            if (section === 'Reading') limit = 2;
+            if (section === 'Listening') limit = 4;
+            this.sessionQuestions = this.shuffleArray(deepClone(allQs)).slice(0, limit);
+            this.sessionQuestions.forEach(q => {
+              q.section = section;
+              this.shuffleOptions(q);
+            });
+            this.isFullMockExam = false;
+          } else {
+            this.sessionQuestions = [];
+          }
+        }
+
+        if (this.sessionQuestions && this.sessionQuestions.length > 0) {
+          this.startSession(false);
+        } else {
+          history.replaceState(null, '', '/dashboard');
+          this.handleRoute();
+        }
+      } else {
+        history.replaceState(null, '', '/dashboard');
+        this.handleRoute();
+      }
+    } else {
+      history.replaceState(null, '', '/dashboard');
+      this.handleRoute();
+    }
   }
 
   // --- SESSION RUNNERS ---
@@ -322,7 +439,7 @@ class JLPTApp {
     this.selectLevel(level);
   }
 
-  startSession() {
+  startSession(push = true) {
     this.currentIndex = 0;
     this.score = 0;
     this.selectedOption = null;
@@ -334,6 +451,11 @@ class JLPTApp {
     this.panelDashboard.classList.remove('active');
     this.panelResults.classList.remove('active');
     this.panelQuiz.classList.add('active');
+
+    if (push) {
+      const cleanCategory = (this.focusSection || 'All').toLowerCase();
+      history.pushState(null, '', `/quiz/${this.level.toLowerCase()}/${cleanCategory}`);
+    }
 
     // Remove old timer warnings
     const timerEl = document.getElementById('time-elapsed');
@@ -1189,7 +1311,7 @@ class JLPTApp {
     // Refresh streak and statistics
     this.loadStreak();
     this.loadLevelStats();
-    this.showDashboard();
+    this.handleRoute();
   }
 
   logout() {
@@ -1208,8 +1330,11 @@ class JLPTApp {
     this.initAuth();
   }
 
-  showUserProfile() {
+  showUserProfile(push = true) {
     this.playAudio('click');
+    if (push && window.location.pathname !== '/profile') {
+      history.pushState(null, '', '/profile');
+    }
     const modal = document.getElementById('modal-user-profile');
     modal.style.display = 'flex';
 
@@ -1267,6 +1392,9 @@ class JLPTApp {
   closeUserProfile() {
     this.playAudio('click');
     document.getElementById('modal-user-profile').style.display = 'none';
+    if (window.location.pathname === '/profile') {
+      history.pushState(null, '', '/dashboard');
+    }
   }
 
   updateUserProfileCredentials() {
@@ -1323,8 +1451,11 @@ class JLPTApp {
     });
   }
 
-  showAdminPanel() {
+  showAdminPanel(push = true) {
     this.playAudio('click');
+    if (push && window.location.pathname !== '/admin') {
+      history.pushState(null, '', '/admin');
+    }
     const modal = document.getElementById('modal-admin-panel');
     modal.style.display = 'flex';
 
@@ -1380,6 +1511,9 @@ class JLPTApp {
   closeAdminPanel() {
     this.playAudio('click');
     document.getElementById('modal-admin-panel').style.display = 'none';
+    if (window.location.pathname === '/admin') {
+      history.pushState(null, '', '/dashboard');
+    }
   }
 
   updateUserByAdmin(idx) {
