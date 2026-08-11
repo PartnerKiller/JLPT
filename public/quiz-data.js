@@ -269,6 +269,66 @@ window.quizQuestions = {
         "correct": 0,
         "romaji": "yūenchi",
         "explanation": "'遊園地' (amusement park) is a Lesson 13 vocabulary word read as 'ゆうえんち'."
+      },
+      {
+        "question": "Choose the correct reading for: <ruby>飛行機<rt class='placeholder'>?</rt></ruby>",
+        "options": [
+          "ひこうき",
+          "じどうしゃ",
+          "しんかんせん",
+          "じてんしゃ"
+        ],
+        "correct": 0,
+        "romaji": "hikōki",
+        "explanation": "'飛行機' (airplane) is read as 'ひこうき' (hikōki)."
+      },
+      {
+        "question": "What does '<ruby>鉛筆<rt>えんぴつ</rt></ruby>' mean?",
+        "options": [
+          "Notebook",
+          "Pencil",
+          "Eraser",
+          "Pen"
+        ],
+        "correct": 1,
+        "romaji": "enpitsu",
+        "explanation": "'鉛筆' (enpitsu) means pencil."
+      },
+      {
+        "question": "Choose the correct reading for: <ruby>牛乳<rt class='placeholder'>?</rt></ruby>",
+        "options": [
+          "ぎゅうにゅう",
+          "おちゃ",
+          "みず",
+          "おさけ"
+        ],
+        "correct": 0,
+        "romaji": "gyūnyū",
+        "explanation": "'牛乳' (milk) is read as 'ぎゅうにゅう' (gyūnyū)."
+      },
+      {
+        "question": "What does '<ruby>食堂<rt>しょくどう</rt></ruby>' mean?",
+        "options": [
+          "Library",
+          "Dining Hall/Cafeteria",
+          "Gym",
+          "Station"
+        ],
+        "correct": 1,
+        "romaji": "shokudō",
+        "explanation": "'食堂' (shokudō) means cafeteria or dining hall."
+      },
+      {
+        "question": "Choose the correct reading for: <ruby>靴下<rt class='placeholder'>?</rt></ruby>",
+        "options": [
+          "くつした",
+          "てぶくろ",
+          "ぼうし",
+          "ずぼん"
+        ],
+        "correct": 0,
+        "romaji": "kutsushita",
+        "explanation": "'靴下' (socks) is read as 'くつした' (kutsushita)."
       }
     ],
     "Grammar": [
@@ -535,6 +595,66 @@ window.quizQuestions = {
         "correct": 3,
         "romaji": "Ashita wa hima desu.",
         "explanation": "In Lesson 8, Na-adjectives directly take 'desu' in plain positive assertions without 'na'."
+      },
+      {
+        "question": "Complete: <ruby>私<rt>わたし</rt></ruby>は<ruby>日本語<rt>にほんご</rt></ruby><span class='blank-placeholder'>?</span><ruby>勉強<rt>べんきょう</rt></ruby>します。",
+        "options": [
+          "を",
+          "は",
+          "に",
+          "が"
+        ],
+        "correct": 0,
+        "romaji": "Watashi wa Nihongo [o] benkyō shimasu.",
+        "explanation": "The particle 'を' (o) is used to mark the direct object of a transitive verb ('勉強します')."
+      },
+      {
+        "question": "Complete: <ruby>机<rt>つくえ</rt></ruby>の<ruby>上<rt>うえ</rt></ruby><span class='blank-placeholder'>?</span><ruby>ペン<rt>ぺん</rt></ruby>があります。",
+        "options": [
+          "に",
+          "で",
+          "を",
+          "へ"
+        ],
+        "correct": 0,
+        "romaji": "Tsukue no ue [ni] pen ga arimasu.",
+        "explanation": "The particle 'に' (ni) marks the location of existence for inanimate objects (あります)."
+      },
+      {
+        "question": "Complete: <ruby>図書館<rt>としょかん</rt></ruby><span class='blank-placeholder'>?</span><ruby>本<rt>ほん</rt></ruby>を<ruby>読<rt>よ</rt></ruby>みます。",
+        "options": [
+          "で",
+          "に",
+          "へ",
+          "が"
+        ],
+        "correct": 0,
+        "romaji": "Toshokan [de] hon o yomimasu.",
+        "explanation": "The particle 'で' (de) is used to mark the location where an action takes place."
+      },
+      {
+        "question": "Complete: <ruby>昨日<rt>きのう</rt></ruby>、どこ<span class='blank-placeholder'>?</span><ruby>行<rt>い</rt></ruby>きませんでした。",
+        "options": [
+          "へも",
+          "へ",
+          "に",
+          "をも"
+        ],
+        "correct": 0,
+        "romaji": "Kinō, doko [he mo] ikimasen deshita.",
+        "explanation": "To say 'went nowhere' or 'did not go anywhere', combine question word + particle + も + negative verb."
+      },
+      {
+        "question": "Complete: <ruby>木村<rt>きむら</rt></ruby>さんは<ruby>テニス<rt>てにす</rt></ruby><span class='blank-placeholder'>?</span><ruby>上手<rt>じょうず</rt></ruby>です。",
+        "options": [
+          "が",
+          "を",
+          "に",
+          "は"
+        ],
+        "correct": 0,
+        "romaji": "Kimura-san wa tenisu [ga] jōzu desu.",
+        "explanation": "The particle 'が' (ga) is used to mark the object of capability or skill with adjectives like '上手' (skilled at)."
       }
     ],
     "Reading": [
@@ -990,6 +1110,66 @@ window.quizQuestions = {
         "correct": 0,
         "romaji": "happyō",
         "explanation": "'発表' (presentation/announcement) is a Lesson 39 vocabulary word read as 'はっぴょう'."
+      },
+      {
+        "question": "Choose the correct reading for: <ruby>貿易<rt class='placeholder'>?</rt></ruby>",
+        "options": [
+          "ぼうえき",
+          "ほうほう",
+          "ぼうさい",
+          "ほうき"
+        ],
+        "correct": 0,
+        "romaji": "bōeki",
+        "explanation": "'貿易' (foreign trade) is read as 'ぼうえき' (bōeki)."
+      },
+      {
+        "question": "What does '<ruby>尋ねる<rt>たずねる</rt></ruby>' mean?",
+        "options": [
+          "To search for",
+          "To ask/inquire",
+          "To visit",
+          "To return"
+        ],
+        "correct": 1,
+        "romaji": "tazuneru",
+        "explanation": "'尋ねる' (tazuneru) means to ask or inquire."
+      },
+      {
+        "question": "Choose the correct reading for: <ruby>複雑<rt class='placeholder'>?</rt></ruby>な",
+        "options": [
+          "ふくざつ",
+          "かんたん",
+          "ふうけい",
+          "じゅうよう"
+        ],
+        "correct": 0,
+        "romaji": "fukuzatsu",
+        "explanation": "'複雑' (complex/complicated) is read as 'ふくざつ' (fukuzatsu)."
+      },
+      {
+        "question": "What does '<ruby>怒る<rt>おこる</rt></ruby>' mean?",
+        "options": [
+          "To laugh",
+          "To get angry",
+          "To cry",
+          "To surprise"
+        ],
+        "correct": 1,
+        "romaji": "okoru",
+        "explanation": "'怒る' (okoru) means to get angry."
+      },
+      {
+        "question": "Choose the correct reading for: <ruby>遅れる<rt class='placeholder'>?</rt></ruby>",
+        "options": [
+          "おくれる",
+          "わすれる",
+          "こわれる",
+          "たおれる"
+        ],
+        "correct": 0,
+        "romaji": "okureru",
+        "explanation": "'遅れる' (to be late/delayed) is read as 'おくれる' (okureru)."
       }
     ],
     "Grammar": [
@@ -1256,6 +1436,66 @@ window.quizQuestions = {
         "correct": 0,
         "romaji": "Sensei ni Nihongo o home[rarejashitata].",
         "explanation": "In Lesson 37, the passive form ('褒められました') is used to express receiving praise."
+      },
+      {
+        "question": "Complete: その<ruby>本<rt>ほん</rt></ruby>を<ruby>読<rt>よ</rt></ruby><span class='blank-placeholder'>?</span>あとで、<ruby>感想<rt>かんそう</rt></ruby>を<ruby>聞<rt>き</rt></ruby>かせてください。",
+        "options": [
+          "た",
+          "む",
+          "んで",
+          "ます"
+        ],
+        "correct": 0,
+        "romaji": "Sono hon o yo[ta] ato de, kansō o kikasete kudasai.",
+        "explanation": "'〜たあとで' (after doing) is a grammar pattern describing sequential actions."
+      },
+      {
+        "question": "Complete: <ruby>明日<rt>あした</rt></ruby><span class='blank-placeholder'>?</span>、ハイキングは中止です。",
+        "options": [
+          "が雨なら",
+          "が雨ならは",
+          "が雨ならばは",
+          "が雨ならが"
+        ],
+        "correct": 0,
+        "romaji": "Ashita [ga ame nara], haikingu wa chūshi desu.",
+        "explanation": "'〜なら' (if/in case) indicates conditionality for nouns (N + nara)."
+      },
+      {
+        "question": "Complete: 毎日運動する<span class='blank-placeholder'>?</span>にしています。",
+        "options": [
+          "ように",
+          "ために",
+          "ことに",
+          "わけに"
+        ],
+        "correct": 0,
+        "romaji": "Mainichi undō suru [yō ni] shite imasu.",
+        "explanation": "'〜ようにする' indicates making an effort or establishing a habit."
+      },
+      {
+        "question": "Complete: このスマホは<ruby>使い<rt>つかい</rt></ruby><span class='blank-placeholder'>?</span>です。",
+        "options": [
+          "やすい",
+          "にくい",
+          "すぎる",
+          "ながら"
+        ],
+        "correct": 0,
+        "romaji": "Kono sumaho wa tsukai[yasui] desu.",
+        "explanation": "'Verb stem + yasui' means 'easy to do'."
+      },
+      {
+        "question": "Complete: 宿題が多すぎて、全部終わって<span class='blank-placeholder'>?</span>ました。",
+        "options": [
+          "しまい",
+          "おき",
+          "み",
+          "あり"
+        ],
+        "correct": 0,
+        "romaji": "Shukudai ga ōsugite, zenbu owatte [shimai]mashita.",
+        "explanation": "'〜てしまう' indicates completion of an action, sometimes with a nuance of regret."
       }
     ],
     "Reading": [
@@ -1681,6 +1921,66 @@ window.quizQuestions = {
         "correct": 0,
         "romaji": "hani",
         "explanation": "'範囲' (range/scope) is read as 'はんい'."
+      },
+      {
+        "question": "Choose the correct reading for: <ruby>豊富<rt class='placeholder'>?</rt></ruby>な",
+        "options": [
+          "ほうふ",
+          "ほうしゅ",
+          "ほうそう",
+          "ほうがん"
+        ],
+        "correct": 0,
+        "romaji": "hōfu",
+        "explanation": "'豊富' (abundant/rich) is read as 'ほうふ'."
+      },
+      {
+        "question": "What does '<ruby>貴重<rt>きちょう</rt></ruby>' mean?",
+        "options": [
+          "Dangerous",
+          "Precious/Valuable",
+          "Difficult",
+          "Temporary"
+        ],
+        "correct": 1,
+        "romaji": "kichō",
+        "explanation": "'貴重' means precious or valuable."
+      },
+      {
+        "question": "Choose the correct reading for: <ruby>納得<rt class='placeholder'>?</rt></ruby>する",
+        "options": [
+          "なっとく",
+          "がっとく",
+          "のうとく",
+          "ねっとく"
+        ],
+        "correct": 0,
+        "romaji": "nattoku",
+        "explanation": "'納得' (consent/understanding) is read as 'なっとく'."
+      },
+      {
+        "question": "What does '<ruby>歓迎<rt>かんげい</rt></ruby>' mean?",
+        "options": [
+          "Refusal",
+          "Welcome/Reception",
+          "Warning",
+          "Celebration"
+        ],
+        "correct": 1,
+        "romaji": "kangei",
+        "explanation": "'歓迎' means welcome or warm reception."
+      },
+      {
+        "question": "Choose the correct reading for: <ruby>拡大<rt class='placeholder'>?</rt></ruby>する",
+        "options": [
+          "かくだい",
+          "ひろだい",
+          "かくだん",
+          "こうだい"
+        ],
+        "correct": 0,
+        "romaji": "kakudai",
+        "explanation": "'拡大' (expansion/magnification) is read as 'かくだい'."
       }
     ],
     "Grammar": [
@@ -1917,6 +2217,66 @@ window.quizQuestions = {
         "correct": 0,
         "romaji": "Kaigi wa mada [hajimaru tokoro] desu.",
         "explanation": "'Verb dictionary + tokoro' indicates an action that is just about to start."
+      },
+      {
+        "question": "Complete: <ruby>雨<rt>あめ</rt></ruby>が<ruby>降<rt>ふ</rt></ruby>っている<span class='blank-placeholder'>?</span>に、買い物に行よう。",
+        "options": [
+          "うちに",
+          "からに",
+          "ばかりに",
+          "おかげで"
+        ],
+        "correct": 0,
+        "romaji": "Ame ga futte iru [uchi ni], kaimono ni ikō.",
+        "explanation": "'〜うちに' means 'while' or 'before a state changes'."
+      },
+      {
+        "question": "Complete: 先生<span class='blank-placeholder'>?</span>、テストの日程を聞いた。",
+        "options": [
+          "に対して",
+          "について",
+          "にとって",
+          "に関して"
+        ],
+        "correct": 0,
+        "romaji": "Sensei [ni taishite], tesuto no nittei o kiita.",
+        "explanation": "'〜に対して' indicates the target of an action or attitude."
+      },
+      {
+        "question": "Complete: 日本の技術は、世界<span class='blank-placeholder'>?</span>認められている。",
+        "options": [
+          "において",
+          "に関して",
+          "にともなって",
+          "に反して"
+        ],
+        "correct": 0,
+        "romaji": "Nihon no gijutsu wa, sekai [ni oite] mitomerarete iru.",
+        "explanation": "'〜において' is a formal way to express 'in' or 'at' a location/domain."
+      },
+      {
+        "question": "Complete: この薬は、大人<span class='blank-placeholder'>?</span>のものです。子供は飲めません。",
+        "options": [
+          "向け",
+          "向けに",
+          "向けだ",
+          "向けのみ"
+        ],
+        "correct": 0,
+        "romaji": "Kono kusuri wa, otona[muke] no mono desu.",
+        "explanation": "'〜向け' means 'intended for' or 'aimed at' a specific audience."
+      },
+      {
+        "question": "Complete: あの二人が付き合っているなんて、信じられる<span class='blank-placeholder'>?</span>。",
+        "options": [
+          "わけがない",
+          "はずがない",
+          "わけにはいかない",
+          "ものか"
+        ],
+        "correct": 0,
+        "romaji": "Ano futari ga tsukiatte iru nante, shinjirareru [wake ga nai].",
+        "explanation": "'〜わけがない' means 'there is no way that...' or 'it is impossible that...'."
       }
     ],
     "Reading": [
@@ -2342,6 +2702,66 @@ window.quizQuestions = {
         "correct": 0,
         "romaji": "dakyō",
         "explanation": "'妥協' (compromise) is read as 'だきょう'."
+      },
+      {
+        "question": "Choose the correct reading for: <ruby>冷静<rt class='placeholder'>?</rt></ruby>な",
+        "options": [
+          "れいせい",
+          "れんせい",
+          "れいかん",
+          "れいこく"
+        ],
+        "correct": 0,
+        "romaji": "reisei",
+        "explanation": "'冷静' (calm/coolheaded) is read as 'れいせい'."
+      },
+      {
+        "question": "What does '<ruby>状況<rt>じょうきょう</rt></ruby>' mean?",
+        "options": [
+          "Location",
+          "Situation/Circumstances",
+          "Emotion",
+          "Rule"
+        ],
+        "correct": 1,
+        "romaji": "jōkyō",
+        "explanation": "'状況' means state of affairs or situation."
+      },
+      {
+        "question": "Choose the correct reading for: <ruby>影響<rt class='placeholder'>?</rt></ruby>する",
+        "options": [
+          "えいきょう",
+          "えいぎょう",
+          "えいこう",
+          "ようきょう"
+        ],
+        "correct": 0,
+        "romaji": "eikyō",
+        "explanation": "'影響' (influence/effect) is read as 'えいきょう'."
+      },
+      {
+        "question": "What does '<ruby>範囲<rt>はんい</rt></ruby>' mean?",
+        "options": [
+          "Standard",
+          "Scope/Range/Limit",
+          "Decision",
+          "Reason"
+        ],
+        "correct": 1,
+        "romaji": "hani",
+        "explanation": "'範囲' means scope, range, or limits."
+      },
+      {
+        "question": "Choose the correct reading for: <ruby>妥協<rt class='placeholder'>?</rt></ruby>する",
+        "options": [
+          "だきょう",
+          "だよう",
+          "だかい",
+          "だんけつ"
+        ],
+        "correct": 0,
+        "romaji": "dakyō",
+        "explanation": "'妥協' (compromise) is read as 'だきょう'."
       }
     ],
     "Grammar": [
@@ -2578,6 +2998,66 @@ window.quizQuestions = {
         "correct": 0,
         "romaji": "Kyō no giron wa, jikan no tsugō [jō], koko made ni shimasu.",
         "explanation": "'〜上' (jō) means 'due to' or 'from the standpoint of (circumstances)'."
+      },
+      {
+        "question": "Complete: 台風の接近<span class='blank-placeholder'>?</span>、風雨が強まってきた。",
+        "options": [
+          "にともなって",
+          "に反して",
+          "を問わず",
+          "に先立って"
+        ],
+        "correct": 0,
+        "romaji": "Taifū no sekkin [ni tomonatte], fūu ga tsuyomatte kita.",
+        "explanation": "'〜に伴って' (ni tomonatte) means 'along with' or 'as something progresses'."
+      },
+      {
+        "question": "Complete: お金<span class='blank-placeholder'>?</span>あれば、幸せになれるわけではない。",
+        "options": [
+          "さえあれば",
+          "こそあれば",
+          "ばかりあれば",
+          "のみあれば"
+        ],
+        "correct": 0,
+        "romaji": "Okane [sae areba], shiawase ni nareru wake dewa nai.",
+        "explanation": "'〜さえ〜ば' means 'if only...' (expressing a minimum requirement)."
+      },
+      {
+        "question": "Complete: 少子高齢化が急速に進み<span class='blank-placeholder'>?</span>。",
+        "options": [
+          "つつある",
+          "きっている",
+          "がちである",
+          "かねない"
+        ],
+        "correct": 0,
+        "romaji": "Shōshikōreika ga kyūsoku ni susumi[tsutsu aru].",
+        "explanation": "'〜つつある' indicates a continuous progress or change ('in the process of doing')."
+      },
+      {
+        "question": "Complete: このまま対策を怠れば、重大な事故になり<span class='blank-placeholder'>?</span>。",
+        "options": [
+          "かねない",
+          "っこない",
+          "かねる",
+          "がたい"
+        ],
+        "correct": 0,
+        "romaji": "Kono mama taisaku o okotareba, jūdai na jiko ni nari[kanenai].",
+        "explanation": "'〜かねない' means 'might happen' or 'could result in' (usually indicating a negative consequence)."
+      },
+      {
+        "question": "Complete: 来年度の計画について、現在<span class='blank-placeholder'>?</span>です。",
+        "options": [
+          "検討中",
+          "検討下",
+          "検討上",
+          "検討内"
+        ],
+        "correct": 0,
+        "romaji": "Rainendo no keikaku ni tsuite, genzai [kentōchū] desu.",
+        "explanation": "'〜中' (chū) indicates that an action is currently in progress ('under consideration')."
       }
     ],
     "Reading": [
@@ -3003,6 +3483,66 @@ window.quizQuestions = {
         "correct": 0,
         "romaji": "baikai",
         "explanation": "'媒介' (mediation/intermediation) is read as 'ばいかい'."
+      },
+      {
+        "question": "Choose the correct reading for: <ruby>把握<rt class='placeholder'>?</rt></ruby>する",
+        "options": [
+          "はおく",
+          "ぱおく",
+          "はそく",
+          "ばそく"
+        ],
+        "correct": 0,
+        "romaji": "haoku",
+        "explanation": "'把握' (grasp/understanding) is read as 'はおく'."
+      },
+      {
+        "question": "What does '<ruby>模索<rt>もさく</rt></ruby>' mean?",
+        "options": [
+          "Imitation",
+          "Groping/Searching for solutions",
+          "Analysis",
+          "Summary"
+        ],
+        "correct": 1,
+        "romaji": "mosaku",
+        "explanation": "'模索' means to search for a solution in the dark, or grope."
+      },
+      {
+        "question": "Choose the correct reading for: <ruby>核心<rt class='placeholder'>?</rt></ruby>",
+        "options": [
+          "かくしん",
+          "ぎゃくしん",
+          "こうしん",
+          "はいしん"
+        ],
+        "correct": 0,
+        "romaji": "kakushin",
+        "explanation": "'核心' (core/crux/heart of matter) is read as 'かくしん'."
+      },
+      {
+        "question": "What does '<ruby>崩壊<rt>ほうかい</rt></ruby>' mean?",
+        "options": [
+          "Destruction/Collapse",
+          "Reconstruction",
+          "Movement",
+          "Reform"
+        ],
+        "correct": 0,
+        "romaji": "hōkai",
+        "explanation": "'崩壊' means decay, ruin, collapse, or breakdown."
+      },
+      {
+        "question": "Choose the correct reading for: <ruby>媒介<rt class='placeholder'>?</rt></ruby>する",
+        "options": [
+          "ばいかい",
+          "ばいきん",
+          "まいかい",
+          "はいかい"
+        ],
+        "correct": 0,
+        "romaji": "baikai",
+        "explanation": "'媒介' (mediation/intermediation) is read as 'ばいかい'."
       }
     ],
     "Grammar": [
@@ -3239,6 +3779,66 @@ window.quizQuestions = {
         "correct": 0,
         "romaji": "Kono shōsetsu wa, dokusha ni kandō o [ataezu ni wa okanai].",
         "explanation": "'〜ずにはおかない' means 'cannot help but/will certainly cause' (e.g., will certainly move the reader)."
+      },
+      {
+        "question": "Complete: 彼の無責任な態度は、怒り<span class='blank-placeholder'>?</span>。",
+        "options": [
+          "極まりない",
+          "に限る",
+          "にかたくない",
+          "にすぎない"
+        ],
+        "correct": 0,
+        "romaji": "Kare no musekinin na taido wa, ikari[kiwamarinai].",
+        "explanation": "'〜極まりない' means 'extremely' or 'limitless' (used to emphasize a negative state)."
+      },
+      {
+        "question": "Complete: 今日の東京公演<span class='blank-placeholder'>?</span>、全国ツアーが始まった。",
+        "options": [
+          "を皮切りに",
+          "を皮切りとしてではない",
+          "をもってして",
+          "はおろか"
+        ],
+        "correct": 0,
+        "romaji": "Kyō no Tōkyō kōen [o kawakiri ni], zenkoku tsuā ga hajimatta.",
+        "explanation": "'〜を皮切りに' means 'starting with...' or 'beginning with...' (triggering a succession similar events)."
+      },
+      {
+        "question": "Complete: 挨拶<span class='blank-placeholder'>?</span>、お祝いに行ってきました。",
+        "options": [
+          "かたがた",
+          "がてら",
+          "ながら",
+          "つつ"
+        ],
+        "correct": 0,
+        "romaji": "Aisatsu [katagata], oiwai ni itte kimashita.",
+        "explanation": "'〜かたがた' means 'while doing' or 'at the same time' (combining two purposes in one action, formal)."
+      },
+      {
+        "question": "Complete: 法を犯した者は、厳罰に処せ<span class='blank-placeholder'>?</span>。",
+        "options": [
+          "ずにはおかない",
+          "ざるをえない",
+          "ずにはいられない",
+          "べからず"
+        ],
+        "correct": 0,
+        "romaji": "Hō o okashita mono wa, genbatsu ni shose[zu ni wa okanai].",
+        "explanation": "'〜ずにはおかない' means 'will definitely do...' or 'cannot help but cause...'."
+      },
+      {
+        "question": "Complete: 優れた技術が、市場調査<span class='blank-placeholder'>?</span>、画期的な製品が誕生した。",
+        "options": [
+          "と相まって",
+          "にあって",
+          "をおいて",
+          "はおろか"
+        ],
+        "correct": 0,
+        "romaji": "Sugureta gijutsu ga, shijō chōsa [to aimatte], kakkiteki na seihin ga tanjō shita.",
+        "explanation": "'〜と相まって' means 'coupled with...' or 'together with...' (two factors working together to produce a synergy)."
       }
     ],
     "Reading": [
