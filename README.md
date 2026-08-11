@@ -23,6 +23,8 @@ An interactive, responsive, and realistic web application designed for practicin
 - **Split Reading View**: Responsive split-pane layout with a glassmorphic scrollable text reader on the left and reading comprehension questions on the right.
 - **Star (`★`) Rearrangement Questions**: Realistic sentence composition questions matching actual JLPT grammar section layouts.
 - **Furigana & Romaji Toggles**: Support for showing/hiding furigana (N5-N1) and romaji translations (N5-N4) below Japanese text. Furigana toggling applies globally to options, questions, reading passages, and reviews.
+- **Visual Theme Style Selector**: Ability to toggle between **Cyber Glow** (sci-fi backdrop, floating animated orbs, glassmorphic card effects) and **Classic Zen** (a minimalist, distraction-free layout with solid backgrounds, standard borders, and soft shadows).
+- **Vast Question Bank (N5 to N1)**: Extensively expanded question pools mapped directly to authentic *Minna no Nihongo* and *Try! Japanese Grammar* curricula, ensuring zero repeated questions and complete randomization.
 - **Global Mock Randomization**: Question configurations are fully shuffled across all sections (Vocabulary, Grammar, Reading, and Listening) by default in all mock exam/test modes.
 - **Progress Tracking & Analytics**: Level progress scores are saved in the user database. Detailed charts show sectional performance breakdown (Vocabulary, Grammar, Reading, Listening) with pass/fail grading at the end of official tests.
 
