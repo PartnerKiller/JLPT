@@ -1,0 +1,37 @@
+=== Nihongo Pro Audio Scraper (Curl Bypass Mode) ===
+Fetching index page: https://japanesetest4you.com/category/jlpt-n5/jlpt-n5-listening-test/
+Fetching index page: https://japanesetest4you.com/category/jlpt-n5/jlpt-n5-listening-test/page/2/
+Fetching index page: https://japanesetest4you.com/category/jlpt-n5/jlpt-n5-listening-test/page/3/
+Found 29 unique exercise pages.
+Fetching exercise page: https://japanesetest4you.com/japanese-language-proficiency-test-jlpt-n5-listening-exercise-1/
+Fetching exercise page: https://japanesetest4you.com/japanese-language-proficiency-test-jlpt-n5-listening-exercise-2/
+Fetching exercise page: https://japanesetest4you.com/japanese-language-proficiency-test-jlpt-n5-listening-exercise-3/
+Fetching exercise page: https://japanesetest4you.com/japanese-language-proficiency-test-jlpt-n5-listening-exercise-4/
+Fetching exercise page: https://japanesetest4you.com/japanese-language-proficiency-test-jlpt-n5-listening-exercise-5/
+Fetching exercise page: https://japanesetest4you.com/japanese-language-proficiency-test-jlpt-n5-listening-exercise-6/
+Fetching exercise page: https://japanesetest4you.com/japanese-language-proficiency-test-jlpt-n5-listening-exercise-7/
+Fetching exercise page: https://japanesetest4you.com/japanese-language-proficiency-test-jlpt-n5-listening-exercise-8/
+Fetching exercise page: https://japanesetest4you.com/japanese-language-proficiency-test-jlpt-n5-listening-exercise-9/
+Fetching exercise page: https://japanesetest4you.com/japanese-language-proficiency-test-jlpt-n5-listening-exercise-10/
+Fetching exercise page: https://japanesetest4you.com/japanese-language-proficiency-test-jlpt-n5-listening-exercise-11/
+Fetching exercise page: https://japanesetest4you.com/japanese-language-proficiency-test-jlpt-n5-listening-exercise-12/
+Fetching exercise page: https://japanesetest4you.com/japanese-language-proficiency-test-jlpt-n5-listening-exercise-13/
+Fetching exercise page: https://japanesetest4you.com/japanese-language-proficiency-test-jlpt-n5-listening-exercise-14/
+Fetching exercise page: https://japanesetest4you.com/japanese-language-proficiency-test-jlpt-n5-listening-exercise-15/
+Fetching exercise page: https://japanesetest4you.com/japanese-language-proficiency-test-jlpt-n5-listening-exercise-16/
+Fetching exercise page: https://japanesetest4you.com/japanese-language-proficiency-test-jlpt-n5-listening-exercise-17/
+Fetching exercise page: https://japanesetest4you.com/japanese-language-proficiency-test-jlpt-n5-listening-exercise-18/
+Fetching exercise page: https://japanesetest4you.com/japanese-language-proficiency-test-jlpt-n5-listening-exercise-19/
+Fetching exercise page: https://japanesetest4you.com/japanese-language-proficiency-test-jlpt-n5-listening-exercise-20/
+Fetching exercise page: https://japanesetest4you.com/japanese-language-proficiency-test-jlpt-n5-listening-exercise-21/
+Fetching exercise page: https://japanesetest4you.com/japanese-language-proficiency-test-jlpt-n5-listening-exercise-22/
+Fetching exercise page: https://japanesetest4you.com/japanese-language-proficiency-test-jlpt-n5-listening-exercise-23/
+Fetching exercise page: https://japanesetest4you.com/japanese-language-proficiency-test-jlpt-n5-listening-exercise-24/
+Fetching exercise page: https://japanesetest4you.com/japanese-language-proficiency-test-jlpt-n5-listening-exercise-25/
+Fetching exercise page: https://japanesetest4you.com/japanese-language-proficiency-test-jlpt-n5-listening-exercise-26/
+Fetching exercise page: https://japanesetest4you.com/japanese-language-proficiency-test-jlpt-n5-listening-exercise-27/
+Fetching exercise page: https://japanesetest4you.com/japanese-language-proficiency-test-jlpt-n5-listening-exercise-28/
+Fetching exercise page: https://japanesetest4you.com/japanese-language-proficiency-test-jlpt-n5-listening-exercise-29/
+Successfully scraped 29 exercise pages containing audio.
+Saved mapping.json to /home/sakura/jlpt/public/audio/n5/mapping.json
+Downloading audio files...
