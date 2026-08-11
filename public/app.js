@@ -93,6 +93,10 @@ class JLPTApp {
     this.handleRoute();
   }
 
+  getToken() {
+    return localStorage.getItem('token') || sessionStorage.getItem('token') || '';
+  }
+
   // --- STREAK & LOCALSTORAGE STUFF ---
   loadStreak() {
     const lastActiveDate = localStorage.getItem('jlpt_last_active');
@@ -271,7 +275,7 @@ class JLPTApp {
   }
 
   handleRoute() {
-    const savedUser = sessionStorage.getItem('currentUser');
+    const savedUser = localStorage.getItem('currentUser') || sessionStorage.getItem('currentUser');
     const path = window.location.pathname;
     const parts = path.split('/').filter(Boolean); // e.g. ["quiz", "n5", "vocabulary"]
 
@@ -983,7 +987,7 @@ class JLPTApp {
 
     // Save report card to backend JSON database
     if (this.currentUser) {
-      const token = sessionStorage.getItem('token') || '';
+      const token = this.getToken();
       fetch('/api/report/save', {
         method: 'POST',
         headers: { 
@@ -1443,7 +1447,7 @@ class JLPTApp {
     const reportContainer = document.getElementById('profile-report-card');
     reportContainer.innerHTML = '<div style="font-size: 13px; opacity: 0.6;">Loading your academic report card...</div>';
 
-    const token = sessionStorage.getItem('token') || '';
+    const token = this.getToken();
     fetch(`/api/report/get?username=${encodeURIComponent(this.currentUser)}`, {
       headers: {
         'Authorization': `Bearer ${token}`
@@ -1526,7 +1530,7 @@ class JLPTApp {
       return;
     }
 
-    const token = sessionStorage.getItem('token') || '';
+    const token = this.getToken();
     fetch('/api/profile/update', {
       method: 'POST',
       headers: { 
@@ -1547,7 +1551,11 @@ class JLPTApp {
         
         // Update user state if name changed
         if (newUsername !== this.currentUser) {
-          sessionStorage.setItem('currentUser', newUsername);
+          if (localStorage.getItem('currentUser')) {
+            localStorage.setItem('currentUser', newUsername);
+          } else {
+            sessionStorage.setItem('currentUser', newUsername);
+          }
           this.currentUser = newUsername;
           document.getElementById('user-display-name').textContent = newUsername;
         }
@@ -1578,7 +1586,7 @@ class JLPTApp {
     const usersList = document.getElementById('admin-users-list');
     usersList.innerHTML = '<tr><td colspan="4" style="padding: 15px; opacity: 0.6;">Loading users data...</td></tr>';
 
-    const token = sessionStorage.getItem('token') || '';
+    const token = this.getToken();
     fetch('/api/admin/users', {
       headers: {
         'Authorization': `Bearer ${token}`
@@ -1650,7 +1658,7 @@ class JLPTApp {
       return;
     }
 
-    const token = sessionStorage.getItem('token') || '';
+    const token = this.getToken();
     fetch('/api/admin/user/update', {
       method: 'POST',
       headers: { 
